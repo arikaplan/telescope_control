@@ -1,12 +1,12 @@
+#find coordinates of celestial bodies
+
 from datetime import datetime
 from astropy.coordinates import AltAz, Angle, EarthLocation, ICRS
 from astropy import units as u
 import ephem
 
-#LOCATION = "Greenland"
-#CBODY = "Jupiter"
-
 def getlocation(LOCATION, CBODY):
+
   #observation locations
   locations = dict(
           Barcroft  = EarthLocation( lat=Angle(37.5838176, 'deg'),
@@ -21,7 +21,6 @@ def getlocation(LOCATION, CBODY):
   )
 
   #celestial bodies
-
   cbodies = dict(
   	  Sun     = ephem.Sun(),
   	  Moon    = ephem.Moon(),
@@ -34,10 +33,12 @@ def getlocation(LOCATION, CBODY):
       Neptune = ephem.Neptune()
   )
 
-  #observer location, current utc time
+  #observer location
   location = locations[LOCATION]
+
+  #current utc time
   t = str(datetime.utcnow())
-  time = t[:4] + '/' + t[5:7] + '/' + t[8:]
+  time = t[:4] + '/' + t[5:7] + '/' + t[8:] #converting time into useable format
 
   #celestial body of interest
   cbody = cbodies[CBODY]
@@ -57,16 +58,17 @@ def getlocation(LOCATION, CBODY):
   print altaz.az.deg, altaz.alt.deg
   #############################
   '''
+
   #set observer location and epoch
   obs = ephem.Observer()
   obs.lon, obs.lat = str(location.longitude.deg), str(location.latitude.deg)
   obs.elevation = float(str(location.height).split()[0])
   obs.date = time
 
-  #compute celestial body coordinates given observer spacetime coordiantes
+  #compute celestial body az/el coordinates given observer spacetime coordiantes
   cbody.compute(obs)
 
-  #conver azimuth to degrees
+  #convert azimuth to degrees
   az = str(cbody.az).split(':')
   az = [float(i) for i in az]
   az = (az[0] + az[1]/60. + az[2]/60./60.)
@@ -76,6 +78,6 @@ def getlocation(LOCATION, CBODY):
   alt = [float(i) for i in alt]
   alt = (alt[0] + alt[1]/60. + alt[2]/60./60.)
 
-  #print cbody.ra, cbody.dec
+  #return azimuth and altitude of celestial body
   return az, alt
 

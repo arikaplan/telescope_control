@@ -16,3 +16,7 @@ if (MaxEl - MinEl + stepSize)/stepSize is not an even integer it could
 fail
 
 code to keep telescope from pointing below horizon may need higher limit than 0
+
+it might be possible/better to combine the forward and backward passes into one block of code, use -1**i and a list for min/max az then do list[i % 2] or something like that
+
+for azelscan think about the best way to do iput parameters for rotation, i.e. distance based on distance, time, or rotations

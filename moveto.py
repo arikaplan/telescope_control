@@ -1,4 +1,5 @@
-#import gclib
+# move from some initial position to a final position
+
 import planets
 
 import sys
@@ -9,32 +10,17 @@ def location(az, el, c):
   #g = gclib.py() #make an instance of the gclib python class
   
   try:
-    #print('gclib version:', g.GVersion())
     print('Moving to object location')
 
-    ###########################################################################
-    #  Connect
-    ###########################################################################
-    #g.GOpen('10.1.2.245 --direct -s ALL')
-    #g.GOpen('10.1.2.250 --direct -s ALL')
+    #print('gclib version:', g.GVersion())
     #g.GOpen('COM1 --direct')
     #print(g.GInfo())
 
-    #Motion Complete
-
-    #c = g.GCommand
     c = c
 
-    #c('AB') #abort motion and program
-    #c('MO') #turn off all motors
-    #ygc('SH') #servo on
-
-    #you should put some logic here or somewhere else that makes it always start at the same encoder position for each axis,
-    #it seems like wherever it is right now when it turns on is set as the 0 position. Or just make sure it knows its current position
-    #relative to some set 0
-    
-
     ######################################
+
+    # deg to ct conversion for each motor
     degtoctsAZ = 1024000/360
     degtoctsE = 4096/360
 
@@ -52,14 +38,13 @@ def location(az, el, c):
         print('Warning, this elevation is below the horizon, your going to break the telescope...')
         return 
 
-    #convert to cts
+    #convert new coordinates to cts
     P2AZ = AZ % 360 * degtoctsAZ
     P2E = E % 360 * degtoctsE
     
-
-    #azimuth settings
+    #azimuth scan settings
     azSP = 90 * degtoctsAZ # 90 deg/sec
-    azD = (P2AZ - P1AZ) # move to desired az
+    azD = (P2AZ - P1AZ) # distance to desired az
     
     #make it rotate the short way round
     if azD > 180. * degtoctsAZ:
@@ -70,42 +55,34 @@ def location(az, el, c):
     
     #elevation settings
     elevSP = 180 * degtoctsE # x degrees/sec
-    elevD = (P2E - P1E) # move to desired elev
+    elevD = (P2E - P1E) # distance to desired elev
     
-    #make it rotate the short way round, this might be unecessary
+    #make it rotate the short way round, this might be unecessary for el
     if elevD > 180. * degtoctsE:
         elevD = elevD - 360. * degtoctsE
     
     if elevD < -180. * degtoctsE:
         elevD = 360. * degtoctsE + elevD
-    #print 'elevation!!', elevD
-    
 
+    #gclib/galil commands to move az motor
     c('SPA=' + str(azSP)) #speed, cts/sec
     c('PRA=' + str(azD)) #relative move
     print(' Starting Motion...')
-    c('BGA') #begin motion
-    #c('AMA')
+    c('BGA') #begin motion 
     #g.GMotionComplete('A')
     
-
+    #gclib/galil commands to move elevation motor
     c('SPB=' + str(elevSP)) #elevation speed
-    c('PRB=' + str(elevD)) # change the elevation by x deg
-    c('BGB')
+    c('PRB=' + str(elevD)) #relative move
+    c('BGB') # begin motion
+
+    #wait for both az and el motors to finish moving
     c('AMB')
     c('AMA')
     print(' done.')
 
-    #count += 1
-
-    #print(c('TP'))
     print('AZ_f:', P2AZ/degtoctsAZ, 'Elev_f:', P2E/degtoctsE)
-    #############################################################
-
-    #P2A = float(c('TPX'))
-    #deltaA = (P2A - P1A) / degtoctsA
-    #print 'delta A:', deltaA
-    
+ 
     del c #delete the alias
 
   ###########################################################################
@@ -114,15 +91,8 @@ def location(az, el, c):
   except gclib.GclibError as e:
     print('Unexpected GclibError:', e)
   
-  #finally:
-  #  g.GClose() #don't forget to close connections!
-  
   return
   
- 
-#runs main() if example.py called from the console
-#if __name__ == '__location__':
-#  location()
 '''
 g = gclib.py()
 g.GOpen('10.1.2.245 --direct -s ALL')
