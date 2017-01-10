@@ -28,25 +28,6 @@ stepSize = 10.
 
 numAzScans = 2
 
-'''
-######### things to do ##########
-note that the precision on these scans is not perfect, figure 
-out what precision is required, i think its coming from rounding 
-errors and conversion between cts and degrees.
-
-# resolved - moveto function takes the long way round when shifting elevation
-
-add acceleration and deceleration, decide if speed 
-should be set or variable
-
-find absolute position of encoder, right not there is no reference
-point
-
-if (MaxEl - MinEl + stepSize)/stepSize is not an even integer it could
-fail
-
-code to keep telescope from pointing below horizon may need higher limit than 0
-'''
 
 #az, el = planets.getlocation(location, cbody)
 #moveto.location(az, el)
