@@ -2,7 +2,6 @@ import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
 
-
 def main():
 
   g = gclib.py() #make an instance of the gclib python class
@@ -29,8 +28,8 @@ def main():
     
     #azimuth scan settings
     time = 5 # move for 2 seconds
-    azSP = 90 * degtoctsAZ # 90 deg/sec
-    azD = 1*360 * degtoctsAZ #azSP * time
+    azSP = 120 * degtoctsAZ # 90 deg/sec
+    azD = 2*360 * degtoctsAZ #azSP * time
 
     #elevation settings
     elevSP = 180 * degtoctsE # x degrees/sec

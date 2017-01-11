@@ -4,7 +4,7 @@ note that the precision on these scans is not perfect, figure
 out what precision is required, i think its coming from rounding 
 errors and conversion between cts and degrees.
 
-# resolved - moveto function takes the long way round when shifting elevation
+#### resolved - moveto function takes the long way round when shifting elevation
 
 add acceleration and deceleration, decide if speed 
 should be set or variable
@@ -19,4 +19,12 @@ code to keep telescope from pointing below horizon may need higher limit than 0
 
 it might be possible/better to combine the forward and backward passes into one block of code, use -1**i and a list for min/max az then do list[i % 2] or something like that
 
-for azelscan think about the best way to do iput parameters for rotation, i.e. distance based on distance, time, or rotations
+for azscan think about the best way to do iput parameters for rotation, i.e. distance based on distance, time, or rotations, have each option as a button?
+
+make a move function that is used in all other scripts, put it in moveto, equivilent of qichengs arrow buttons
+
+cant do more than one rotation in azscan? 
+
+changing the speed of az motor creates an error...except now it doesnt
+
+add elevation logic to not let azscan go below horizon

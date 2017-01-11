@@ -19,7 +19,7 @@ c('MO') #turn off all motors
 c('SH') #servo on
 
 location = "UCSB" #observation location
-cbody = "Sun" # celestial body of observation
+cbody = "Neptune" # celestial body of observation
 
 #+/- azimuth for each back and forth scan
 MinAz = -10
