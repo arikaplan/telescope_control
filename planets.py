@@ -37,8 +37,7 @@ def getlocation(LOCATION, CBODY):
   location = locations[LOCATION]
 
   #current utc time
-  t = str(datetime.utcnow())
-  time = t[:4] + '/' + t[5:7] + '/' + t[8:] #converting time into useable format
+  time = str(datetime.utcnow())
 
   #celestial body of interest
   cbody = cbodies[CBODY]
@@ -80,4 +79,3 @@ def getlocation(LOCATION, CBODY):
 
   #return azimuth and altitude of celestial body
   return az, alt
-
