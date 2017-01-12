@@ -10,7 +10,6 @@ def main():
     
     #connect to network
     g.GOpen('10.1.2.245 --direct -s ALL')
-
     #print('gclib version:', g.GVersion())
     #g.GOpen('COM1 --direct')
     #print(g.GInfo())
@@ -28,16 +27,17 @@ def main():
     
     #azimuth scan settings
     time = 5 # move for 2 seconds
-    azSP = 120 * degtoctsAZ # 90 deg/sec
+    azSP = 90 * degtoctsAZ # 90 deg/sec
     azD = 2*360 * degtoctsAZ #azSP * time
 
     #elevation settings
     elevSP = 180 * degtoctsE # x degrees/sec
-    elevD = 90 * degtoctsE # move elevation x degrees each iteration
+    elevD = 10 * degtoctsE # move elevation x degrees each iteration
 
     iterations = 2 # how many iterations do you want to do
 
     #initial position
+    P1AZ = (float(c('TPX')) % 1024000) / degtoctsAZ
     P1AZ = (float(c('TPX')) % 1024000) / degtoctsAZ
     P1E = (float(c('TPY')) % 4096) / degtoctsE
     print('AZ:', P1AZ, 'Elev:', P1E)
@@ -61,9 +61,8 @@ def main():
         c('BGB')
         c('AMB')
 
-      #print(c('TP')), position after each iteration
-      P2AZ = (float(c('TPX'))) % 1024000 / degtoctsAZ
-      P2E = float(c('TPY')) % 4096 / degtoctsE
+      P2AZ = (float(c('TPX')) % 1024000) / degtoctsAZ
+      P2E = (float(c('TPY')) % 4096) / degtoctsE
       print('AZ:', P2AZ, 'Elev:', P2E)
     
     del c #delete the alias

@@ -5,6 +5,7 @@ import planets
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
+from datetime import datetime, timedelta
 
 def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
   
@@ -151,7 +152,7 @@ def horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, step
    
   return
 
-def azScan(numRotations, iterations, deltaEl, c):
+def azScan(tscan, iterations, deltaEl, c):
  
   try:
 
@@ -165,7 +166,7 @@ def azScan(numRotations, iterations, deltaEl, c):
     azSP = 90 * degtoctsAZ # 90 deg/sec
     #azAC = 20 * degtoctsAZ # acceleration 
     #azDC = azAC # deceleration
-    azD = numRotations * 360 * degtoctsAZ 
+    #azD = numRotations * 360 * degtoctsAZ 
     #azD = distance * degtoctsAz, if I do just a straight distance
     #time = 2 # move for 2 seconds
     #azD = azSP * time # if i do it based on time
@@ -184,14 +185,30 @@ def azScan(numRotations, iterations, deltaEl, c):
     #while count < iterations:
     for i in range(0, iterations):
 
-      #gclib/galil commands to move elevation axis motor
-      c('SPA=' + str(azSP)) #speed, cts/sec
-      #c('ACA=' + str(azAC)) #acceleration, cts/sec
-      #c('DCA=' + str(azDC)) #deceleration, cts/sec
-      c('PRA=' + str(azD)) #relative move, 1024000 cts = 360 degrees
-      print(' Starting iteration: ' + str(i + 1))
-      c('BGA') #begin motion
-      c('AMA') #wait for motion to complete
+      #set start time
+      st = datetime.utcnow()
+      #set current time to start time
+      ct = st
+      #duration of azimuth scan
+      dt = timedelta(0, tscan)
+
+      print(' Starting az Scan: ' + str(i + 1))
+
+      #scan in azimuth while current time < start time + duration
+      while ct < st + dt:
+
+        #gclib/galil commands to move elevation axis motor
+        c('JGA=' + str(azSP)) #speed, cts/sec
+        #c('ACA=' + str(azAC)) #acceleration, cts/sec
+        #c('DCA=' + str(azDC)) #deceleration, cts/sec
+        #c('PRA=' + str(azD)) #relative move, 1024000 cts = 360 degrees
+        c('BGA') #begin motion
+
+        #update current time
+        ct = datetime.utcnow()
+
+      c('ST') # stop when duration has passed
+      #c('AMA') #wait for motion to complete
       #g.GMotionComplete('A')
       print(' done.')
 
@@ -206,7 +223,7 @@ def azScan(numRotations, iterations, deltaEl, c):
         c('AMB')
         
 
-      #print(c('TP')), position after each iteration
+      #final position after each iteration
       P2AZ = (float(c('TPX'))) % 1024000 / degtoctsAZ
       P2E = float(c('TPY')) % 4096 / degtoctsE
       print('AZ:', P2AZ, 'Elev:', P2E)

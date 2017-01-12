@@ -28,3 +28,9 @@ cant do more than one rotation in azscan?
 changing the speed of az motor creates an error...except now it doesnt
 
 add elevation logic to not let azscan go below horizon
+
+you could define some function that sets the absolute zero at some random position, then always return to that position at the end of each session, that way when it turns on the next time the zero will always be the same, whereas now zero is wherever it happens to be positioned when it turns on
+
+figure out if there is a better way to convert az el coordinates outputted by ephem into degrees
+
+put in logic that allows for different scan times at each elevation
