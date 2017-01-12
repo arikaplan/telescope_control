@@ -164,17 +164,13 @@ def azScan(tscan, iterations, deltaEl, c):
     
     #azimuth scan settings
     azSP = 90 * degtoctsAZ # 90 deg/sec
-    #azAC = 20 * degtoctsAZ # acceleration 
-    #azDC = azAC # deceleration
-    #azD = numRotations * 360 * degtoctsAZ 
-    #azD = distance * degtoctsAz, if I do just a straight distance
-    #time = 2 # move for 2 seconds
-    #azD = azSP * time # if i do it based on time
+    azAC = 20 * degtoctsAZ # acceleration 
+    azDC = azAC # deceleration
 
     #elevation settings
     elevSP = 180 * degtoctsE # x degrees/sec
-    #elevAC = 40 * degtoctsAZ # acceleration 
-    #elevDC = elevAC # deceleration
+    elevAC = 40 * degtoctsAZ # acceleration 
+    elevDC = elevAC # deceleration
     elevD = deltaEl * degtoctsE # move elevation x degrees each iteration
 
     #initial position
@@ -199,34 +195,39 @@ def azScan(tscan, iterations, deltaEl, c):
 
         #gclib/galil commands to move elevation axis motor
         c('JGA=' + str(azSP)) #speed, cts/sec
-        #c('ACA=' + str(azAC)) #acceleration, cts/sec
-        #c('DCA=' + str(azDC)) #deceleration, cts/sec
-        #c('PRA=' + str(azD)) #relative move, 1024000 cts = 360 degrees
+        c('ACA=' + str(azAC)) #acceleration, cts/sec
+        c('DCA=' + str(azDC)) #deceleration, cts/sec
         c('BGA') #begin motion
 
         #update current time
         ct = datetime.utcnow()
 
       c('ST') # stop when duration has passed
-      #c('AMA') #wait for motion to complete
-      #g.GMotionComplete('A')
+      c('AMA') # wait for motion to stop
+
       print(' done.')
 
-      #change elevation for next az scan
-      if i < iterations - 1:
-        c('SPB=' + str(elevSP)) #elevation speed
-        #c('ACB=' + str(elevAC)) #acceleration, cts/sec
-        #c('DCB=' + str(elevDC)) #deceleration, cts/sec
-        #print('blaaaaaaaaaaaaaaaah')
-        c('PRB=' + str(elevD)) # change the elevation by x deg
-        c('BGB')
-        c('AMB')
-        
-
-      #final position after each iteration
+      #final position after each az scan
       P2AZ = (float(c('TPX'))) % 1024000 / degtoctsAZ
       P2E = float(c('TPY')) % 4096 / degtoctsE
       print('AZ:', P2AZ, 'Elev:', P2E)
+
+      #change elevation for next az scan
+      if i < iterations - 1:
+        print('changing elevation')
+        c('SPB=' + str(elevSP)) #elevation speed
+        c('ACB=' + str(elevAC)) #acceleration, cts/sec
+        c('DCB=' + str(elevDC)) #deceleration, cts/sec
+        c('PRB=' + str(elevD)) # change the elevation by x deg
+        c('BGB') #begin motion
+        c('AMB') #wait for motion to complete
+        print('done')
+        
+
+        #position after each elevation change
+        P2AZ = (float(c('TPX'))) % 1024000 / degtoctsAZ
+        P2E = float(c('TPY')) % 4096 / degtoctsE
+        print('AZ:', P2AZ, 'Elev:', P2E)
     
     del c #delete the alias
 

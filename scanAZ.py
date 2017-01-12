@@ -18,7 +18,7 @@ c('MO') #turn off all motors
 c('SH') #servo on
 
 #how long should it scan in azimuth before switching elevations
-tscan = 10
+tscan = 5
 
 # how many different elevations to scan at
 iterations = 2
