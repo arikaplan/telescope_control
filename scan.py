@@ -1,5 +1,6 @@
 #script for linear and horizontal scan patterns
 
+import config
 import moveto
 import planets
 import sys
@@ -17,11 +18,11 @@ def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
     c = c
 
     # deg to ct conversion for each motor
-    degtoctsAZ = 1024000./360.
-    degtoctsE = 4096./360.
+    degtoctsAZ = config.degtoctsAZ
+    degtoctsE = config.degtoctsE
     
     #azimuth scan settings
-    azSP = 90 * degtoctsAZ # az scan speed, 90 deg/sec
+    azSP = config.azSP # az scan speed, 90 deg/sec
     MinCT = MinAz * degtoctsAZ 
     MaxCT = MaxAz * degtoctsAZ
 
@@ -87,11 +88,11 @@ def horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, step
     c = c
     
     # deg to ct conversion for each motor
-    degtoctsAZ = 1024000./360.
-    degtoctsE = 4096./360.
+    degtoctsAZ = config.degtoctsAZ
+    degtoctsE = config.degtoctsE
     
     #azimuth scan settings
-    azSP = 90 * degtoctsAZ # 90 deg/sec
+    azSP = config.azSP # az scan speed, 90 deg/sec
     MinCT = MinAz * degtoctsAZ
     MaxCT = MaxAz * degtoctsAZ
 
@@ -159,18 +160,18 @@ def azScan(tscan, iterations, deltaEl, c):
     c = c
     
     # deg to ct conversion for each motor
-    degtoctsAZ = 1024000/360
-    degtoctsE = 4096/360
+    degtoctsAZ = config.degtoctsAZ
+    degtoctsE = config.degtoctsE
     
     #azimuth scan settings
-    azSP = 90 * degtoctsAZ # 90 deg/sec
-    azAC = 20 * degtoctsAZ # acceleration 
-    azDC = azAC # deceleration
+    azSP = config.azSP # az scan speed, 90 deg/sec
+    azAC = config.azAC # acceleration 
+    azDC = config.azDC # deceleration
 
     #elevation settings
-    elevSP = 180 * degtoctsE # x degrees/sec
-    elevAC = 40 * degtoctsAZ # acceleration 
-    elevDC = elevAC # deceleration
+    elevSP = config.elevSP # x degrees/sec
+    elevAC = config.elevAC # acceleration 
+    elevDC = config.elevDC # deceleration
     elevD = deltaEl * degtoctsE # move elevation x degrees each iteration
 
     #initial position
