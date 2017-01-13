@@ -1,7 +1,7 @@
 # move from some initial position to a final position
 
 import planets
-
+import config
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
@@ -21,8 +21,8 @@ def location(az, el, c):
     ######################################
 
     # deg to ct conversion for each motor
-    degtoctsAZ = 1024000/360
-    degtoctsE = 4096/360
+    degtoctsAZ = config.degtoctsAZ
+    degtoctsE = config.degtoctsE
 
     #where you are currently
     P1AZ = float(c('TPX'))
@@ -43,7 +43,7 @@ def location(az, el, c):
     P2E = E % 360 * degtoctsE
     
     #azimuth scan settings
-    azSP = 90 * degtoctsAZ # 90 deg/sec
+    azSP = config.azSP # 90 deg/sec
     azD = (P2AZ - P1AZ) # distance to desired az
     
     #make it rotate the short way round
@@ -54,7 +54,7 @@ def location(az, el, c):
         azD = 360. * degtoctsAZ + azD
     
     #elevation settings
-    elevSP = 180 * degtoctsE # x degrees/sec
+    elevSP = config.elevSP # x degrees/sec
     elevD = (P2E - P1E) # distance to desired elev
     
     #make it rotate the short way round, this might be unecessary for el
@@ -98,8 +98,8 @@ g = gclib.py()
 g.GOpen('10.1.2.245 --direct -s ALL')
 c = g.GCommand
 
-az = 5
-el = 170
+az = 2
+el = 90
 
 location(az, el, c)
 '''
