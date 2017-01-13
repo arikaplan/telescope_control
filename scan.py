@@ -22,10 +22,13 @@ def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
     degtoctsE = config.degtoctsE
     
     #azimuth scan settings
-    azSP = config.azSP # az scan speed, 90 deg/sec
-    MinCT = MinAz * degtoctsAZ 
-    MaxCT = MaxAz * degtoctsAZ
-
+    azSP = config.azSP # az scan speed
+    #set the speed for the galil control
+    c('SPA=' + str(azSP)) #speed, cts/sec
+  
+    MinCT = MinAz * degtoctsAZ # min az scanned to
+    MaxCT = MaxAz * degtoctsAZ # max az scanned to
+    
     #loop through back and forth azimuth scans
     for i in range(0, numAzScans):
 
@@ -45,7 +48,6 @@ def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
         moveto.location(az + MinAz, el, c)
 
         #gclib/galil commands to move az axis motor
-        c('SPA=' + str(azSP)) #speed, cts/sec
         c('PRA=' + str(MaxCT - MinCT)) #relative move
         print(' Starting forward pass: ' + str(i + 1))
         c('BGA') #begin motion
@@ -58,8 +60,7 @@ def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
 
         moveto.location(az + MaxAz, el, c)
 
-        #gclib/galil commands to move elevation axis motor
-        c('SPA=' + str(azSP)) #speed, cts/sec
+        #gclib/galil commands to move az axis motor
         c('PRA=' + str(MinCT - MaxCT)) #relative move, 1024000 cts = 360 degrees
         print(' Starting backward pass: ' + str(i))
         c('BGA') #begin motion
@@ -93,8 +94,11 @@ def horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, step
     
     #azimuth scan settings
     azSP = config.azSP # az scan speed, 90 deg/sec
-    MinCT = MinAz * degtoctsAZ
-    MaxCT = MaxAz * degtoctsAZ
+    #set the speed for the galil control
+    c('SPA=' + str(azSP)) #speed, cts/sec
+  
+    MinCT = MinAz * degtoctsAZ # min az scanned to
+    MaxCT = MaxAz * degtoctsAZ # max az scanned to
 
     #number of elevations to scan at, rounds to nearest integer
     numElScans = int(round(((MaxEl - MinEl + stepSize)/stepSize)))
@@ -120,7 +124,6 @@ def horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, step
           moveto.location(az + MinAz, el + MinEl + j*stepSize, c)
 
           #gclib/galil commands to move az axis motor
-          c('SPA=' + str(azSP)) #speed, cts/sec
           c('PRA=' + str(MaxCT - MinCT)) #relative move
           print(' Starting forward pass: ', i + 1)
           c('BGA') #begin motion
@@ -134,7 +137,6 @@ def horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, step
           moveto.location(az + MaxAz, el + MinEl + j*stepSize, c)
 
           #gclib/galil commands to move elevation axis motor
-          c('SPA=' + str(azSP)) #speed, cts/sec
           c('PRA=' + str(MinCT - MaxCT)) #relative move
           print(' Starting backward pass: ', i)
           c('BGA') #begin motion
@@ -168,11 +170,22 @@ def azScan(tscan, iterations, deltaEl, c):
     azAC = config.azAC # acceleration 
     azDC = config.azDC # deceleration
 
+    #gclib/galil commands to set az axis motor motion
+    c('JGA=' + str(azSP)) #speed, cts/sec
+    c('ACA=' + str(azAC)) #acceleration, cts/sec
+    c('DCA=' + str(azDC)) #deceleration, cts/sec
+
     #elevation settings
     elevSP = config.elevSP # x degrees/sec
     elevAC = config.elevAC # acceleration 
     elevDC = config.elevDC # deceleration
     elevD = deltaEl * degtoctsE # move elevation x degrees each iteration
+
+    #gclib/galil commands to set az axis motor motion
+    c('SPB=' + str(elevSP)) #elevation speed
+    c('ACB=' + str(elevAC)) #acceleration, cts/sec
+    c('DCB=' + str(elevDC)) #deceleration, cts/sec
+    c('PRB=' + str(elevD)) # change the elevation by x deg
 
     #initial position
     P1AZ = (float(c('TPX')) % 1024000) / degtoctsAZ
@@ -191,14 +204,10 @@ def azScan(tscan, iterations, deltaEl, c):
 
       print(' Starting az Scan: ' + str(i + 1))
 
+      c('BGA') #begin motion
+
       #scan in azimuth while current time < start time + duration
       while ct < st + dt:
-
-        #gclib/galil commands to move elevation axis motor
-        c('JGA=' + str(azSP)) #speed, cts/sec
-        c('ACA=' + str(azAC)) #acceleration, cts/sec
-        c('DCA=' + str(azDC)) #deceleration, cts/sec
-        c('BGA') #begin motion
 
         #update current time
         ct = datetime.utcnow()
@@ -216,10 +225,7 @@ def azScan(tscan, iterations, deltaEl, c):
       #change elevation for next az scan
       if i < iterations - 1:
         print('changing elevation')
-        c('SPB=' + str(elevSP)) #elevation speed
-        c('ACB=' + str(elevAC)) #acceleration, cts/sec
-        c('DCB=' + str(elevDC)) #deceleration, cts/sec
-        c('PRB=' + str(elevD)) # change the elevation by x deg
+
         c('BGB') #begin motion
         c('AMB') #wait for motion to complete
         print('done')

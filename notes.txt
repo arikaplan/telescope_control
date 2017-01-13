@@ -34,3 +34,5 @@ you could define some function that sets the absolute zero at some random positi
 figure out if there is a better way to convert az el coordinates outputted by ephem into degrees
 
 put in logic that allows for different scan times at each elevation
+
+potentially make comment positions consistant
