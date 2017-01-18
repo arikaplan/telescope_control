@@ -23,10 +23,10 @@ def main():
     c('SH') #servo on
     
     #1024000 cts = 360 degrees on motor A
-    c('JGA = 90 * 1024000 / 360') # rotate at 90 deg/s
+    c('SPA = 90 * 1024000 / 360') # rotate at 90 deg/s
     c('ACA = 90 * 1024000 / 360') 
     c('DCA = 90 * 1024000 / 360')
-    #c('PRA = 2 * 1024000') # do 2 full rotations, device times out
+    c('PRA = 1 * 1024000') # do 2 full rotations, device times out
                            # for 1 rotation, device does not time out
 
     #4096 cts = 360 degrees on motor B
@@ -35,36 +35,20 @@ def main():
     c('DCB = 180 * 4096 / 360')
     c('PRB = 1 * 4096') # do one rotation
 
-    #current utc time
-    ct = datetime.utcnow()
-    t = ct
-    dt = timedelta(0, 10)
-    print(ct)
-    while t < ct + dt:
+ 
 
-      c('BGA')
 
-      t = datetime.utcnow()
+    
 
-    c('ST')
-    print(datetime.utcnow())
+
+
 
     #c('AMA')
     
-    c('BGB')
-    c('AMB')
+    #c('BGB')
+    #c('AMB')
 
-    ct = datetime.utcnow()
-    t = ct
-    print(ct)
-    while t < ct + dt:
 
-      c('BGA')
-
-      t = datetime.utcnow()
-
-    c('ST')
-    print(datetime.utcnow())
     #c('BGA')
     #c('AMA')
 

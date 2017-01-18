@@ -1,4 +1,5 @@
 import scan
+import scantest
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
@@ -17,8 +18,9 @@ c('AB') #abort motion and program
 c('MO') #turn off all motors
 c('SH') #servo on
 
-#how long should it scan in azimuth before switching elevations
+#how long should it scan in azimuth before switching elevations, in seconds
 tscan = 5
+numRotations = 1
 
 # how many different elevations to scan at
 iterations = 2
@@ -26,6 +28,11 @@ iterations = 2
 #difference in elevation for each scan
 deltaEl = 90.
 
-scan.azScan(tscan, iterations, deltaEl, c)
+#starting elevation and azimuth
+az0 = 60.
+el0 = 60.
+
+scan.azScan(tscan, iterations, az0, el0, deltaEl, c)
+#scantest.azScan(numRotations, iterations, deltaEl, c)
 
 g.GClose() #close connections

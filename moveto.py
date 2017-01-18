@@ -92,6 +92,7 @@ def location(az, el, c):
     print('Unexpected GclibError:', e)
   
   return
+
   
 '''
 g = gclib.py()

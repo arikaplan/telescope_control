@@ -20,11 +20,6 @@ def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
     # deg to ct conversion for each motor
     degtoctsAZ = config.degtoctsAZ
     degtoctsE = config.degtoctsE
-    
-    #azimuth scan settings
-    azSP = config.azSP # az scan speed
-    #set the speed for the galil control
-    c('SPA=' + str(azSP)) #speed, cts/sec
   
     MinCT = MinAz * degtoctsAZ # min az scanned to
     MaxCT = MaxAz * degtoctsAZ # max az scanned to
@@ -47,12 +42,12 @@ def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
 
         moveto.location(az + MinAz, el, c)
 
-        #gclib/galil commands to move az axis motor
-        c('PRA=' + str(MaxCT - MinCT)) #relative move
         print(' Starting forward pass: ' + str(i + 1))
-        c('BGA') #begin motion
+
+        moveto.distance(MaxCT - MinCT, 0., c)
+
         c('AMA') # wait for motion to complete
-        #g.GMotionComplete('A') # I don't know what this does
+
         print(' done.')
 
       #backwards scan
@@ -60,12 +55,12 @@ def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
 
         moveto.location(az + MaxAz, el, c)
 
-        #gclib/galil commands to move az axis motor
-        c('PRA=' + str(MinCT - MaxCT)) #relative move, 1024000 cts = 360 degrees
         print(' Starting backward pass: ' + str(i))
-        c('BGA') #begin motion
+
+        moveto.distance(MinCT - MaxCT, 0., c)
+
         c('AMA') #wait for motion to complete
-        #g.GMotionComplete('A')
+        
         print(' done.')
       
     del c #delete the alias
@@ -155,7 +150,7 @@ def horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, step
    
   return
 
-def azScan(tscan, iterations, az0, el0, deltaEl, c):
+def azScan(tscan, iterations, deltaEl, c):
  
   try:
 
@@ -164,8 +159,6 @@ def azScan(tscan, iterations, az0, el0, deltaEl, c):
     # deg to ct conversion for each motor
     degtoctsAZ = config.degtoctsAZ
     degtoctsE = config.degtoctsE
-
-    moveto.location(az0, el0, c)
     
     #azimuth scan settings
     azSP = config.azSP # az scan speed, 90 deg/sec
