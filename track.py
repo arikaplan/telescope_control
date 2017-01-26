@@ -36,10 +36,10 @@ stepSize = 10.
 numAzScans = 2
 
 #do a linear scan at a fixed elevation
-#scan.linearScan(location, cbody, numAzScans, MinAz, MaxAz, c)
+scan.linearScan(location, cbody, numAzScans, MinAz, MaxAz, c)
 
 #do a horizontal scan at x elevations
-scan.horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, stepSize, c)
+#scan.horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, stepSize, c)
 
 
 g.GClose() #close connections

@@ -22,9 +22,14 @@ def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
     degtoctsE = config.degtoctsE
     
     #azimuth scan settings
-    azSP = config.azSP # az scan speed
-    #set the speed for the galil control
+    azSP = config.azSP # az scan speed, 90 deg/sec
+    azAC = config.azAC # acceleration 
+    azDC = config.azDC # deceleration
+
+    #gclib/galil commands to set az axis motor motion
     c('SPA=' + str(azSP)) #speed, cts/sec
+    c('ACA=' + str(azAC)) #acceleration, cts/sec
+    c('DCA=' + str(azDC)) #deceleration, cts/sec
   
     MinCT = MinAz * degtoctsAZ # min az scanned to
     MaxCT = MaxAz * degtoctsAZ # max az scanned to
@@ -94,8 +99,15 @@ def horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, step
     
     #azimuth scan settings
     azSP = config.azSP # az scan speed, 90 deg/sec
+    azAC = config.azAC # acceleration 
+    azDC = config.azDC # deceleration
+
     #set the speed for the galil control
     c('SPA=' + str(azSP)) #speed, cts/sec
+
+    #gclib/galil commands to set az axis motor motion
+    c('ACA=' + str(azAC)) #acceleration, cts/sec
+    c('DCA=' + str(azDC)) #deceleration, cts/sec
   
     MinCT = MinAz * degtoctsAZ # min az scanned to
     MaxCT = MaxAz * degtoctsAZ # max az scanned to

@@ -1,4 +1,4 @@
-
+                                                                                                                     
 ######### things to do ##########
 note that the precision on these scans is not perfect, figure 
 out what precision is required, i think its coming from rounding 
@@ -48,3 +48,6 @@ add functionality to move to starting elevation in scanAZ
 forward/backward pass # comments are incorrect, jumps form 1 to 3, figure out the right way to do this
 
 putting moveto.location in azScan in different locations in script effects functionality, might have to do with setting acceleration and deceleration before vs after moveto
+
+
+Think about how best to display ouput, and what output we want to display (gui related)

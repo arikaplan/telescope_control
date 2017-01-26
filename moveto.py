@@ -44,6 +44,9 @@ def location(az, el, c):
     
     #azimuth scan settings
     azSP = config.azSP # 90 deg/sec
+    azAC = config.azAC # acceleration 
+    azDC = config.azDC # deceleration
+
     azD = (P2AZ - P1AZ) # distance to desired az
     
     #make it rotate the short way round
@@ -55,6 +58,9 @@ def location(az, el, c):
     
     #elevation settings
     elevSP = config.elevSP # x degrees/sec
+    elevAC = config.elevAC # acceleration 
+    elevDC = config.elevDC # deceleration
+
     elevD = (P2E - P1E) # distance to desired elev
     
     #make it rotate the short way round, this might be unecessary for el
@@ -66,19 +72,27 @@ def location(az, el, c):
 
     #gclib/galil commands to move az motor
     c('SPA=' + str(azSP)) #speed, cts/sec
+    c('ACA=' + str(azAC)) #speed, cts/sec
+    c('DCA=' + str(azDC)) #speed, cts/sec
     c('PRA=' + str(azD)) #relative move
+
+    #gclib/galil commands to move elevation motor
+    c('SPB=' + str(elevSP)) #elevation speed
+    c('ACB=' + str(elevAC)) #speed, cts/sec
+    c('DCB=' + str(elevDC)) #speed, cts/sec
+    c('PRB=' + str(elevD)) #relative move
+
     print(' Starting Motion...')
     c('BGA') #begin motion 
     #g.GMotionComplete('A')
-    
-    #gclib/galil commands to move elevation motor
-    c('SPB=' + str(elevSP)) #elevation speed
-    c('PRB=' + str(elevD)) #relative move
+
     c('BGB') # begin motion
 
     #wait for both az and el motors to finish moving
     c('AMB')
     c('AMA')
+    #g.GMotionComplete('A')
+    #g.GMotionComplete('B')
     print(' done.')
 
     print('AZ_f:', P2AZ/degtoctsAZ, 'Elev_f:', P2E/degtoctsE)
@@ -99,8 +113,8 @@ g = gclib.py()
 g.GOpen('10.1.2.245 --direct -s ALL')
 c = g.GCommand
 
-az = 2
-el = 90
+az = 90
+el = 2
 
 location(az, el, c)
 '''
