@@ -6,8 +6,9 @@ errors and conversion between cts and degrees.
 
 #### resolved - moveto function takes the long way round when shifting elevation
 
-add acceleration and deceleration to all motion control, decide if speed 
-should be set or variable
+#### resolved - add acceleration and deceleration to all motion control, 
+
+decide if speed should be set or variable
 
 find absolute position of encoder, right now there is no reference
 point
@@ -23,7 +24,7 @@ for azscan think about the best way to do iput parameters for rotation, i.e. dis
 
 ****make a move function that is used in all other scripts, put it in moveto, equivilent of qichengs arrow buttons *******
 
-cant do more than one rotation in azscan? 
+cant do more than one rotation in azscan? AM times out after 5 seconds 
 
 changing the speed of az motor creates an error...except now it doesnt
 
@@ -43,7 +44,7 @@ eventually you should figure out how to connect to the controller in some macro 
 
 moveto speed and scan speed should probably be different
 
-add functionality to move to starting elevation in scanAZ
+### resolved - add functionality to move to starting elevation in scanAZ
 
 forward/backward pass # comments are incorrect, jumps form 1 to 3, figure out the right way to do this
 
