@@ -41,6 +41,7 @@ potentially make comment positions consistant
 if I stick with time method, put in logic to convert time to distance
 
 eventually you should figure out how to connect to the controller in some macro program, and not have to do it in each individual script, this will probably come naturally with the interface.
+also should get around setting the motion controls in each script
 
 moveto speed and scan speed should probably be different
 

@@ -2,6 +2,7 @@ from tkinter import *
 
 
 class ArisButtons:
+	#init gets called automatically
 	def __init__(self, master):
 
 		topframe = Frame(master)
@@ -9,6 +10,14 @@ class ArisButtons:
 
 		bottomframe = Frame(master)
 		bottomframe.pack(side=BOTTOM)
+
+
+		self.label_3 = Label(topframe, text='n1 + n2')
+		self.label_3.grid(row = 2, column = 0, sticky = E)
+
+		#user input
+		self.txt = Text(topframe, height = 1, width = 15)
+		self.txt.grid(row = 2, column = 1)
 
 
 		self.label_1 = Label(topframe, text='number 1')
@@ -37,10 +46,16 @@ class ArisButtons:
 		self.quitButton = Button(bottomframe, text='quit', command=master.quit)
 		self.quitButton.pack(side=LEFT)
 
+
 	def printMessage(self):
-		n1 = float(self.entry_1.get())
-		n2 = float(self.entry_2.get())
-		return n1 + n2
+		self.txt.delete('1.0', END)
+		n1 = self.entry_1.get()
+		n2 = self.entry_2.get()
+		n1 = float(n1)
+		n2 = float(n2)
+		#print(n1 + n2)
+		self.txt.insert('1.0',n1 + n2)
+
 
 root = Tk()
 
