@@ -4,23 +4,18 @@ note that the precision on these scans is not perfect, figure
 out what precision is required, i think its coming from rounding 
 errors and conversion between cts and degrees.
 
-#### resolved - moveto function takes the long way round when shifting elevation
-
-#### resolved - add acceleration and deceleration to all motion control, 
 
 decide if speed should be set or variable
 
 find absolute position of encoder, right now there is no reference
 point
 
-### resolved - if (MaxEl - MinEl + stepSize)/stepSize is not an even integer it could
-fail
 
 code to keep telescope from pointing below horizon may need higher limit than 0
 
 it might be possible/better to combine the forward and backward passes into one block of code, use -1**i and a list for min/max az then do list[i % 2] or something like that
 
-for azscan think about the best way to do iput parameters for rotation, i.e. distance based on distance, time, or rotations, have each option as a button?
+for azscan think about the best way to do input parameters for rotation, i.e. distance based on distance, time, or rotations, have each option as a button?
 
 ****make a move function that is used in all other scripts, put it in moveto, equivilent of qichengs arrow buttons *******
 
