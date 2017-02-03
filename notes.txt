@@ -13,7 +13,7 @@ point
 
 code to keep telescope from pointing below horizon may need higher limit than 0
 
-it might be possible/better to combine the forward and backward passes into one block of code, use -1**i and a list for min/max az then do list[i % 2] or something like that
+it might be possible/better to combine the forward and backward passes into one block of code, use -1**i and a list for min/max az then do list[i % 2] or something like that (scan.py: linearScan() & horizontalScan())
 
 for azscan think about the best way to do input parameters for rotation, i.e. distance based on distance, time, or rotations, have each option as a button?
 
@@ -25,21 +25,24 @@ add elevation logic to not let azscan go below horizon, at some point
 
 you could define some function that sets the absolute zero at some random position, then always return to that position at the end of each session, that way when it turns on the next time the zero will always be the same, whereas now zero is wherever it happens to be positioned when it turns on
 
-figure out if there is a better way to convert az el coordinates outputted by ephem into degrees
+figure out if there is a better way to convert az el coordinates outputted by ephem into degrees(planets.py)
 
-put in logic that allows for different scan times at each elevation
+put in logic that allows for different scan times at each elevation(scan.py: azScan())
 
 if I stick with time method, put in logic to convert time to distance
 
 ****eventually you should figure out how to connect to the controller in some macro program, and not have to do it in each individual script, this will probably come naturally with the interface.
 also should get around setting the motion controls in each script******
 
-moveto speed and scan speed should probably be different
+moveto speed and scan speed should probably be different(scan.py vs moveto.py)
 
-
-forward/backward pass # comments are incorrect, jumps form 1 to 3, figure out the right way to do this
+forward/backward pass # comments are incorrect, jumps form 1 to 3, figure out the right way to do this(scan.py: linearScan() & horizontalScan())
 
 putting moveto.location in azScan in different locations in script effects functionality, might have to do with setting acceleration and deceleration before vs after moveto
 
 
 Think about how best to display ouput, and what output we want to display (gui related)
+
+after running azScan in gui, I cannot run something else again without first shutting down the gui and reoppening.
+
+gui.py cant run on its own as is until I run one of the other programs, I imagine this has something to do with connecting to the machine. 
