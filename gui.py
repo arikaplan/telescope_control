@@ -50,14 +50,23 @@ class interface:
 
 		#user input
 		self.tscan = Entry(inputfame)
+		self.tscan.insert(END, '5.0')
 		self.tscan.grid(row = 0, column = 1)
+
 		self.iterations = Entry(inputfame)
+		self.iterations.insert(END, '2')
 		self.iterations.grid(row = 1, column = 1)
+
 		self.deltaEl = Entry(inputfame)
+		self.deltaEl.insert(END, '90.0')
 		self.deltaEl.grid(row = 2, column = 1)
+
 		self.az0 = Entry(inputfame)
+		self.az0.insert(END, '0.0')
 		self.az0.grid(row = 3, column = 1)
+
 		self.el0 = Entry(inputfame)
+		self.el0.insert(END, '60.0')
 		self.el0.grid(row = 4, column = 1)
 
 

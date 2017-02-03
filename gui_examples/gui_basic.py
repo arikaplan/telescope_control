@@ -19,8 +19,10 @@ class ArisButtons:
 
 		#user input
 		self.entry_1 = Entry(topframe)
+		self.entry_1.insert(END, '5.0')
 		self.entry_1.grid(row = 0, column = 1)
 		self.entry_2 = Entry(topframe)
+		self.entry_2.insert(END, '5.0')
 		self.entry_2.grid(row = 1, column = 1)
 
 		
