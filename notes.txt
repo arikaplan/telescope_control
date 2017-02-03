@@ -43,6 +43,5 @@ putting moveto.location in azScan in different locations in script effects funct
 
 Think about how best to display ouput, and what output we want to display (gui related)
 
-after running azScan in gui, I cannot run something else again without first shutting down the gui and reoppening.
 
-gui.py cant run on its own as is until I run one of the other programs, I imagine this has something to do with connecting to the machine. 
+gui.py cant run on its own as is until I run one of the other programs, I imagine this has something to do with connecting to the machine. Except I just turned on the machine and it didnt have a problem this time...

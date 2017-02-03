@@ -80,12 +80,12 @@ class interface:
 
 		scan.azScan(tscan, iterations, az0, el0, deltaEl, c)
 
-		g.GClose() #close connections
-
 
 root = Tk()
 
 b = interface(root)
 
 root.mainloop()
+
+g.GClose() #close connections
 
