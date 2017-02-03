@@ -17,8 +17,6 @@ it might be possible/better to combine the forward and backward passes into one 
 
 for azscan think about the best way to do input parameters for rotation, i.e. distance based on distance, time, or rotations, have each option as a button?
 
-****make a move function that is used in all other scripts, put it in moveto, equivilent of qichengs arrow buttons *******
-
 cant do more than one rotation in azscan? AM times out after 5 seconds 
 
 changing the speed of az motor creates an error...except now it doesnt
@@ -31,16 +29,13 @@ figure out if there is a better way to convert az el coordinates outputted by ep
 
 put in logic that allows for different scan times at each elevation
 
-potentially make comment positions consistant
-
 if I stick with time method, put in logic to convert time to distance
 
-eventually you should figure out how to connect to the controller in some macro program, and not have to do it in each individual script, this will probably come naturally with the interface.
-also should get around setting the motion controls in each script
+****eventually you should figure out how to connect to the controller in some macro program, and not have to do it in each individual script, this will probably come naturally with the interface.
+also should get around setting the motion controls in each script******
 
 moveto speed and scan speed should probably be different
 
-### resolved - add functionality to move to starting elevation in scanAZ
 
 forward/backward pass # comments are incorrect, jumps form 1 to 3, figure out the right way to do this
 

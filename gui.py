@@ -1,7 +1,26 @@
+import scan
+import scantest
+import sys
+sys.path.append('C:/Python27x86/lib/site-packages')
+import gclib
 from tkinter import *
 
 
-class ArisButtons:
+#make an instance of the gclib python class
+g = gclib.py()
+#connect to network
+g.GOpen('10.1.2.245 --direct -s ALL')
+#
+#g.GOpen('COM1 --direct')
+#used for galil commands
+c = g.GCommand
+
+c('AB') #abort motion and program
+c('MO') #turn off all motors
+c('SH') #servo on
+
+
+class interface:
 	#init gets called automatically
 	def __init__(self, master):
 
@@ -12,53 +31,54 @@ class ArisButtons:
 		bottomframe.pack(side=BOTTOM)
 
 
-		self.label_3 = Label(topframe, text='n1 + n2')
-		self.label_3.grid(row = 2, column = 0, sticky = E)
+		self.l1 = Label(topframe, text='scan time (seconds)')
+		self.l1.grid(row = 0, column = 0, sticky=W)
+		self.l2 = Label(topframe, text='iteration #')
+		self.l2.grid(row = 1, column = 0, sticky=W)
+		self.l3 = Label(topframe, text='El Step Size (deg)')
+		self.l3.grid(row = 2, column = 0, sticky=W)
+		self.l4 = Label(topframe, text='starting az (deg)')
+		self.l4.grid(row = 3, column = 0, sticky=W)
+		self.l5 = Label(topframe, text='starting el (deg)')
+		self.l5.grid(row = 4, column = 0, sticky=W)
 
 		#user input
-		self.txt = Text(topframe, height = 1, width = 15)
-		self.txt.grid(row = 2, column = 1)
+		self.tscan = Entry(topframe)
+		self.tscan.grid(row = 0, column = 1)
+		self.iterations = Entry(topframe)
+		self.iterations.grid(row = 1, column = 1)
+		self.deltaEl = Entry(topframe)
+		self.deltaEl.grid(row = 2, column = 1)
+		self.az0 = Entry(topframe)
+		self.az0.grid(row = 3, column = 1)
+		self.el0 = Entry(topframe)
+		self.el0.grid(row = 4, column = 1)
 
 
-		self.label_1 = Label(topframe, text='number 1')
-		self.label_1.grid(row = 0, column = 0)
-		self.label_2 = Label(topframe, text='number 2')
-		self.label_2.grid(row = 1, column = 0)
-
-		#user input
-		self.entry_1 = Entry(topframe)
-		self.entry_1.grid(row = 0, column = 1)
-		self.entry_2 = Entry(topframe)
-		self.entry_2.grid(row = 1, column = 1)
-
-		'''
-		text = Text(topframe)
-		text.pack(side=BOTTOM)
-		output = printMessage(self)
-		text.insert(output)
-		'''
-
-		self.printButton = Button(bottomframe, 
-			text='Add numbers', 
-			command=self.printMessage)
-		self.printButton.pack(side=LEFT)
+		self.scan = Button(bottomframe, 
+			text='Start Scan', 
+			command=self.scanAz)
+		self.scan.pack(side=LEFT)
 
 		self.quitButton = Button(bottomframe, text='quit', command=master.quit)
 		self.quitButton.pack(side=LEFT)
 
 
-	def printMessage(self):
-		self.txt.delete('1.0', END)
-		n1 = self.entry_1.get()
-		n2 = self.entry_2.get()
-		n1 = float(n1)
-		n2 = float(n2)
-		#print(n1 + n2)
-		self.txt.insert('1.0',n1 + n2)
+	def scanAz(self):
+
+		tscan = float(self.tscan.get())
+		iterations = int(self.iterations.get())
+		deltaEl = float(self.deltaEl.get())
+		az0 = float(self.az0.get())
+		el0 = float(self.el0.get())
+
+		scan.azScan(tscan, iterations, az0, el0, deltaEl, c)
 
 
 root = Tk()
 
-b = ArisButtons(root)
+b = interface(root)
 
 root.mainloop()
+
+g.GClose() #close connections

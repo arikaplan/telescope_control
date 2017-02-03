@@ -10,7 +10,7 @@ def location(az, el, c):
   #g = gclib.py() #make an instance of the gclib python class
   
   try:
-    print('Moving to object location')
+    
 
     #print('gclib version:', g.GVersion())
     #g.GOpen('COM1 --direct')
@@ -82,7 +82,7 @@ def location(az, el, c):
     c('DCB=' + str(elevDC)) #speed, cts/sec
     c('PRB=' + str(elevD)) #relative move
 
-    print(' Starting Motion...')
+    print('Moving to object location')
     c('BGA') #begin motion 
     #g.GMotionComplete('A')
 
@@ -195,7 +195,7 @@ def distance(az, el, c):
   
   return
   
-
+'''
 g = gclib.py()
 g.GOpen('10.1.2.245 --direct -s ALL')
 c = g.GCommand
@@ -205,3 +205,4 @@ el = 0
 
 #location(az, el, c)
 distance(az, el, c)
+'''
