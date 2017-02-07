@@ -45,3 +45,7 @@ Think about how best to display ouput, and what output we want to display (gui r
 
 
 gui.py cant run on its own as is until I run one of the other programs, I imagine this has something to do with connecting to the machine. Except I just turned on the machine and it didnt have a problem this time...
+
+WTF is different between gui_basic and gui_tabs?!?!?!?! one compiles and one doesnt
+
+device often times out the first time running gui

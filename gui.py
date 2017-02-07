@@ -3,6 +3,7 @@ import scantest
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
+from tkinter import ttk
 from tkinter import *
 
 #make an instance of the gclib python class
@@ -17,84 +18,89 @@ c('AB') #abort motion and program
 c('MO') #turn off all motors
 c('SH') #servo on
 
-
-
 class interface:
 
-	#init gets called automatically
-	def __init__(self, master):
+    def __init__(self, master):    
 
+        nb = ttk.Notebook(master)
 
-		topframe = Frame(master)
-		topframe.pack()
+        page1 = Frame(nb)
+        page2 = Frame(nb)
 
-		inputfame = Frame(master)
-		inputfame.pack(side=TOP)
+        #topframe = Frame(page1)
+        #topframe.pack(side=TOP)
 
-		buttonframe = Frame(master)
-		buttonframe.pack(side=BOTTOM)
+        inputframe = Frame(page1)
+        inputframe.pack(side=TOP)
 
-		self.title = Label(topframe, text = 'Az Scan')
-		self.title.pack()
+        buttonframe = Frame(page1)
+        buttonframe.pack(side=BOTTOM)
 
-		self.l1 = Label(inputfame, text='scan time (seconds)')
-		self.l1.grid(row = 0, column = 0, sticky=W)
-		self.l2 = Label(inputfame, text='iteration #')
-		self.l2.grid(row = 1, column = 0, sticky=W)
-		self.l3 = Label(inputfame, text='El Step Size (deg)')
-		self.l3.grid(row = 2, column = 0, sticky=W)
-		self.l4 = Label(inputfame, text='starting az (deg)')
-		self.l4.grid(row = 3, column = 0, sticky=W)
-		self.l5 = Label(inputfame, text='starting el (deg)')
-		self.l5.grid(row = 4, column = 0, sticky=W)
+        #tab 1
+        #self.title = Label(topframe, text = 'Az Scan')
+        #self.title.pack()
 
-		#user input
-		self.tscan = Entry(inputfame)
-		self.tscan.insert(END, '5.0')
-		self.tscan.grid(row = 0, column = 1)
+        self.l1 = Label(inputframe, text='scan time (seconds)')
+        self.l1.grid(row = 0, column = 0, sticky=W)
+        self.l2 = Label(inputframe, text='iteration #')
+        self.l2.grid(row = 1, column = 0, sticky=W)
+        self.l3 = Label(inputframe, text='El Step Size (deg)')
+        self.l3.grid(row = 2, column = 0, sticky=W)
+        self.l4 = Label(inputframe, text='starting az (deg)')
+        self.l4.grid(row = 3, column = 0, sticky=W)
+        self.l5 = Label(inputframe, text='starting el (deg)')
+        self.l5.grid(row = 4, column = 0, sticky=W)
 
-		self.iterations = Entry(inputfame)
-		self.iterations.insert(END, '2')
-		self.iterations.grid(row = 1, column = 1)
+        #user input
+        self.tscan = Entry(inputframe)
+        self.tscan.insert(END, '5.0')
+        self.tscan.grid(row = 0, column = 1)
 
-		self.deltaEl = Entry(inputfame)
-		self.deltaEl.insert(END, '90.0')
-		self.deltaEl.grid(row = 2, column = 1)
+        self.iterations = Entry(inputframe)
+        self.iterations.insert(END, '2')
+        self.iterations.grid(row = 1, column = 1)
 
-		self.az0 = Entry(inputfame)
-		self.az0.insert(END, '0.0')
-		self.az0.grid(row = 3, column = 1)
+        self.deltaEl = Entry(inputframe)
+        self.deltaEl.insert(END, '90.0')
+        self.deltaEl.grid(row = 2, column = 1)
 
-		self.el0 = Entry(inputfame)
-		self.el0.insert(END, '60.0')
-		self.el0.grid(row = 4, column = 1)
+        self.az0 = Entry(inputframe)
+        self.az0.insert(END, '0.0')
+        self.az0.grid(row = 3, column = 1)
 
+        self.el0 = Entry(inputframe)
+        self.el0.insert(END, '60.0')
+        self.el0.grid(row = 4, column = 1)
 
-		self.scan = Button(buttonframe, 
-			text='Start Scan', 
-			command=self.scanAz)
-		self.scan.pack(side=LEFT)
+        self.scan = Button(buttonframe, 
+            text='Start Scan', 
+            command=self.scanAz)
+        self.scan.pack(side=LEFT)
 
-		self.quitButton = Button(buttonframe, text='quit', command=master.quit)
-		self.quitButton.pack(side=LEFT)
+        self.quitButton = Button(buttonframe, text='quit', command=master.quit)
+        self.quitButton.pack(side=LEFT)
 
+        nb.add(page1, text='Az Scan')
+        #nb.add(page2, text='Two')
 
-	def scanAz(self):
+        nb.pack(expand=1, fill="both")
 
-		tscan = float(self.tscan.get())
-		iterations = int(self.iterations.get())
-		deltaEl = float(self.deltaEl.get())
-		az0 = float(self.az0.get())
-		el0 = float(self.el0.get())
+    def scanAz(self):
 
-		scan.azScan(tscan, iterations, az0, el0, deltaEl, c)
+        tscan = float(self.tscan.get())
+        iterations = int(self.iterations.get())
+        deltaEl = float(self.deltaEl.get())
+        az0 = float(self.az0.get())
+        el0 = float(self.el0.get())
+
+        scan.azScan(tscan, iterations, az0, el0, deltaEl, c)
 
 
 root = Tk()
+root.title("Telescope Control")
 
 b = interface(root)
 
 root.mainloop()
 
 g.GClose() #close connections
-
