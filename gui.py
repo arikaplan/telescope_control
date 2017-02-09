@@ -24,7 +24,7 @@ class interface:
 
         nb = ttk.Notebook(master)
 
-        ##### tab 1 #####
+        ##### page 1 #####
         page1 = Frame(nb)
 
         #topframe = Frame(page1)
@@ -39,15 +39,15 @@ class interface:
         #self.title = Label(topframe, text = 'Az Scan')
         #self.title.pack()
 
-        self.l1 = Label(inputframe, text='scan time (seconds)')
+        self.l1 = Label(inputframe, text='Scan Time (seconds)')
         self.l1.grid(row = 0, column = 0, sticky=W)
-        self.l2 = Label(inputframe, text='iteration #')
+        self.l2 = Label(inputframe, text='Iteration #')
         self.l2.grid(row = 1, column = 0, sticky=W)
         self.l3 = Label(inputframe, text='El Step Size (deg)')
         self.l3.grid(row = 2, column = 0, sticky=W)
-        self.l4 = Label(inputframe, text='starting az (deg)')
+        self.l4 = Label(inputframe, text='Starting AZ (deg)')
         self.l4.grid(row = 3, column = 0, sticky=W)
-        self.l5 = Label(inputframe, text='starting el (deg)')
+        self.l5 = Label(inputframe, text='Starting EL (deg)')
         self.l5.grid(row = 4, column = 0, sticky=W)
 
         #user input
@@ -79,8 +79,14 @@ class interface:
         self.quitButton = Button(buttonframe, text='quit', command=master.quit)
         self.quitButton.pack(side=LEFT)
 
-        ##### #tab 2 ######
-        page2 = Frame(nb)
+        #self.stopButton = Button(buttonframe, text='Stop', command=self.stop)
+        #self.stopButton.pack(side=LEFT)
+
+        ###### page 2  ######
+        nb2 = ttk.Notebook(nb)
+
+        ###### page 2, tab 1 ######
+        page2 = Frame(nb2)
         inputframe = Frame(page2)
         inputframe.pack(side=TOP)
 
@@ -127,8 +133,76 @@ class interface:
         self.quitButton = Button(buttonframe, text='quit', command=master.quit)
         self.quitButton.pack(side=LEFT)
 
+        ###### page 2, tab 2 ######
+        page3 = Frame(nb2)
+        inputframe = Frame(page3)
+        inputframe.pack(side=TOP)
+
+        buttonframe = Frame(page3)
+        buttonframe.pack(side=BOTTOM)
+
+        self.l1 = Label(inputframe, text='Location')
+        self.l1.grid(row = 0, column = 0, sticky=W)
+        self.l2 = Label(inputframe, text='Celestial Object')
+        self.l2.grid(row = 1, column = 0, sticky=W)
+        self.l3 = Label(inputframe, text='Az Scan #')
+        self.l3.grid(row = 2, column = 0, sticky=W)
+        self.l4 = Label(inputframe, text='Min Az')
+        self.l4.grid(row = 3, column = 0, sticky=W)
+        self.l5 = Label(inputframe, text='Max AZ')
+        self.l5.grid(row = 4, column = 0, sticky=W)
+        self.l6 = Label(inputframe, text='Min El')
+        self.l6.grid(row = 5, column = 0, sticky=W)
+        self.l7 = Label(inputframe, text='Max El')
+        self.l7.grid(row = 6, column = 0, sticky=W)
+        self.l8 = Label(inputframe, text='Step Size')
+        self.l8.grid(row = 7, column = 0, sticky=W)
+
+        #user input
+        self.location = Entry(inputframe)
+        self.location.insert(END, 'UCSB')
+        self.location.grid(row = 0, column = 1)
+
+        self.cbody = Entry(inputframe)
+        self.cbody.insert(END, 'Neptune')
+        self.cbody.grid(row = 1, column = 1)
+
+        self.numAzScans = Entry(inputframe)
+        self.numAzScans.insert(END, '2')
+        self.numAzScans.grid(row = 2, column = 1)
+
+        self.MinAz = Entry(inputframe)
+        self.MinAz.insert(END, '-10.0')
+        self.MinAz.grid(row = 3, column = 1)
+
+        self.MaxAz = Entry(inputframe)
+        self.MaxAz.insert(END, '10.0')
+        self.MaxAz.grid(row = 4, column = 1)
+
+        self.MinEl = Entry(inputframe)
+        self.MinEl.insert(END, '-10.0')
+        self.MinEl.grid(row = 5, column = 1)
+
+        self.MaxEl = Entry(inputframe)
+        self.MaxEl.insert(END, '10.0')
+        self.MaxEl.grid(row = 6, column = 1)
+
+        self.stepSize = Entry(inputframe)
+        self.stepSize.insert(END, '10.0')
+        self.stepSize.grid(row = 7, column = 1)
+
+        self.scan = Button(buttonframe, 
+            text='Start Scan', 
+            command=self.horizontal)
+        self.scan.pack(side=LEFT)
+
+        self.quitButton = Button(buttonframe, text='quit', command=master.quit)
+        self.quitButton.pack(side=LEFT)
+
         nb.add(page1, text='Az Scan')
-        nb.add(page2, text='Track')
+        nb.add(nb2, text='Track')
+        nb2.add(page2, text = 'Linear Scan')
+        nb2.add(page3, text = 'Horizontal Scan')
 
         nb.pack(expand=1, fill="both")
 
@@ -151,6 +225,24 @@ class interface:
 
         scan.linearScan(location, cbody, numAzScans, MinAz, MaxAz, c)
 
+    def horizontal(self):
+        location = self.location.get()
+        cbody = self.cbody.get()
+        numAzScans = int(self.numAzScans.get())
+        MinAz = float(self.MinAz.get())
+        MaxAz = float(self.MaxAz.get())
+        MinEl = float(self.MinEl.get())
+        MaxEl = float(self.MaxEl.get())
+        stepSize = float(self.stepSize.get())
+
+        scan.horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, stepSize, c)
+
+    #this does not currently work
+    '''
+    def stop(self):
+
+        c('ST')
+    '''
 
 root = Tk()
 root.title("Telescope Control")

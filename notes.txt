@@ -49,3 +49,7 @@ gui.py cant run on its own as is until I run one of the other programs, I imagin
 WTF is different between gui_basic and gui_tabs?!?!?!?! one compiles and one doesnt
 
 device often times out the first time running gui
+
+I tried to make a stop button, but you cant press another button until the last command has run, figure out a way around this. 
+
+figure out how to better adjust layout, its weird right now
