@@ -53,3 +53,11 @@ device often times out the first time running gui
 I tried to make a stop button, but you cant press another button until the last command has run, figure out a way around this. 
 
 figure out how to better adjust layout, its weird right now
+
+figure out how to put a frame next to notebook tabs that is always there, this is where the output should go
+
+why does the output frame only put text in the middle....??
+
+in moveto the position print statements should be changed to refer to config file where they have % (cts/rev)
+
+put in some logic to azScan to accept hours instead of seconds for tscan, maybe change the default to hours, then if input is less than one, have some logic to convert that to seconds, or maybe timdelta can just handle that. or have an option to do either and you have to specify at input

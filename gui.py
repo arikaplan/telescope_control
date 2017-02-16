@@ -1,4 +1,5 @@
 import scan
+import moveto
 import scantest
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
@@ -24,7 +25,10 @@ class interface:
 
         nb = ttk.Notebook(master)
 
-        ##### page 1 #####
+        outputframe = Frame(master)
+        outputframe.pack(side=RIGHT)
+
+        ##### azimuth scan #####
         page1 = Frame(nb)
 
         #topframe = Frame(page1)
@@ -82,10 +86,10 @@ class interface:
         #self.stopButton = Button(buttonframe, text='Stop', command=self.stop)
         #self.stopButton.pack(side=LEFT)
 
-        ###### page 2  ######
+        ###### tracking  ######
         nb2 = ttk.Notebook(nb)
 
-        ###### page 2, tab 1 ######
+        ###### linear scan ######
         page2 = Frame(nb2)
         inputframe = Frame(page2)
         inputframe.pack(side=TOP)
@@ -133,7 +137,7 @@ class interface:
         self.quitButton = Button(buttonframe, text='quit', command=master.quit)
         self.quitButton.pack(side=LEFT)
 
-        ###### page 2, tab 2 ######
+        ###### horizontal scan ######
         page3 = Frame(nb2)
         inputframe = Frame(page3)
         inputframe.pack(side=TOP)
@@ -199,12 +203,78 @@ class interface:
         self.quitButton = Button(buttonframe, text='quit', command=master.quit)
         self.quitButton.pack(side=LEFT)
 
+        ####### move page #########
+        movePage = Frame(nb)
+
+        moveDFrame = Frame(movePage)
+        moveDFrame.pack()
+
+        labelD = Label(moveDFrame, text = 'Move Distance')
+        labelD.pack()
+
+        inputframe = Frame(moveDFrame)
+        inputframe.pack(side=TOP)
+
+        buttonframe = Frame(moveDFrame)
+        buttonframe.pack(side=BOTTOM)
+
+        self.l1 = Label(inputframe, text='az')
+        self.l1.grid(row = 0, column = 0, sticky=W)
+
+        self.l2 = Label(inputframe, text='el')
+        self.l2.grid(row = 1, column = 0, sticky=W)
+
+        #user input
+        self.az = Entry(inputframe)
+        self.az.insert(END, '0.0')
+        self.az.grid(row = 0, column = 1)
+
+        self.el = Entry(inputframe)
+        self.el.insert(END, '0.0')
+        self.el.grid(row = 1, column = 1)
+
+        self.scan = Button(buttonframe, 
+            text='Start Move', command=self.moveDist)
+        self.scan.pack(side=LEFT)
+
+        self.quitButton = Button(buttonframe, text='quit', command=master.quit)
+        self.quitButton.pack(side=LEFT)
+
+        ####### notebook layout #########
+        nb.add(movePage, text='Move')
         nb.add(page1, text='Az Scan')
         nb.add(nb2, text='Track')
         nb2.add(page2, text = 'Linear Scan')
         nb2.add(page3, text = 'Horizontal Scan')
 
+
         nb.pack(expand=1, fill="both")
+
+        ####### output frame ##### 
+
+        outputframe1 = Frame(outputframe)
+        outputframe1.pack()
+
+        outputframe2 = Frame(outputframe)
+        outputframe2.pack()
+        
+        self.title = Label(outputframe1, text='Feedback')
+        self.title.pack()
+
+        self.laz = Label(outputframe2, text='az')
+        self.laz.grid(row = 1, column = 0, sticky = E)
+
+        self.aztxt = Text(outputframe2, height = 1, width = 15)
+        self.aztxt.grid(row = 1, column = 1)
+
+    #button functions    
+
+    def moniter(self):
+        self.txt.delete('1.0', END)
+
+ 
+        self.txt.insert('1.0',5)    
+
 
     def scanAz(self):
 
@@ -236,6 +306,13 @@ class interface:
         stepSize = float(self.stepSize.get())
 
         scan.horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, stepSize, c)
+
+    def moveDist(self):
+        az = float(self.az.get())
+        el = float(self.el.get())
+
+        moveto.distance(az, el, c)
+
 
     #this does not currently work
     '''

@@ -1,6 +1,11 @@
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
+from datetime import datetime, timedelta
+
+
+degtoctsAZ = 1024000./360.
+degtoctsE = 4096./360.
 
 def main():
 
@@ -34,14 +39,41 @@ def main():
     c('SPB = 180 * 4096 / 360') # rotate at 180 deg/s
     c('PRB = 2 * 4096') # do one rotation
 
-    c('BGB')
-    c('AMB')
+    P1AZ = int(c('TPX'))
+    P1E = int(c('TPY'))
 
+    P2AZ = P1AZ - 10000
+    P2E = P1E - 10000
+    
     c('BGA')
-    c('AMA')
+  
+    st = datetime.utcnow()
+    print(st)
+    #print(st,'\n',st + dt)
+    count = 0
+    #print('t1, ', st)
+    #print('t2, ', st + timedelta(0, 1 + count))
+    #print('t4, ', timedelta(0, 1 + count))
 
-    c('BGB')
-    c('AMB')
+    while (P2AZ != P1AZ) & (P2E != P1E):
+
+      P1AZ = float(c('TPX'))
+      P1E = float(c('TPY'))
+
+      ct = datetime.utcnow()
+      #print('t2, ', ct)
+      #print('t1, ', st)# + timedelta(0, 1 + count))
+      #print('t3, ', st + timedelta(0, 1 + count))
+      #print('t4, ', timedelta(0, 1 + count))
+      if ct >= st + timedelta(0, 1 + count):
+        print(ct)
+        print('AZ_1:', P1AZ , 'Elev_1:', P1E )
+        P2AZ = float(c('TPX'))
+        P2E = float(c('TPY'))
+
+        count += 1
+
+
 
     del c #delete the alias
 
