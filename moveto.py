@@ -45,8 +45,6 @@ def location(az, el, c):
     #convert new coordinates to cts
     P2AZ = AZ % 360 * degtoctsAZ
     P2E = E % 360 * degtoctsE
-
-    print(AZ, AZ % 360, '!!!!!!!!!!!!!!!!!!!!!!')
     
     #azimuth scan settings
     azSP = config.azSP # 90 deg/sec
@@ -54,8 +52,6 @@ def location(az, el, c):
     azDC = config.azDC # deceleration
 
     azD = (P2AZ - P1AZ) # distance to desired az
-    print(P2AZ, P1AZ, P2AZ - P1AZ, '!!!!!!!!!!!!!!!!!!!!!!')
-    print(azD / degtoctsAZ, '!!!!!!!!!!!!!!!!!!!!!!')
     
     #make it rotate the short way round
     if azD > 180. * degtoctsAZ:
@@ -95,14 +91,14 @@ def location(az, el, c):
     print('Moving to object location')
     c('BGA') #begin motion 
     #g.GMotionComplete('A')
-    #wait(c)
+    wait(c)
 
     c('BGB') # begin motion
 
     #wait for both az and el motors to finish moving
-    c('AMB')
-    c('AMA')
-    #wait(c)
+    #c('AMB')
+    #c('AMA')
+    wait(c)
     #g.GMotionComplete('A')
     #g.GMotionComplete('B')
     print(' done.')
@@ -185,14 +181,14 @@ def distance(az, el, c):
 
     c('BGA') #begin motion 
     #g.GMotionComplete('A')
-    #wait(c)
+    wait(c)
 
     c('BGB') # begin motion
 
     #wait for both az and el motors to finish moving
-    #wait(c)
-    c('AMA')
-    c('AMB')
+    wait(c)
+    #c('AMA')
+    #c('AMB')
     #g.GMotionComplete('A')
     #g.GMotionComplete('B')
     print(' done.')

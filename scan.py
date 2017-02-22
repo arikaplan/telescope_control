@@ -8,9 +8,9 @@ sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
 from datetime import datetime, timedelta
 
-#def wait(c):
-#    while int(float(c('MG _BGA'))) == 1 or int(float(c('MG _BGB'))) == 1:
-#        pass
+def wait(c):
+    while int(float(c('MG _BGA'))) == 1 or int(float(c('MG _BGB'))) == 1:
+        pass
 
 def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
   
@@ -60,8 +60,8 @@ def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
         c('PRA=' + str(MaxCT - MinCT)) #relative move
         print(' Starting forward pass: ' + str(i + 1))
         c('BGA') #begin motion
-        #wait(c)
-        c('AMA') # wait for motion to complete
+        wait(c)
+        #c('AMA') # wait for motion to complete
 
         #g.GMotionComplete('A') # I don't know what this does
         print(' done.')
@@ -75,8 +75,8 @@ def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
         c('PRA=' + str(MinCT - MaxCT)) #relative move, 1024000 cts = 360 degrees
         print(' Starting backward pass: ' + str(i))
         c('BGA') #begin motion
-        c('AMA') #wait for motion to complete
-        #wait(c)
+        #c('AMA') #wait for motion to complete
+        wait(c)
         #g.GMotionComplete('A')
         print(' done.')
       
@@ -146,8 +146,8 @@ def horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, step
           c('PRA=' + str(MaxCT - MinCT)) #relative move
           print(' Starting forward pass: ', i + 1)
           c('BGA') #begin motion
-          #wait(c)
-          c('AMA') # wait for motion to complete
+          wait(c)
+          #c('AMA') # wait for motion to complete
           #g.GMotionComplete('A')
           print(' done.')
 
@@ -160,8 +160,8 @@ def horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, step
           c('PRA=' + str(MinCT - MaxCT)) #relative move
           print(' Starting backward pass: ', i)
           c('BGA') #begin motion
-          #wait(c)
-          c('AMA') # wait for motion to complete
+          wait(c)
+          #c('AMA') # wait for motion to complete
           #g.GMotionComplete('A')
           print(' done.')
         
@@ -190,8 +190,6 @@ def azScan(tscan, iterations, deltaEl, c):
     azSP = config.azSP # az scan speed, 90 deg/sec
     azAC = config.azAC # acceleration 
     azDC = config.azDC # deceleration
-
-    #moveto.location(az0, el0, c)  
     
     #gclib/galil commands to set az axis motor motion
     c('JGA=' + str(azSP)) #speed, cts/sec
@@ -238,8 +236,8 @@ def azScan(tscan, iterations, deltaEl, c):
         ct = datetime.utcnow()
 
       c('ST') # stop when duration has passed
-      #wait(c)
-      c('AMA') # wait for motion to stop
+      wait(c)
+      #c('AMA') # wait for motion to stop
 
       print(' done.')
 
@@ -253,8 +251,8 @@ def azScan(tscan, iterations, deltaEl, c):
         print('changing elevation')
 
         c('BGB') #begin motion
-        #wait(c)
-        c('AMB') #wait for motion to complete
+        wait(c)
+        #c('AMB') #wait for motion to complete
         print('done')
         
 
