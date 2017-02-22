@@ -6,6 +6,10 @@ import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
 
+def wait(c):
+    while int(float(c('MG _BGA'))) == 1 or int(float(c('MG _BGB'))) == 1:
+        pass
+
 def location(az, el, c):
   #g = gclib.py() #make an instance of the gclib python class
   
@@ -25,9 +29,9 @@ def location(az, el, c):
     degtoctsE = config.degtoctsE
 
     #where you are currently
-    P1AZ = float(c('TPX'))
-    P1E = float(c('TPY'))
-    print('AZ_0:', P1AZ % 1024000 / degtoctsAZ, 'Elev_0:', P1E % 4096 / degtoctsE)
+    P1AZ = float(c('TPX')) % 1024000
+    P1E = float(c('TPY')) % 4096
+    print('AZ_0:', P1AZ / degtoctsAZ, 'Elev_0:', P1E / degtoctsE)
 
     #az el you want to go to
     AZ = az
@@ -41,6 +45,8 @@ def location(az, el, c):
     #convert new coordinates to cts
     P2AZ = AZ % 360 * degtoctsAZ
     P2E = E % 360 * degtoctsE
+
+    print(AZ, AZ % 360, '!!!!!!!!!!!!!!!!!!!!!!')
     
     #azimuth scan settings
     azSP = config.azSP # 90 deg/sec
@@ -48,6 +54,8 @@ def location(az, el, c):
     azDC = config.azDC # deceleration
 
     azD = (P2AZ - P1AZ) # distance to desired az
+    print(P2AZ, P1AZ, P2AZ - P1AZ, '!!!!!!!!!!!!!!!!!!!!!!')
+    print(azD / degtoctsAZ, '!!!!!!!!!!!!!!!!!!!!!!')
     
     #make it rotate the short way round
     if azD > 180. * degtoctsAZ:
@@ -55,6 +63,8 @@ def location(az, el, c):
 
     if azD < -180. * degtoctsAZ:
         azD = 360. * degtoctsAZ + azD
+
+    #print(azD / degtoctsAZ, '!!!!!!!!!!!!!!!!!!!!!!')
     
     #elevation settings
     elevSP = config.elevSP # x degrees/sec
@@ -85,12 +95,14 @@ def location(az, el, c):
     print('Moving to object location')
     c('BGA') #begin motion 
     #g.GMotionComplete('A')
+    #wait(c)
 
     c('BGB') # begin motion
 
     #wait for both az and el motors to finish moving
     c('AMB')
     c('AMA')
+    #wait(c)
     #g.GMotionComplete('A')
     #g.GMotionComplete('B')
     print(' done.')
@@ -173,17 +185,19 @@ def distance(az, el, c):
 
     c('BGA') #begin motion 
     #g.GMotionComplete('A')
+    #wait(c)
 
     c('BGB') # begin motion
 
     #wait for both az and el motors to finish moving
-    c('AMB')
+    #wait(c)
     c('AMA')
+    c('AMB')
     #g.GMotionComplete('A')
     #g.GMotionComplete('B')
     print(' done.')
 
-    print('AZ_f:', P2AZ/degtoctsAZ, 'Elev_f:', P2E/degtoctsE)
+    print('AZ_f:', (P1AZ + P2AZ)/degtoctsAZ % 360, 'Elev_f:', (P1E + P2E)/degtoctsE % 360)
  
     del c #delete the alias
 
@@ -200,7 +214,7 @@ g = gclib.py()
 g.GOpen('10.1.2.245 --direct -s ALL')
 c = g.GCommand
 
-az = 360
+az = 10
 el = 0
 
 #location(az, el, c)

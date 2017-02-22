@@ -1,7 +1,9 @@
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
+sys.path.append('../')
 import gclib
 from datetime import datetime, timedelta
+
 
 def main():
 
@@ -26,7 +28,7 @@ def main():
     c('SPA = 90 * 1024000 / 360') # rotate at 90 deg/s
     c('ACA = 90 * 1024000 / 360') 
     c('DCA = 90 * 1024000 / 360')
-    c('PRA = 2 * 1024000') # do 2 full rotations, device times out
+    c('PRA = 1 * 1024000') # do 2 full rotations, device times out
                            # for 1 rotation, device does not time out
 
     #4096 cts = 360 degrees on motor B
@@ -35,19 +37,28 @@ def main():
     c('DCB = 180 * 4096 / 360')
     c('PRB = 1 * 4096') # do one rotation
 
- 
+    def wait(c, axis):
+        while int(float(c('MG _BG' + axis))) == 1:
+            pass
+    
+    P1 = float(c('TPX'))
     c('BGA')
-    g.GMotionComplete('A')
+
+    wait(c, 'A')
+    
+    P2 = float(c('TPX'))
+    print(P2-P1)
+    #wait(c)
+
+    c('BGB')
+     
+
+    #g.GMotionComplete('A')
     #c('AMA')
     
-    c('BGB')
-    g.GMotionComplete('B')
+    #c('BGB')
+    #g.GMotionComplete('B')
     #c('AMB')
-
-
-    c('BGA')
-    g.GMotionComplete('A')
-    #c('AMA')
 
 
     del c #delete the alias

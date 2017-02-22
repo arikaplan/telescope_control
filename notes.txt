@@ -1,8 +1,7 @@
                                                                                                                      
 ######### things to do ##########
 note that the precision on these scans is not perfect, figure 
-out what precision is required, i think its coming from rounding 
-errors and conversion between cts and degrees.
+out what precision is required, i think its coming from rounding errors and conversion between cts and degrees.
 
 
 decide if speed should be set or variable
@@ -17,7 +16,6 @@ it might be possible/better to combine the forward and backward passes into one 
 
 for azscan think about the best way to do input parameters for rotation, i.e. distance based on distance, time, or rotations, have each option as a button?
 
-cant do more than one rotation in azscan? AM times out after 5 seconds 
 
 changing the speed of az motor creates an error...except now it doesnt
 
@@ -29,7 +27,6 @@ figure out if there is a better way to convert az el coordinates outputted by ep
 
 put in logic that allows for different scan times at each elevation(scan.py: azScan())
 
-if I stick with time method, put in logic to convert time to distance
 
 ****eventually you should figure out how to connect to the controller in some macro program, and not have to do it in each individual script, this will probably come naturally with the interface.
 also should get around setting the motion controls in each script******
@@ -37,8 +34,6 @@ also should get around setting the motion controls in each script******
 moveto speed and scan speed should probably be different(scan.py vs moveto.py)
 
 forward/backward pass # comments are incorrect, jumps form 1 to 3, figure out the right way to do this(scan.py: linearScan() & horizontalScan())
-
-putting moveto.location in azScan in different locations in script effects functionality, might have to do with setting acceleration and deceleration before vs after moveto
 
 
 Think about how best to display ouput, and what output we want to display (gui related)
@@ -54,10 +49,15 @@ I tried to make a stop button, but you cant press another button until the last 
 
 figure out how to better adjust layout, its weird right now
 
-figure out how to put a frame next to notebook tabs that is always there, this is where the output should go
-
 why does the output frame only put text in the middle....??
 
-in moveto the position print statements should be changed to refer to config file where they have % (cts/rev)
+in moveto the position statements should be changed to refer to config file where they have % (cts/rev)
 
 put in some logic to azScan to accept hours instead of seconds for tscan, maybe change the default to hours, then if input is less than one, have some logic to convert that to seconds, or maybe timdelta can just handle that. or have an option to do either and you have to specify at input
+
+replace all AM's with MG _BGA logic, 
+- this also means you can do different logic for PR command, right now its time based, it could also just be distance based
+
+in moveto decide whether or not you can have 2 axes moving at once
+
+in moveto.location you make the elevation axis go the short way round, you should probably make it go whichever way doesnt take elev < 0

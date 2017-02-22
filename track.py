@@ -19,7 +19,7 @@ c('MO') #turn off all motors
 c('SH') #servo on
 
 location = "UCSB" #observation location
-cbody = "Neptune" # celestial body of observation
+cbody = "Sun" # celestial body of observation
 
 #+/- azimuth for each back and forth scan
 MinAz = -10
@@ -36,10 +36,10 @@ stepSize = 10.
 numAzScans = 2
 
 #do a linear scan at a fixed elevation
-scan.linearScan(location, cbody, numAzScans, MinAz, MaxAz, c)
+#scan.linearScan(location, cbody, numAzScans, MinAz, MaxAz, c)
 
 #do a horizontal scan at x elevations
-#scan.horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, stepSize, c)
+scan.horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, stepSize, c)
 
 
 g.GClose() #close connections

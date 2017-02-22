@@ -3,6 +3,7 @@ import scantest
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
+import moveto
 
 
 #make an instance of the gclib python class
@@ -19,7 +20,7 @@ c('MO') #turn off all motors
 c('SH') #servo on
 
 #how long should it scan in azimuth before switching elevations, in seconds
-tscan = 2
+tscan = 5
 #numRotations = 1
 
 # how many different elevations to scan at
@@ -30,9 +31,10 @@ deltaEl = 90.
 
 #starting elevation and azimuth
 az0 = 60.
-el0 = 60.
+el0 = 0.
 
-scan.azScan(tscan, iterations, az0, el0, deltaEl, c)
+moveto.location(az0, el0, c) 
+scan.azScan(tscan, iterations,  deltaEl, c)
 #scantest.azScan(numRotations, iterations, deltaEl, c)
 
 g.GClose() #close connections

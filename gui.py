@@ -49,10 +49,10 @@ class interface:
         self.l2.grid(row = 1, column = 0, sticky=W)
         self.l3 = Label(inputframe, text='El Step Size (deg)')
         self.l3.grid(row = 2, column = 0, sticky=W)
-        self.l4 = Label(inputframe, text='Starting AZ (deg)')
-        self.l4.grid(row = 3, column = 0, sticky=W)
-        self.l5 = Label(inputframe, text='Starting EL (deg)')
-        self.l5.grid(row = 4, column = 0, sticky=W)
+        #self.l4 = Label(inputframe, text='Starting AZ (deg)')
+        #self.l4.grid(row = 3, column = 0, sticky=W)
+        #self.l5 = Label(inputframe, text='Starting EL (deg)')
+        #self.l5.grid(row = 4, column = 0, sticky=W)
 
         #user input
         self.tscan = Entry(inputframe)
@@ -67,13 +67,13 @@ class interface:
         self.deltaEl.insert(END, '90.0')
         self.deltaEl.grid(row = 2, column = 1)
 
-        self.az0 = Entry(inputframe)
-        self.az0.insert(END, '0.0')
-        self.az0.grid(row = 3, column = 1)
+        #self.az0 = Entry(inputframe)
+        #self.az0.insert(END, '0.0')
+        #self.az0.grid(row = 3, column = 1)
 
-        self.el0 = Entry(inputframe)
-        self.el0.insert(END, '60.0')
-        self.el0.grid(row = 4, column = 1)
+        #self.el0 = Entry(inputframe)
+        #self.el0.insert(END, '60.0')
+        #self.el0.grid(row = 4, column = 1)
 
         self.scan = Button(buttonframe, 
             text='Start Scan', 
@@ -203,11 +203,14 @@ class interface:
         self.quitButton = Button(buttonframe, text='quit', command=master.quit)
         self.quitButton.pack(side=LEFT)
 
-        ####### move page #########
+        ####### move distance page #########
         movePage = Frame(nb)
 
         moveDFrame = Frame(movePage)
         moveDFrame.pack()
+
+        movetoFrame = Frame(movePage)
+        movetoFrame.pack(side=TOP)
 
         labelD = Label(moveDFrame, text = 'Move Distance')
         labelD.pack()
@@ -226,7 +229,7 @@ class interface:
 
         #user input
         self.az = Entry(inputframe)
-        self.az.insert(END, '0.0')
+        self.az.insert(END, '10.0')
         self.az.grid(row = 0, column = 1)
 
         self.el = Entry(inputframe)
@@ -239,6 +242,40 @@ class interface:
 
         self.quitButton = Button(buttonframe, text='quit', command=master.quit)
         self.quitButton.pack(side=LEFT)
+
+        ########## move to #############
+
+        labelto = Label(movetoFrame, text = 'Move to location')
+        labelto.pack()
+
+        inputframe2 = Frame(movetoFrame)
+        inputframe2.pack(side=TOP)
+
+        buttonframe2 = Frame(movetoFrame)
+        buttonframe2.pack(side=BOTTOM)
+
+        self.l3 = Label(inputframe2, text='az')
+        self.l3.grid(row = 0, column = 0, sticky=W)
+
+        self.l4 = Label(inputframe2, text='el')
+        self.l4.grid(row = 1, column = 0, sticky=W)
+
+        #user input
+        self.az2 = Entry(inputframe2)
+        self.az2.insert(END, '0.0')
+        self.az2.grid(row = 0, column = 1)
+
+        self.el2 = Entry(inputframe2)
+        self.el2.insert(END, '0.0')
+        self.el2.grid(row = 1, column = 1)
+
+        self.scan = Button(buttonframe2, 
+            text='Start Move', command=self.moveTo)
+        self.scan.pack(side=LEFT)
+
+        self.quitButton = Button(buttonframe2, text='quit', command=master.quit)
+        self.quitButton.pack(side=LEFT)
+
 
         ####### notebook layout #########
         nb.add(movePage, text='Move')
@@ -281,10 +318,12 @@ class interface:
         tscan = float(self.tscan.get())
         iterations = int(self.iterations.get())
         deltaEl = float(self.deltaEl.get())
-        az0 = float(self.az0.get())
-        el0 = float(self.el0.get())
+        #az0 = float(self.az0.get())
+        #el0 = float(self.el0.get())
 
-        scan.azScan(tscan, iterations, az0, el0, deltaEl, c)
+        #moveto.location(az0, el0, c) 
+
+        scan.azScan(tscan, iterations, deltaEl, c)
 
     def linear(self):
         location = self.location.get()
@@ -312,6 +351,12 @@ class interface:
         el = float(self.el.get())
 
         moveto.distance(az, el, c)
+
+    def moveTo(self):
+        az = float(self.az2.get())
+        el = float(self.el2.get())
+
+        moveto.location(az, el, c)
 
 
     #this does not currently work
