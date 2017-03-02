@@ -7,9 +7,15 @@ import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
 from datetime import datetime, timedelta
-
+'''
 def wait(c):
     while int(float(c('MG _BGA'))) == 1 or int(float(c('MG _BGB'))) == 1:
+        pass
+'''
+
+def wait(c):
+    while c('MG _BGA') != '0.0000' or c('MG _BGB') != '0.0000':
+        #print(c('MG _BGA'),c('MG _BGB'))
         pass
 
 def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):

@@ -58,6 +58,6 @@ put in some logic to azScan to accept hours instead of seconds for tscan, maybe 
 replace all AM's with MG _BGA logic, 
 - this also means you can do different logic for PR command, right now its time based, it could also just be distance based
 
-in moveto decide whether or not you can have 2 axes moving at once
-
 in moveto.location you make the elevation axis go the short way round, you should probably make it go whichever way doesnt take elev < 0
+
+stop only stops current motion, not all subsequent motion

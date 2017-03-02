@@ -1,11 +1,14 @@
 import scan
 import moveto
 import scantest
+import config
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
 from tkinter import ttk
 from tkinter import *
+import threading
+import time
 
 #make an instance of the gclib python class
 g = gclib.py()
@@ -19,9 +22,12 @@ c('AB') #abort motion and program
 c('MO') #turn off all motors
 c('SH') #servo on
 
+degtoctsAZ = config.degtoctsAZ
+degtoctsE = config.degtoctsE
+
 class interface:
 
-    def __init__(self, master):    
+    def __init__(self, master, interval = 0.2): 
 
         nb = ttk.Notebook(master)
 
@@ -80,7 +86,7 @@ class interface:
             command=self.scanAz)
         self.scan.pack(side=LEFT)
 
-        self.quitButton = Button(buttonframe, text='quit', command=master.quit)
+        self.quitButton = Button(buttonframe, text='stop', command=self.stop)
         self.quitButton.pack(side=LEFT)
 
         #self.stopButton = Button(buttonframe, text='Stop', command=self.stop)
@@ -109,32 +115,32 @@ class interface:
         self.l5.grid(row = 4, column = 0, sticky=W)
 
         #user input
-        self.location = Entry(inputframe)
-        self.location.insert(END, 'UCSB')
-        self.location.grid(row = 0, column = 1)
+        self.location_lin = Entry(inputframe)
+        self.location_lin.insert(END, 'UCSB')
+        self.location_lin.grid(row = 0, column = 1)
 
-        self.cbody = Entry(inputframe)
-        self.cbody.insert(END, 'Neptune')
-        self.cbody.grid(row = 1, column = 1)
+        self.cbody_lin = Entry(inputframe)
+        self.cbody_lin.insert(END, 'Neptune')
+        self.cbody_lin.grid(row = 1, column = 1)
 
-        self.numAzScans = Entry(inputframe)
-        self.numAzScans.insert(END, '2')
-        self.numAzScans.grid(row = 2, column = 1)
+        self.numAzScans_lin = Entry(inputframe)
+        self.numAzScans_lin.insert(END, '2')
+        self.numAzScans_lin.grid(row = 2, column = 1)
 
-        self.MinAz = Entry(inputframe)
-        self.MinAz.insert(END, '-10.0')
-        self.MinAz.grid(row = 3, column = 1)
+        self.MinAz_lin = Entry(inputframe)
+        self.MinAz_lin.insert(END, '-10.0')
+        self.MinAz_lin.grid(row = 3, column = 1)
 
-        self.MaxAz = Entry(inputframe)
-        self.MaxAz.insert(END, '10.0')
-        self.MaxAz.grid(row = 4, column = 1)
+        self.MaxAz_lin = Entry(inputframe)
+        self.MaxAz_lin.insert(END, '10.0')
+        self.MaxAz_lin.grid(row = 4, column = 1)
 
         self.scan = Button(buttonframe, 
             text='Start Scan', 
             command=self.linear)
         self.scan.pack(side=LEFT)
 
-        self.quitButton = Button(buttonframe, text='quit', command=master.quit)
+        self.quitButton = Button(buttonframe, text='stop', command=self.stop)
         self.quitButton.pack(side=LEFT)
 
         ###### horizontal scan ######
@@ -163,25 +169,25 @@ class interface:
         self.l8.grid(row = 7, column = 0, sticky=W)
 
         #user input
-        self.location = Entry(inputframe)
-        self.location.insert(END, 'UCSB')
-        self.location.grid(row = 0, column = 1)
+        self.location_hor = Entry(inputframe)
+        self.location_hor.insert(END, 'UCSB')
+        self.location_hor.grid(row = 0, column = 1)
 
-        self.cbody = Entry(inputframe)
-        self.cbody.insert(END, 'Neptune')
-        self.cbody.grid(row = 1, column = 1)
+        self.cbody_hor = Entry(inputframe)
+        self.cbody_hor.insert(END, 'Neptune')
+        self.cbody_hor.grid(row = 1, column = 1)
 
-        self.numAzScans = Entry(inputframe)
-        self.numAzScans.insert(END, '2')
-        self.numAzScans.grid(row = 2, column = 1)
+        self.numAzScans_hor = Entry(inputframe)
+        self.numAzScans_hor.insert(END, '2')
+        self.numAzScans_hor.grid(row = 2, column = 1)
 
-        self.MinAz = Entry(inputframe)
-        self.MinAz.insert(END, '-10.0')
-        self.MinAz.grid(row = 3, column = 1)
+        self.MinAz_hor = Entry(inputframe)
+        self.MinAz_hor.insert(END, '-10.0')
+        self.MinAz_hor.grid(row = 3, column = 1)
 
-        self.MaxAz = Entry(inputframe)
-        self.MaxAz.insert(END, '10.0')
-        self.MaxAz.grid(row = 4, column = 1)
+        self.MaxAz_hor = Entry(inputframe)
+        self.MaxAz_hor.insert(END, '10.0')
+        self.MaxAz_hor.grid(row = 4, column = 1)
 
         self.MinEl = Entry(inputframe)
         self.MinEl.insert(END, '-10.0')
@@ -240,7 +246,7 @@ class interface:
             text='Start Move', command=self.moveDist)
         self.scan.pack(side=LEFT)
 
-        self.quitButton = Button(buttonframe, text='quit', command=master.quit)
+        self.quitButton = Button(buttonframe, text='stop', command=self.stop)
         self.quitButton.pack(side=LEFT)
 
         ########## move to #############
@@ -273,7 +279,7 @@ class interface:
             text='Start Move', command=self.moveTo)
         self.scan.pack(side=LEFT)
 
-        self.quitButton = Button(buttonframe2, text='quit', command=master.quit)
+        self.quitButton = Button(buttonframe2, text='stop', command=self.stop)
         self.quitButton.pack(side=LEFT)
 
 
@@ -288,7 +294,7 @@ class interface:
         nb.pack(expand=1, fill="both")
 
         ####### output frame ##### 
-
+        '''
         outputframe1 = Frame(outputframe)
         outputframe1.pack()
 
@@ -303,68 +309,98 @@ class interface:
 
         self.aztxt = Text(outputframe2, height = 1, width = 15)
         self.aztxt.grid(row = 1, column = 1)
-
-    #button functions    
+        
+        #thread stuff
+        self.interval = interval
+        thread = threading.Thread(target=self.moniter, args=())
+        thread.daemon = True                            # Daemonize thread
+        thread.start() 
+        '''
 
     def moniter(self):
-        self.txt.delete('1.0', END)
 
- 
-        self.txt.insert('1.0',5)    
+        Paz = (float(c('TPX')) % 1024000) / degtoctsAZ
 
+        while True:
 
+            self.aztxt.delete('1.0', END)
+
+            self.aztxt.insert('1.0', Paz)
+            print(c('TPX'))
+            Paz = (float(c('TPX')) % 1024000) / degtoctsAZ
+
+            time.sleep(self.interval)  
+
+       
     def scanAz(self):
 
         tscan = float(self.tscan.get())
         iterations = int(self.iterations.get())
         deltaEl = float(self.deltaEl.get())
-        #az0 = float(self.az0.get())
-        #el0 = float(self.el0.get())
 
-        #moveto.location(az0, el0, c) 
+        thread = threading.Thread(target=scan.azScan, args=(tscan, iterations, deltaEl, c))
+        thread.daemon = True
+        thread.start()
 
-        scan.azScan(tscan, iterations, deltaEl, c)
+        #scan.azScan(tscan, iterations, deltaEl, c)
 
     def linear(self):
-        location = self.location.get()
-        cbody = self.cbody.get()
-        numAzScans = int(self.numAzScans.get())
-        MinAz = float(self.MinAz.get())
-        MaxAz = float(self.MaxAz.get())
+        location = self.location_lin.get()
+        cbody = self.cbody_lin.get()
+        numAzScans = int(self.numAzScans_lin.get())
+        MinAz = float(self.MinAz_lin.get())
+        MaxAz = float(self.MaxAz_lin.get())
 
-        scan.linearScan(location, cbody, numAzScans, MinAz, MaxAz, c)
+        thread = threading.Thread(target=scan.linearScan, args=(location, cbody, numAzScans, MinAz, MaxAz, c))
+        thread.daemon = True
+        thread.start()
+
+        #scan.linearScan(location, cbody, numAzScans, MinAz, MaxAz, c)
 
     def horizontal(self):
-        location = self.location.get()
-        cbody = self.cbody.get()
-        numAzScans = int(self.numAzScans.get())
-        MinAz = float(self.MinAz.get())
-        MaxAz = float(self.MaxAz.get())
+        location = self.location_hor.get()
+        cbody = self.cbody_hor.get()
+        numAzScans = int(self.numAzScans_hor.get())
+        MinAz = float(self.MinAz_hor.get())
+        MaxAz = float(self.MaxAz_hor.get())
         MinEl = float(self.MinEl.get())
         MaxEl = float(self.MaxEl.get())
         stepSize = float(self.stepSize.get())
 
-        scan.horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, stepSize, c)
+        thread = threading.Thread(target=scan.horizontalScan, args=(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, stepSize, c))
+        thread.daemon = True
+        thread.start()
+
+        #scan.horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, stepSize, c)
 
     def moveDist(self):
         az = float(self.az.get())
         el = float(self.el.get())
 
-        moveto.distance(az, el, c)
+        thread = threading.Thread(target=moveto.distance, args=(az, el, c))
+        thread.daemon = True
+        thread.start()
+
+        #moveto.distance(az, el, c)
+
 
     def moveTo(self):
         az = float(self.az2.get())
         el = float(self.el2.get())
 
-        moveto.location(az, el, c)
+        thread = threading.Thread(target=moveto.location, args=(az, el, c))
+        thread.daemon = True
+        thread.start()
+
+        #moveto.location(az, el, c)
 
 
     #this does not currently work
-    '''
+    
     def stop(self):
-
+        print('stopping motion...')
         c('ST')
-    '''
+    
 
 root = Tk()
 root.title("Telescope Control")

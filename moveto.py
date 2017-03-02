@@ -5,10 +5,16 @@ import config
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
-
+'''
 def wait(c):
     while int(float(c('MG _BGA'))) == 1 or int(float(c('MG _BGB'))) == 1:
         pass
+'''
+def wait(c):
+    while c('MG _BGA') != '0.0000' or c('MG _BGB') != '0.0000':
+        #print(c('MG _BGA'),c('MG _BGB'))
+        pass
+
 
 def location(az, el, c):
   #g = gclib.py() #make an instance of the gclib python class
@@ -134,6 +140,7 @@ def distance(az, el, c):
     degtoctsE = config.degtoctsE
 
     #where you are currently
+    print(c('TPX'))
     P1AZ = float(c('TPX'))
     P1E = float(c('TPY'))
     print('AZ_0:', P1AZ % 1024000 / degtoctsAZ, 'Elev_0:', P1E % 4096 / degtoctsE)
@@ -210,7 +217,7 @@ g = gclib.py()
 g.GOpen('10.1.2.245 --direct -s ALL')
 c = g.GCommand
 
-az = 10
+az = 90
 el = 0
 
 #location(az, el, c)
