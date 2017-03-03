@@ -15,7 +15,6 @@ def wait(c):
         #print(c('MG _BGA'),c('MG _BGB'))
         pass
 
-
 def location(az, el, c):
   #g = gclib.py() #make an instance of the gclib python class
   
@@ -98,6 +97,8 @@ def location(az, el, c):
     c('BGA') #begin motion 
     #g.GMotionComplete('A')
     wait(c)
+    if c('MG _SCA') != '1.0000':
+        return
 
     c('BGB') # begin motion
 
@@ -105,6 +106,11 @@ def location(az, el, c):
     #c('AMB')
     #c('AMA')
     wait(c)
+
+    #if it hasnt reached its intended position, 
+    #its because I stopped it and the function should end
+    if c('MG _SCB') != '1.0000':
+        return
     #g.GMotionComplete('A')
     #g.GMotionComplete('B')
     print(' done.')
@@ -190,10 +196,20 @@ def distance(az, el, c):
     #g.GMotionComplete('A')
     wait(c)
 
+    #if it hasnt reached its intended position, 
+    #its because I stopped it and the function should end
+    if c('MG _SCA') != '1.0000':
+        return
+
     c('BGB') # begin motion
 
     #wait for both az and el motors to finish moving
     wait(c)
+
+    #if it hasnt reached its intended position, 
+    #its because I stopped it and the function should end
+    if c('MG _SCB') != '1.0000':
+        return
     #c('AMA')
     #c('AMB')
     #g.GMotionComplete('A')

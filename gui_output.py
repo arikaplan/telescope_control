@@ -27,7 +27,7 @@ degtoctsE = config.degtoctsE
 
 class interface:
 
-    def __init__(self, master, interval = 0.2): 
+    def __init__(self, master): 
 
         outputframe = Frame(master)
         outputframe.pack()
@@ -56,6 +56,7 @@ class interface:
         self.alttxt.grid(row = 2, column = 1)
         
         #thread stuff
+        interval = 0.2
         self.interval = interval
         thread = threading.Thread(target=self.moniter, args=())
         thread.daemon = True                            # Daemonize thread

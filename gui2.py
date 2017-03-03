@@ -27,7 +27,7 @@ degtoctsE = config.degtoctsE
 
 class interface:
 
-    def __init__(self, master, interval = 0.2): 
+    def __init__(self, master): 
 
         nb = ttk.Notebook(master)
 
@@ -86,8 +86,8 @@ class interface:
             command=self.scanAz)
         self.scan.pack(side=LEFT)
 
-        self.quitButton = Button(buttonframe, text='stop', command=self.stop)
-        self.quitButton.pack(side=LEFT)
+        self.quitButton_az = Button(buttonframe, text='stop', command=self.stop)
+        self.quitButton_az.pack(side=LEFT)
 
         #self.stopButton = Button(buttonframe, text='Stop', command=self.stop)
         #self.stopButton.pack(side=LEFT)
@@ -97,117 +97,117 @@ class interface:
 
         ###### linear scan ######
         page2 = Frame(nb2)
-        inputframe = Frame(page2)
-        inputframe.pack(side=TOP)
+        inputframe2 = Frame(page2)
+        inputframe2.pack(side=TOP)
 
-        buttonframe = Frame(page2)
-        buttonframe.pack(side=BOTTOM)
+        buttonframe2 = Frame(page2)
+        buttonframe2.pack(side=BOTTOM)
 
-        self.l1 = Label(inputframe, text='Location')
+        self.l1 = Label(inputframe2, text='Location')
         self.l1.grid(row = 0, column = 0, sticky=W)
-        self.l2 = Label(inputframe, text='Celestial Object')
+        self.l2 = Label(inputframe2, text='Celestial Object')
         self.l2.grid(row = 1, column = 0, sticky=W)
-        self.l3 = Label(inputframe, text='Az Scan #')
+        self.l3 = Label(inputframe2, text='Az Scan #')
         self.l3.grid(row = 2, column = 0, sticky=W)
-        self.l4 = Label(inputframe, text='Min Az')
+        self.l4 = Label(inputframe2, text='Min Az')
         self.l4.grid(row = 3, column = 0, sticky=W)
-        self.l5 = Label(inputframe, text='Max AZ')
+        self.l5 = Label(inputframe2, text='Max AZ')
         self.l5.grid(row = 4, column = 0, sticky=W)
 
         #user input
-        self.location_lin = Entry(inputframe)
+        self.location_lin = Entry(inputframe2)
         self.location_lin.insert(END, 'UCSB')
         self.location_lin.grid(row = 0, column = 1)
 
-        self.cbody_lin = Entry(inputframe)
+        self.cbody_lin = Entry(inputframe2)
         self.cbody_lin.insert(END, 'Neptune')
         self.cbody_lin.grid(row = 1, column = 1)
 
-        self.numAzScans_lin = Entry(inputframe)
+        self.numAzScans_lin = Entry(inputframe2)
         self.numAzScans_lin.insert(END, '2')
         self.numAzScans_lin.grid(row = 2, column = 1)
 
-        self.MinAz_lin = Entry(inputframe)
+        self.MinAz_lin = Entry(inputframe2)
         self.MinAz_lin.insert(END, '-10.0')
         self.MinAz_lin.grid(row = 3, column = 1)
 
-        self.MaxAz_lin = Entry(inputframe)
+        self.MaxAz_lin = Entry(inputframe2)
         self.MaxAz_lin.insert(END, '10.0')
         self.MaxAz_lin.grid(row = 4, column = 1)
 
-        self.scan = Button(buttonframe, 
+        self.scan = Button(buttonframe2, 
             text='Start Scan', 
             command=self.linear)
         self.scan.pack(side=LEFT)
 
-        self.quitButton = Button(buttonframe, text='stop', command=self.stop)
-        self.quitButton.pack(side=LEFT)
+        self.quitButton_lin = Button(buttonframe2, text='stop', command=self.stop)
+        self.quitButton_lin.pack(side=LEFT)
 
         ###### horizontal scan ######
         page3 = Frame(nb2)
-        inputframe = Frame(page3)
-        inputframe.pack(side=TOP)
+        inputframe3 = Frame(page3)
+        inputframe3.pack(side=TOP)
 
-        buttonframe = Frame(page3)
-        buttonframe.pack(side=BOTTOM)
+        buttonframe3 = Frame(page3)
+        buttonframe3.pack(side=BOTTOM)
 
-        self.l1 = Label(inputframe, text='Location')
+        self.l1 = Label(inputframe3, text='Location')
         self.l1.grid(row = 0, column = 0, sticky=W)
-        self.l2 = Label(inputframe, text='Celestial Object')
+        self.l2 = Label(inputframe3, text='Celestial Object')
         self.l2.grid(row = 1, column = 0, sticky=W)
-        self.l3 = Label(inputframe, text='Az Scan #')
+        self.l3 = Label(inputframe3, text='Az Scan #')
         self.l3.grid(row = 2, column = 0, sticky=W)
-        self.l4 = Label(inputframe, text='Min Az')
+        self.l4 = Label(inputframe3, text='Min Az')
         self.l4.grid(row = 3, column = 0, sticky=W)
-        self.l5 = Label(inputframe, text='Max AZ')
+        self.l5 = Label(inputframe3, text='Max AZ')
         self.l5.grid(row = 4, column = 0, sticky=W)
-        self.l6 = Label(inputframe, text='Min El')
+        self.l6 = Label(inputframe3, text='Min El')
         self.l6.grid(row = 5, column = 0, sticky=W)
-        self.l7 = Label(inputframe, text='Max El')
+        self.l7 = Label(inputframe3, text='Max El')
         self.l7.grid(row = 6, column = 0, sticky=W)
-        self.l8 = Label(inputframe, text='Step Size')
+        self.l8 = Label(inputframe3, text='Step Size')
         self.l8.grid(row = 7, column = 0, sticky=W)
 
         #user input
-        self.location_hor = Entry(inputframe)
+        self.location_hor = Entry(inputframe3)
         self.location_hor.insert(END, 'UCSB')
         self.location_hor.grid(row = 0, column = 1)
 
-        self.cbody_hor = Entry(inputframe)
+        self.cbody_hor = Entry(inputframe3)
         self.cbody_hor.insert(END, 'Neptune')
         self.cbody_hor.grid(row = 1, column = 1)
 
-        self.numAzScans_hor = Entry(inputframe)
+        self.numAzScans_hor = Entry(inputframe3)
         self.numAzScans_hor.insert(END, '2')
         self.numAzScans_hor.grid(row = 2, column = 1)
 
-        self.MinAz_hor = Entry(inputframe)
+        self.MinAz_hor = Entry(inputframe3)
         self.MinAz_hor.insert(END, '-10.0')
         self.MinAz_hor.grid(row = 3, column = 1)
 
-        self.MaxAz_hor = Entry(inputframe)
+        self.MaxAz_hor = Entry(inputframe3)
         self.MaxAz_hor.insert(END, '10.0')
         self.MaxAz_hor.grid(row = 4, column = 1)
 
-        self.MinEl = Entry(inputframe)
+        self.MinEl = Entry(inputframe3)
         self.MinEl.insert(END, '-10.0')
         self.MinEl.grid(row = 5, column = 1)
 
-        self.MaxEl = Entry(inputframe)
+        self.MaxEl = Entry(inputframe3)
         self.MaxEl.insert(END, '10.0')
         self.MaxEl.grid(row = 6, column = 1)
 
-        self.stepSize = Entry(inputframe)
+        self.stepSize = Entry(inputframe3)
         self.stepSize.insert(END, '10.0')
         self.stepSize.grid(row = 7, column = 1)
 
-        self.scan = Button(buttonframe, 
+        self.scan = Button(buttonframe3, 
             text='Start Scan', 
             command=self.horizontal)
         self.scan.pack(side=LEFT)
 
-        self.quitButton = Button(buttonframe, text='stop', command=self.stop)
-        self.quitButton.pack(side=LEFT)
+        self.quitButton_hor = Button(buttonframe3, text='quit', command=master.quit)
+        self.quitButton_hor.pack(side=LEFT)
 
         ####### move distance page #########
         movePage = Frame(nb)
@@ -221,66 +221,66 @@ class interface:
         labelD = Label(moveDFrame, text = 'Move Distance')
         labelD.pack()
 
-        inputframe = Frame(moveDFrame)
-        inputframe.pack(side=TOP)
+        inputframeD = Frame(moveDFrame)
+        inputframeD.pack(side=TOP)
 
-        buttonframe = Frame(moveDFrame)
-        buttonframe.pack(side=BOTTOM)
+        buttonframeD = Frame(moveDFrame)
+        buttonframeD.pack(side=BOTTOM)
 
-        self.l1 = Label(inputframe, text='az')
+        self.l1 = Label(inputframeD, text='az')
         self.l1.grid(row = 0, column = 0, sticky=W)
 
-        self.l2 = Label(inputframe, text='el')
+        self.l2 = Label(inputframeD, text='el')
         self.l2.grid(row = 1, column = 0, sticky=W)
 
         #user input
-        self.az = Entry(inputframe)
+        self.az = Entry(inputframeD)
         self.az.insert(END, '10.0')
         self.az.grid(row = 0, column = 1)
 
-        self.el = Entry(inputframe)
+        self.el = Entry(inputframeD)
         self.el.insert(END, '0.0')
         self.el.grid(row = 1, column = 1)
 
-        self.scan = Button(buttonframe, 
+        self.scan = Button(buttonframeD, 
             text='Start Move', command=self.moveDist)
         self.scan.pack(side=LEFT)
 
-        self.quitButton = Button(buttonframe, text='stop', command=self.stop)
-        self.quitButton.pack(side=LEFT)
+        self.quitButton_MD = Button(buttonframeD, text='stop', command=self.stop)
+        self.quitButton_MD.pack(side=LEFT)
 
         ########## move to #############
 
         labelto = Label(movetoFrame, text = 'Move to location')
         labelto.pack()
 
-        inputframe2 = Frame(movetoFrame)
-        inputframe2.pack(side=TOP)
+        inputframeto = Frame(movetoFrame)
+        inputframeto.pack(side=TOP)
 
-        buttonframe2 = Frame(movetoFrame)
-        buttonframe2.pack(side=BOTTOM)
+        buttonframeto = Frame(movetoFrame)
+        buttonframeto.pack(side=BOTTOM)
 
-        self.l3 = Label(inputframe2, text='az')
+        self.l3 = Label(inputframeto, text='az')
         self.l3.grid(row = 0, column = 0, sticky=W)
 
-        self.l4 = Label(inputframe2, text='el')
+        self.l4 = Label(inputframeto, text='el')
         self.l4.grid(row = 1, column = 0, sticky=W)
 
         #user input
-        self.az2 = Entry(inputframe2)
+        self.az2 = Entry(inputframeto)
         self.az2.insert(END, '0.0')
         self.az2.grid(row = 0, column = 1)
 
-        self.el2 = Entry(inputframe2)
+        self.el2 = Entry(inputframeto)
         self.el2.insert(END, '0.0')
         self.el2.grid(row = 1, column = 1)
 
-        self.scan = Button(buttonframe2, 
+        self.scan = Button(buttonframeto, 
             text='Start Move', command=self.moveTo)
         self.scan.pack(side=LEFT)
 
-        self.quitButton = Button(buttonframe2, text='stop', command=self.stop)
-        self.quitButton.pack(side=LEFT)
+        self.quitButton_Mto = Button(buttonframeto, text='stop', command=self.stop)
+        self.quitButton_Mto.pack(side=LEFT)
 
 
         ####### notebook layout #########
@@ -294,7 +294,7 @@ class interface:
         nb.pack(expand=1, fill="both")
 
         ####### output frame ##### 
-        '''
+        
         outputframe1 = Frame(outputframe)
         outputframe1.pack()
 
@@ -317,6 +317,7 @@ class interface:
         self.alttxt.grid(row = 2, column = 1)
         
         #thread stuff
+        interval = 0.2
         self.interval = interval
         thread = threading.Thread(target=self.moniter, args=())
         thread.daemon = True                            # Daemonize thread
@@ -339,7 +340,7 @@ class interface:
             Palt = (float(c('TPY')) % 4096) / degtoctsE
 
             time.sleep(self.interval) 
-       '''
+       
     def scanAz(self):
 
         tscan = float(self.tscan.get())

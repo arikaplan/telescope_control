@@ -66,7 +66,13 @@ def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
         c('PRA=' + str(MaxCT - MinCT)) #relative move
         print(' Starting forward pass: ' + str(i + 1))
         c('BGA') #begin motion
+
+        #if it hasnt reached its intended position, 
+        #its because I stopped it and the function should end
         wait(c)
+        if c('MG _SCA') != '1.0000':
+          return
+
         #c('AMA') # wait for motion to complete
 
         #g.GMotionComplete('A') # I don't know what this does
@@ -83,6 +89,12 @@ def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
         c('BGA') #begin motion
         #c('AMA') #wait for motion to complete
         wait(c)
+
+        #if it hasnt reached its intended position, 
+        #its because I stopped it and the function should end
+        if c('MG _SCA') != '1.0000':
+          return
+
         #g.GMotionComplete('A')
         print(' done.')
       
@@ -153,6 +165,12 @@ def horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, step
           print(' Starting forward pass: ', i + 1)
           c('BGA') #begin motion
           wait(c)
+
+          #if it hasnt reached its intended position, 
+          #its because I stopped it and the function should end
+          if c('MG _SCA') != '1.0000':
+            return
+
           #c('AMA') # wait for motion to complete
           #g.GMotionComplete('A')
           print(' done.')
@@ -167,6 +185,11 @@ def horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, step
           print(' Starting backward pass: ', i)
           c('BGA') #begin motion
           wait(c)
+
+          #if it hasnt reached its intended position, 
+          #its because I stopped it and the function should end
+          if c('MG _SCA') != '1.0000':
+            return
           #c('AMA') # wait for motion to complete
           #g.GMotionComplete('A')
           print(' done.')
@@ -241,8 +264,13 @@ def azScan(tscan, iterations, deltaEl, c):
         #update current time
         ct = datetime.utcnow()
 
+      #this will be true if I stopped the motion
+      if datetime.utcnow() < st + dt:
+        return
+
       c('ST') # stop when duration has passed
       wait(c)
+
       #c('AMA') # wait for motion to stop
 
       print(' done.')
@@ -258,6 +286,12 @@ def azScan(tscan, iterations, deltaEl, c):
 
         c('BGB') #begin motion
         wait(c)
+
+        #if it hasnt reached its intended position, 
+        #its because I stopped it and the function should end
+        if c('MG _SCB') != '1.0000':
+          return
+
         #c('AMB') #wait for motion to complete
         print('done')
         
