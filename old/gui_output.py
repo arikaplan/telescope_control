@@ -74,9 +74,12 @@ class interface:
             self.aztxt.insert('1.0', Paz)
             self.alttxt.delete('1.0', END)
             self.alttxt.insert('1.0', Palt)
-            #print(c('TPX'))
-            Paz = (float(c('TPX')) % 1024000) / degtoctsAZ
-            Palt = (float(c('TPY')) % 4096) / degtoctsE
+            tpx2 = c('TPX')
+            print("TPX2", tpx2)
+            tpy2 = c('TPY')
+            print("TPY2", tpy2)
+            Paz = (float(tpx2) % 1024000) / degtoctsAZ
+            Palt = (float(tpy2) % 4096) / degtoctsE
 
             time.sleep(self.interval)  
 

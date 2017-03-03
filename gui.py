@@ -18,6 +18,14 @@ g.GOpen('10.1.2.245 --direct -s ALL')
 #used for galil commands
 c = g.GCommand
 
+#make it again for the output frame
+g2 = gclib.py()
+#connect to network
+g2.GOpen('10.1.2.245 --direct -s ALL')
+#g.GOpen('COM1 --direct')
+#used for galil commands
+c2 = g2.GCommand
+
 c('AB') #abort motion and program
 c('MO') #turn off all motors
 c('SH') #servo on
@@ -294,7 +302,7 @@ class interface:
         nb.pack(expand=1, fill="both")
 
         ####### output frame ##### 
-        '''
+        
         outputframe1 = Frame(outputframe)
         outputframe1.pack()
 
@@ -325,8 +333,8 @@ class interface:
 
     def moniter(self):
 
-        Paz = (float(c('TPX')) % 1024000) / degtoctsAZ
-        Palt = (float(c('TPY')) % 4096) / degtoctsE
+        Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
+        Palt = (float(c2('TPY')) % 4096) / degtoctsE
 
         while True:
 
@@ -335,11 +343,11 @@ class interface:
             self.alttxt.delete('1.0', END)
             self.alttxt.insert('1.0', Palt)
             #print(c('TPX'))
-            Paz = (float(c('TPX')) % 1024000) / degtoctsAZ
-            Palt = (float(c('TPY')) % 4096) / degtoctsE
+            Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
+            Palt = (float(c2('TPY')) % 4096) / degtoctsE
 
             time.sleep(self.interval) 
-       '''
+       
     def scanAz(self):
 
         tscan = float(self.tscan.get())
