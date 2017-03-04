@@ -34,8 +34,8 @@ def location(az, el, c):
     degtoctsE = config.degtoctsE
 
     #where you are currently
-    P1AZ = float(c('TPX')) % 1024000
-    P1E = float(c('TPY')) % 4096
+    P1AZ = float(c('TPX')) % (degtoctsAZ * 360.)
+    P1E = float(c('TPY')) % (degtoctsE * 360.)
     print('AZ_0:', P1AZ / degtoctsAZ, 'Elev_0:', P1E / degtoctsE)
 
     #az el you want to go to
@@ -65,7 +65,6 @@ def location(az, el, c):
     if azD < -180. * degtoctsAZ:
         azD = 360. * degtoctsAZ + azD
 
-    #print(azD / degtoctsAZ, '!!!!!!!!!!!!!!!!!!!!!!')
     
     #elevation settings
     elevSP = config.elevSP # x degrees/sec
@@ -73,13 +72,15 @@ def location(az, el, c):
     elevDC = config.elevDC # deceleration
 
     elevD = (P2E - P1E) # distance to desired elev
-    
+
+        
     #make it rotate the short way round, this might be unecessary for el
     if elevD > 180. * degtoctsE:
         elevD = elevD - 360. * degtoctsE
     
     if elevD < -180. * degtoctsE:
         elevD = 360. * degtoctsE + elevD
+    
 
     #gclib/galil commands to move az motor
     c('SPA=' + str(azSP)) #speed, cts/sec
@@ -149,7 +150,7 @@ def distance(az, el, c):
     print(c('TPX'))
     P1AZ = float(c('TPX'))
     P1E = float(c('TPY'))
-    print('AZ_0:', P1AZ % 1024000 / degtoctsAZ, 'Elev_0:', P1E % 4096 / degtoctsE)
+    print('AZ_0:', P1AZ % (degtoctsAZ * 360.) / degtoctsAZ, 'Elev_0:', P1E % (degtoctsE * 360.) / degtoctsE)
 
     #az el you want to move by
     AZ = az

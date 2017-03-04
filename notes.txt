@@ -55,9 +55,11 @@ in moveto the position statements should be changed to refer to config file wher
 
 put in some logic to azScan to accept hours instead of seconds for tscan, maybe change the default to hours, then if input is less than one, have some logic to convert that to seconds, or maybe timdelta can just handle that. or have an option to do either and you have to specify at input
 
-replace all AM's with MG _BGA logic, 
-- this also means you can do different logic for PR command, right now its time based, it could also just be distance based
+you can now do different logic for PR command, right now its time based, it could also just be distance based
 
-in moveto.location you make the elevation axis go the short way round, you should probably make it go whichever way doesnt take elev < 0
 
-stop only stops current motion, not all subsequent motion
+#create an error message text box in gui, for things like elevation safety controls
+
+you dont need so many stop buttons, make a frame at the bottom of each notebook tab with one stop button
+
+azscan stop button doesnt end motion because its based on time not distance

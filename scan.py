@@ -239,8 +239,8 @@ def azScan(tscan, iterations, deltaEl, c):
 
 
     #initial position
-    P1AZ = (float(c('TPX')) % 1024000) / degtoctsAZ
-    P1E = (float(c('TPY')) % 4096) / degtoctsE
+    P1AZ = (float(c('TPX')) % (degtoctsAZ*360.)) / degtoctsAZ
+    P1E = (float(c('TPY')) % (degtoctsE*360.)) / degtoctsE
     print('AZ:', P1AZ, 'Elev:', P1E)
 
 
@@ -264,9 +264,9 @@ def azScan(tscan, iterations, deltaEl, c):
         #update current time
         ct = datetime.utcnow()
 
-      #this will be true if I stopped the motion
-      if datetime.utcnow() < st + dt:
-        return
+        if c('MG _BGA') == '0.0000':
+          return
+
 
       c('ST') # stop when duration has passed
       wait(c)
@@ -276,8 +276,8 @@ def azScan(tscan, iterations, deltaEl, c):
       print(' done.')
 
       #final position after each az scan
-      P2AZ = (float(c('TPX'))) % 1024000 / degtoctsAZ
-      P2E = float(c('TPY')) % 4096 / degtoctsE
+      P2AZ = (float(c('TPX'))) % (degtoctsAZ*360.) / degtoctsAZ
+      P2E = float(c('TPY')) % (degtoctsE*360.) / degtoctsE
       print('AZ:', P2AZ, 'Elev:', P2E)
 
       #change elevation for next az scan
@@ -297,8 +297,8 @@ def azScan(tscan, iterations, deltaEl, c):
         
 
         #position after each elevation change
-        P2AZ = (float(c('TPX'))) % 1024000 / degtoctsAZ
-        P2E = float(c('TPY')) % 4096 / degtoctsE
+        P2AZ = (float(c('TPX'))) % (degtoctsAZ*360.) / degtoctsAZ
+        P2E = float(c('TPY')) % (degtoctsE*360.) / degtoctsE
         print('AZ:', P2AZ, 'Elev:', P2E)
     
     del c #delete the alias
