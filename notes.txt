@@ -3,21 +3,14 @@
 note that the precision on these scans is not perfect, figure 
 out what precision is required, i think its coming from rounding errors and conversion between cts and degrees.
 
-
 decide if speed should be set or variable
 
 find absolute position of encoder, right now there is no reference
 point
 
-
 code to keep telescope from pointing below horizon may need higher limit than 0
 
 it might be possible/better to combine the forward and backward passes into one block of code, use -1**i and a list for min/max az then do list[i % 2] or something like that (scan.py: linearScan() & horizontalScan())
-
-for azscan think about the best way to do input parameters for rotation, i.e. distance based on distance, time, or rotations, have each option as a button?
-
-
-changing the speed of az motor creates an error...except now it doesnt
 
 add elevation logic to not let azscan go below horizon, at some point
 
@@ -27,39 +20,29 @@ figure out if there is a better way to convert az el coordinates outputted by ep
 
 put in logic that allows for different scan times at each elevation(scan.py: azScan())
 
-
 ****eventually you should figure out how to connect to the controller in some macro program, and not have to do it in each individual script, this will probably come naturally with the interface.
 also should get around setting the motion controls in each script******
 
 moveto speed and scan speed should probably be different(scan.py vs moveto.py)
 
-forward/backward pass # comments are incorrect, jumps form 1 to 3, figure out the right way to do this(scan.py: linearScan() & horizontalScan())
-
+forward/backward pass # comments are incorrect, jumps from 1 to 3, figure out the right way to do this(scan.py: linearScan() & horizontalScan())
 
 Think about how best to display ouput, and what output we want to display (gui related)
 
+figure out how to better adjust layout, its weird right now (gui related)
 
-gui.py cant run on its own as is until I run one of the other programs, I imagine this has something to do with connecting to the machine. Except I just turned on the machine and it didnt have a problem this time...
+why does the output frame only put text in the middle....?? (gui.py)
 
-WTF is different between gui_basic and gui_tabs?!?!?!?! one compiles and one doesnt
+put in some logic to azScan to accept hours instead of seconds for tscan, maybe change the default to hours, then if input is less than one, have some logic to convert that to seconds, or maybe timdelta can just handle that. or have an option to do either and you have to specify at input, maybe a checkbox (scan.py, azScan)
 
-device often times out the first time running gui
+for azscan think about the best way to do input parameters for rotation, i.e. distance based on distance, time, or rotations, have each option as a button?
 
-I tried to make a stop button, but you cant press another button until the last command has run, figure out a way around this. 
-
-figure out how to better adjust layout, its weird right now
-
-why does the output frame only put text in the middle....??
-
-in moveto the position statements should be changed to refer to config file where they have % (cts/rev)
-
-put in some logic to azScan to accept hours instead of seconds for tscan, maybe change the default to hours, then if input is less than one, have some logic to convert that to seconds, or maybe timdelta can just handle that. or have an option to do either and you have to specify at input
-
-you can now do different logic for PR command, right now its time based, it could also just be distance based
-
+you can now do different logic for PR command, right now its time based, it could also just be distance based (scan.py, azScan)
 
 #create an error message text box in gui, for things like elevation safety controls
 
-you dont need so many stop buttons, make a frame at the bottom of each notebook tab with one stop button
+set speed/accelaration a variable in gui, save parameters to file
 
-azscan stop button doesnt end motion because its based on time not distance
+have an option to read in file with whatever parameters you want for specific scans
+
+have hardware safety parameters, stop, dont change el past a certain point

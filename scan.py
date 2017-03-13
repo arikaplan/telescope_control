@@ -1,5 +1,4 @@
 #script for linear and horizontal scan patterns
-
 import config
 import moveto
 import planets

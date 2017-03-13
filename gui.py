@@ -1,6 +1,5 @@
 import scan
 import moveto
-import scantest
 import config
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
@@ -14,6 +13,7 @@ import time
 g = gclib.py()
 #connect to network
 g.GOpen('10.1.2.245 --direct -s ALL')
+#g.GOpen('10.1.2.250 --direct -s ALL')
 #g.GOpen('COM1 --direct')
 #used for galil commands
 c = g.GCommand
@@ -22,6 +22,7 @@ c = g.GCommand
 g2 = gclib.py()
 #connect to network
 g2.GOpen('10.1.2.245 --direct -s ALL')
+#g2.GOpen('10.1.2.250 --direct -s ALL')
 #g.GOpen('COM1 --direct')
 #used for galil commands
 c2 = g2.GCommand
@@ -37,9 +38,12 @@ class interface:
 
     def __init__(self, master, interval = 0.2): 
 
-        nb = ttk.Notebook(master)
+        mainFrame = Frame(master)
+        mainFrame.pack()
 
-        outputframe = Frame(master)
+        nb = ttk.Notebook(mainFrame)
+
+        outputframe = Frame(mainFrame)
         outputframe.pack(side=RIGHT)
 
         ##### azimuth scan #####
@@ -94,11 +98,6 @@ class interface:
             command=self.scanAz)
         self.scan.pack(side=LEFT)
 
-        self.quitButton = Button(buttonframe, text='stop', command=self.stop)
-        self.quitButton.pack(side=LEFT)
-
-        #self.stopButton = Button(buttonframe, text='Stop', command=self.stop)
-        #self.stopButton.pack(side=LEFT)
 
         ###### tracking  ######
         nb2 = ttk.Notebook(nb)
@@ -147,9 +146,6 @@ class interface:
             text='Start Scan', 
             command=self.linear)
         self.scan.pack(side=LEFT)
-
-        self.quitButton = Button(buttonframe, text='stop', command=self.stop)
-        self.quitButton.pack(side=LEFT)
 
         ###### horizontal scan ######
         page3 = Frame(nb2)
@@ -214,8 +210,6 @@ class interface:
             command=self.horizontal)
         self.scan.pack(side=LEFT)
 
-        self.quitButton = Button(buttonframe, text='stop', command=self.stop)
-        self.quitButton.pack(side=LEFT)
 
         ####### move distance page #########
         movePage = Frame(nb)
@@ -254,9 +248,6 @@ class interface:
             text='Start Move', command=self.moveDist)
         self.scan.pack(side=LEFT)
 
-        self.quitButton = Button(buttonframe, text='stop', command=self.stop)
-        self.quitButton.pack(side=LEFT)
-
         ########## move to #############
 
         labelto = Label(movetoFrame, text = 'Move to location')
@@ -286,9 +277,6 @@ class interface:
         self.scan = Button(buttonframe2, 
             text='Start Move', command=self.moveTo)
         self.scan.pack(side=LEFT)
-
-        self.quitButton = Button(buttonframe2, text='stop', command=self.stop)
-        self.quitButton.pack(side=LEFT)
 
 
         ####### notebook layout #########
@@ -329,6 +317,18 @@ class interface:
         thread = threading.Thread(target=self.moniter, args=())
         thread.daemon = True                            # Daemonize thread
         thread.start() 
+
+        ############# stop frame ###############
+        
+        bottomFrame = Frame(mainFrame)
+        bottomFrame.pack(side=BOTTOM)
+
+
+        self.stopbutton = Button(mainFrame, text='Stop', command=self.stop)
+        self.stopbutton.pack(side=LEFT)
+
+        self.quitButton = Button(mainFrame, text='Exit', command=master.quit)
+        self.quitButton.pack(side=LEFT)
         
 
     def moniter(self):
