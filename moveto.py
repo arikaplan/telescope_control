@@ -52,7 +52,7 @@ def location(az, el, c):
     P2E = E % 360 * degtoctsE
     
     #azimuth scan settings
-    azSP = config.azSP # 90 deg/sec
+    azSP = config.azSPm # speed
     azAC = config.azAC # acceleration 
     azDC = config.azDC # deceleration
 
@@ -166,7 +166,7 @@ def distance(az, el, c):
     P2E = E  * degtoctsE
     
     #azimuth scan settings
-    azSP = config.azSP # 90 deg/sec
+    azSP = config.azSPm # 90 deg/sec
     azAC = config.azAC # acceleration 
     azDC = config.azDC # deceleration
 

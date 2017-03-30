@@ -41,7 +41,7 @@ you can now do different logic for PR command, right now its time based, it coul
 
 #create an error message text box in gui, for things like elevation safety controls
 
-set speed/accelaration a variable in gui, save parameters to file
+set speed/accelaration as a variable in gui, save parameters to file
 
 have an option to read in file with whatever parameters you want for specific scans
 

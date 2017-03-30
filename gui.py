@@ -346,7 +346,9 @@ class interface:
             Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
             Palt = (float(c2('TPY')) % 4096) / degtoctsE
 
+
             time.sleep(self.interval) 
+
        
     def scanAz(self):
 
