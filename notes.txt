@@ -46,3 +46,12 @@ set speed/accelaration as a variable in gui, save parameters to file
 have an option to read in file with whatever parameters you want for specific scans
 
 have hardware safety parameters, stop, dont change el past a certain point
+
+galil commands that will never change (AC/DC) can be set at beginning of gui.py, rather than in each move function
+
+
+
+#### important notes
+galil always makes starting position the origin, this is incorrect.
+Need to be able to ask encoder for position and other info, then put this in moniter function in gui.py
+

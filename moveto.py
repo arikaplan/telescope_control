@@ -35,6 +35,7 @@ def location(az, el, c):
 
     #where you are currently
     P1AZ = float(c('TPX')) % (degtoctsAZ * 360.)
+    #P1AZ = P1AZ - offset, or replace TP
     P1E = float(c('TPY')) % (degtoctsE * 360.)
     print('AZ_0:', P1AZ / degtoctsAZ, 'Elev_0:', P1E / degtoctsE)
 

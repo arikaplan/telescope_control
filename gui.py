@@ -8,7 +8,7 @@ from tkinter import ttk
 from tkinter import *
 import threading
 import time
-
+'''
 #make an instance of the gclib python class
 g = gclib.py()
 #connect to network
@@ -30,7 +30,7 @@ c2 = g2.GCommand
 c('AB') #abort motion and program
 c('MO') #turn off all motors
 c('SH') #servo on
-
+'''
 degtoctsAZ = config.degtoctsAZ
 degtoctsE = config.degtoctsE
 
@@ -343,6 +343,7 @@ class interface:
             self.alttxt.delete('1.0', END)
             self.alttxt.insert('1.0', Palt)
             #print(c('TPX'))
+            #this is currently asking galil for position, it needs to ask encoder
             Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
             Palt = (float(c2('TPY')) % 4096) / degtoctsE
 
