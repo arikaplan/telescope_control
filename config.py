@@ -24,5 +24,5 @@ elevDC = elevAC # deceleration
 
 #azimuth move settings
 global azSPm 
-azSPm = 90 * degtoctsAZ # az scan speed, 90 deg/sec
+azSPm = 10 * degtoctsAZ # az scan speed, 90 deg/sec
 

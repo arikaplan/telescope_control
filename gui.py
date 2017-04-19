@@ -8,7 +8,7 @@ from tkinter import ttk
 from tkinter import *
 import threading
 import time
-'''
+
 #make an instance of the gclib python class
 g = gclib.py()
 #connect to network
@@ -30,7 +30,7 @@ c2 = g2.GCommand
 c('AB') #abort motion and program
 c('MO') #turn off all motors
 c('SH') #servo on
-'''
+
 degtoctsAZ = config.degtoctsAZ
 degtoctsE = config.degtoctsE
 
