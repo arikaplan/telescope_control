@@ -3,8 +3,6 @@
 note that the precision on these scans is not perfect, figure 
 out what precision is required, i think its coming from rounding errors and conversion between cts and degrees.
 
-decide if speed should be set or variable
-
 find absolute position of encoder, right now there is no reference
 point
 
@@ -20,10 +18,6 @@ figure out if there is a better way to convert az el coordinates outputted by ep
 
 put in logic that allows for different scan times at each elevation(scan.py: azScan())
 
-****eventually you should figure out how to connect to the controller in some macro program, and not have to do it in each individual script, this will probably come naturally with the interface.
-also should get around setting the motion controls in each script******
-
-moveto speed and scan speed should probably be different(scan.py vs moveto.py)
 
 forward/backward pass # comments are incorrect, jumps from 1 to 3, figure out the right way to do this(scan.py: linearScan() & horizontalScan())
 
@@ -49,6 +43,9 @@ have hardware safety parameters, stop, dont change el past a certain point
 
 galil commands that will never change (AC/DC) can be set at beginning of gui.py, rather than in each move function
 
+potetnially use time.time() instead of datetime.utcnow() in scan.azScan, then you dont have to use timedelta
+
+converter.py is set up to write files every minute, logic will need to change if we want files more frequently
 
 
 #### important notes

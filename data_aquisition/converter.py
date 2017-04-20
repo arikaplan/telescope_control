@@ -5,14 +5,22 @@ import h5py
 import getData
 import time
 import sys
+sys.path.append('../')
+import config
 
 '''
 conversions for angles, integer to degrees:
 '''
-azgain=-360./(2.**16)    #az encoder is 16 bits natural binary 
-elgain=-360./(40000.)    #stupid encoder is BCD 18 bits 4 digits of 4 bits and one of two bits max 4x10x10x10x10
-eloffset=295.026         #updated based on moon crossing 2013/08/02, cofe 10 ghz ch37
-azoffset=4.41496+140.	
+#azgain=-360./(2.**16)    #az encoder is 16 bits natural binary 
+#elgain=-360./(40000.)    #stupid encoder is BCD 18 bits 4 digits of 4 bits and one of two bits max 4x10x10x10x10
+#eloffset=295.026         #updated based on moon crossing 2013/08/02, cofe 10 ghz ch37
+#azoffset=4.41496+140.
+
+azgain = config.azgain
+elgain = config.elgain
+eloffset = config.eloffset
+azoffset = config.azoffset
+
 def bcd_to_int(bcd_str):
 	string= ''
 	return int(string.join([str(int(bcd_str[0:2],2)), str(int(bcd_str[2:6],2)), str(int(bcd_str[6:10],2)), str(int(bcd_str[10:14],2)), str(int(bcd_str[14:18],2))]))
@@ -23,15 +31,16 @@ def bin_to_int(bin_str):
 def fileStruct(n_array, data):
 	
 	t=dt.datetime.now()
+	folder = 'data_aquisition/data'
 	date = t.strftime("%m-%d-%Y")
-	time = t.strftime("%H-%M")
-	if not os.path.exists(date):#this is the first file being created for that time
-		os.makedirs(date)
+	time = t.strftime("%H-%M") #if you make a file more frequently than every minute, this will overwrite your data
+	if not os.path.exists(folder +'/'+ date):#this is the first file being created for that time
+		os.makedirs(folder +'/'+ date)
 		#set index to 0
-		
 	
-	path = '/'.join((date,time))
+	path = '/'.join((folder, date,time))
 	path = '.'.join((path,"h5"))
+	
 	#print(path)
 	#fn = os.path.join(os.path.dirname(__file__), 'my_file')
 	#Sprint(fn)
@@ -64,7 +73,7 @@ class datacollector(object):
 		return self.data
 	
 	
-if __name__=='__main__':
+#if __name__=='__main__':
 	'''print(bcd_to_int('101001000000000001'))
 	print(bin_to_int('0011'))
 	all = getData.getData()
@@ -73,14 +82,14 @@ if __name__=='__main__':
 	data[1]=all
 	fileStruct(data)
 	'''
-
+'''
 	if len(sys.argv)==1: #this is the defualt no argument write time
-		sys.argv.append(60)
+		sys.argv.append(60) #this sets how long it takes to write a file
 	#data = np.zeros(1000, dtype=[("first", np.int), ("second", np.int)])
 	eye = getData.Eyeball()
 	Data = datacollector()
 
-	#fileStruct(Data.getData()) #right now we arent writing to file
+	#fileStruct(Data.getData()) 
 
 	time_a = time.time()
 	while True:
@@ -111,3 +120,4 @@ if __name__=='__main__':
 		#print delta
 		
 		#time.sleep(.03-delta)
+'''

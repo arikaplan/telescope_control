@@ -10,6 +10,7 @@ from tkinter import ttk
 from tkinter import *
 import threading
 import time
+import numpy as np
 
 #make an instance of the gclib python class
 g = gclib.py()
@@ -36,6 +37,11 @@ c('SH') #servo on
 
 degtoctsAZ = config.degtoctsAZ
 degtoctsE = config.degtoctsE
+
+azgain = config.azgain
+elgain = config.elgain
+eloffset = config.eloffset
+azoffset = config.azoffset
 
 class interface:
 
@@ -333,7 +339,7 @@ class interface:
         self.quitButton = Button(mainFrame, text='Exit', command=master.quit)
         self.quitButton.pack(side=LEFT)
         
-    
+    '''
     def moniter(self):
 
         while True:
@@ -347,24 +353,24 @@ class interface:
             #this is currently asking galil for position, it needs to ask encoder
 
             time.sleep(self.interval) 
-    
     '''
+    
     def moniter(self):
 
         if len(sys.argv)==1: #this is the defualt no argument write time
-        sys.argv.append(60)
+            sys.argv.append(60) #this sets how long it takes to write a file
         #data = np.zeros(1000, dtype=[("first", np.int), ("second", np.int)])
-        eye = getData.Eyeball()
-        Data = datacollector()
+        eye = converter.getData.Eyeball()
+        Data = converter.datacollector()
 
-        #fileStruct(Data.getData()) #right now we arent writing to file
+        #converter.fileStruct(Data.getData()) 
 
         time_a = time.time()
         while True:
             #timer loop
             all = eye.getData()
             
-            all = (bcd_to_int(all[0]), bin_to_int(all[1]), bin_to_int(all[2]))
+            all = (converter.bcd_to_int(all[0]), converter.bin_to_int(all[1]), converter.bin_to_int(all[2]))
             
             el=eloffset+elgain*all[0]
             az=np.mod(azoffset + azgain*all[1],360.)
@@ -381,13 +387,13 @@ class interface:
                 self.alttxt.insert('1.0', el)
 
             if(delta>=int(sys.argv[1])): 
-                fileStruct(Data.getData(), Data)
+                converter.fileStruct(Data.getData(), Data)
                 time_a=time.time();
                 print("file written")
                 
         print("data collected at" + str(1.0/delta) +"HZ")
 
-    '''  
+      
     def scanAz(self):
 
         tscan = float(self.tscan.get())

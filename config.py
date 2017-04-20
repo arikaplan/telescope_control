@@ -26,3 +26,12 @@ elevDC = elevAC # deceleration
 global azSPm 
 azSPm = 10 * degtoctsAZ # az scan speed, 90 deg/sec
 
+#gain and offset settings
+global azgain
+azgain=-360./(2.**16)    #az encoder is 16 bits natural binary 
+global elgain
+elgain=-360./(40000.)    #stupid encoder is BCD 18 bits 4 digits of 4 bits and one of two bits max 4x10x10x10x10
+global eloffset
+eloffset=295.026         #updated based on moon crossing 2013/08/02, cofe 10 ghz ch37
+global azoffset
+azoffset=4.41496+140.	
