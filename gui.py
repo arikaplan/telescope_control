@@ -336,9 +336,6 @@ class interface:
     
     def moniter(self):
 
-        #Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
-        #Palt = (float(c2('TPY')) % 4096) / degtoctsE
-
         while True:
 
             Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
@@ -347,11 +344,7 @@ class interface:
             self.aztxt.insert('1.0', Paz)
             self.alttxt.delete('1.0', END)
             self.alttxt.insert('1.0', Palt)
-            #print(c('TPX'))
             #this is currently asking galil for position, it needs to ask encoder
-            Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
-            Palt = (float(c2('TPY')) % 4096) / degtoctsE
-
 
             time.sleep(self.interval) 
     
@@ -382,6 +375,10 @@ class interface:
             delta = time_b-time_a
             if (delta>=2):
                 #print(rev,az,el)
+                self.aztxt.delete('1.0', END)
+                self.aztxt.insert('1.0', az)
+                self.alttxt.delete('1.0', END)
+                self.alttxt.insert('1.0', el)
 
             if(delta>=int(sys.argv[1])): 
                 fileStruct(Data.getData(), Data)
