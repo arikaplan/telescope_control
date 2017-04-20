@@ -3,6 +3,8 @@ import moveto
 import config
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
+sys.path.append('data_aquisition')
+import converter
 import gclib
 from tkinter import ttk
 from tkinter import *
@@ -30,6 +32,7 @@ c2 = g2.GCommand
 c('AB') #abort motion and program
 c('MO') #turn off all motors
 c('SH') #servo on
+#c('KD 2')
 
 degtoctsAZ = config.degtoctsAZ
 degtoctsE = config.degtoctsE
@@ -330,14 +333,16 @@ class interface:
         self.quitButton = Button(mainFrame, text='Exit', command=master.quit)
         self.quitButton.pack(side=LEFT)
         
-
+    
     def moniter(self):
 
-        Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
-        Palt = (float(c2('TPY')) % 4096) / degtoctsE
+        #Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
+        #Palt = (float(c2('TPY')) % 4096) / degtoctsE
 
         while True:
 
+            Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
+            Palt = (float(c2('TPY')) % 4096) / degtoctsE
             self.aztxt.delete('1.0', END)
             self.aztxt.insert('1.0', Paz)
             self.alttxt.delete('1.0', END)
@@ -349,8 +354,43 @@ class interface:
 
 
             time.sleep(self.interval) 
+    
+    '''
+    def moniter(self):
 
-       
+        if len(sys.argv)==1: #this is the defualt no argument write time
+        sys.argv.append(60)
+        #data = np.zeros(1000, dtype=[("first", np.int), ("second", np.int)])
+        eye = getData.Eyeball()
+        Data = datacollector()
+
+        #fileStruct(Data.getData()) #right now we arent writing to file
+
+        time_a = time.time()
+        while True:
+            #timer loop
+            all = eye.getData()
+            
+            all = (bcd_to_int(all[0]), bin_to_int(all[1]), bin_to_int(all[2]))
+            
+            el=eloffset+elgain*all[0]
+            az=np.mod(azoffset + azgain*all[1],360.)
+            rev=all[2]
+            Data.add(el,az,rev)
+            #print Data.getData()
+            time_b = time.time()
+            delta = time_b-time_a
+            if (delta>=2):
+                #print(rev,az,el)
+
+            if(delta>=int(sys.argv[1])): 
+                fileStruct(Data.getData(), Data)
+                time_a=time.time();
+                print("file written")
+                
+        print("data collected at" + str(1.0/delta) +"HZ")
+
+    '''  
     def scanAz(self):
 
         tscan = float(self.tscan.get())

@@ -1,3 +1,5 @@
+#import sys
+#sys.path.append('C:/users/labuser/anaconda3/lib/site-packages')
 from PyDAQmx import *
 from PyDAQmx.DAQmxCallBack import *
 from numpy import zeros
@@ -40,7 +42,7 @@ class Eyeball(object):
 		DAQmxStartTask(self.taskHandle)
 
 	def close(self):
-		print "bye"
+		print("bye")
 		
 		DAQmxStopTask(self.taskHandle)
 		DAQmxClearTask(self.taskHandle)
@@ -54,7 +56,7 @@ class Eyeball(object):
 		DAQmxReadDigitalLines(self.taskHandle,1,10.0,DAQmx_Val_GroupByChannel,self.data,100,byref(self.read),byref(self.bytesPerSamp),None)
 		index=0
 		all = [self.data[d] for d in range(0,95)]
-		all = map(str, all) 
+		all = list(map(str, all))
 
 		return  [''.join((all[2:8])[::-1])+''.join((all[10:16])[::-1])+''.join((all[18:24])[::-1]), ''.join((all[24:32])[::-1])+"".join((all[32:40])[::-1]), ''.join((all[40:48])[::-1])+''.join((all[48:56])[::-1])+''.join((all[56:64])[::-1])]
 
@@ -62,4 +64,4 @@ class Eyeball(object):
 if __name__=='__main__':
 	t = Eyeball()
 	#t.getData()
-	print t.getData()
+	print(t.getData())

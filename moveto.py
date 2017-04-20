@@ -39,18 +39,15 @@ def location(az, el, c):
     P1E = float(c('TPY')) % (degtoctsE * 360.)
     print('AZ_0:', P1AZ / degtoctsAZ, 'Elev_0:', P1E / degtoctsE)
 
-    #az el you want to go to
-    AZ = az
-    E = el
 
     #keep telescope from pointing below horizon
-    if E < 0. or E > 180.:
+    if el < 0. or el > 180.:
         print('Warning, this elevation is below the horizon, your going to break the telescope...')
         return 
 
     #convert new coordinates to cts
-    P2AZ = AZ % 360 * degtoctsAZ
-    P2E = E % 360 * degtoctsE
+    P2AZ = az % 360 * degtoctsAZ
+    P2E = el % 360 * degtoctsE
     
     #azimuth scan settings
     azSP = config.azSPm # speed
@@ -74,14 +71,14 @@ def location(az, el, c):
 
     elevD = (P2E - P1E) # distance to desired elev
 
-        
+    '''    
     #make it rotate the short way round, this might be unecessary for el
     if elevD > 180. * degtoctsE:
         elevD = elevD - 360. * degtoctsE
     
     if elevD < -180. * degtoctsE:
         elevD = 360. * degtoctsE + elevD
-    
+    '''
 
     #gclib/galil commands to move az motor
     c('SPA=' + str(azSP)) #speed, cts/sec
@@ -151,20 +148,19 @@ def distance(az, el, c):
     print(c('TPX'))
     P1AZ = float(c('TPX'))
     P1E = float(c('TPY'))
-    print('AZ_0:', P1AZ % (degtoctsAZ * 360.) / degtoctsAZ, 'Elev_0:', P1E % (degtoctsE * 360.) / degtoctsE)
+    AZ_0 = P1AZ % (degtoctsAZ * 360.) / degtoctsAZ
+    Elev_0 = P1E % (degtoctsE * 360.) / degtoctsE 
+    print('AZ_0:', AZ_0, 'Elev_0:', Elev_0)
 
-    #az el you want to move by
-    AZ = az
-    E = el
 
     #keep telescope from pointing below horizon
-    if E < 0. or E > 180.:
+    if (Elev_0 + el) < 0. or (Elev_0 + el) > 180.:
         print('Warning, this elevation is below the horizon, your going to break the telescope...')
         return 
 
     #convert new coordinates to cts
-    P2AZ = AZ  * degtoctsAZ
-    P2E = E  * degtoctsE
+    P2AZ = az  * degtoctsAZ
+    P2E = el  * degtoctsE
     
     #azimuth scan settings
     azSP = config.azSPm # 90 deg/sec
@@ -218,7 +214,7 @@ def distance(az, el, c):
     #g.GMotionComplete('B')
     print(' done.')
 
-    print('AZ_f:', (P1AZ + P2AZ)/degtoctsAZ % 360, 'Elev_f:', (P1E + P2E)/degtoctsE % 360)
+    print('AZ_f:', AZ_0 + az, 'Elev_f:', Elev_0 + el)
  
     del c #delete the alias
 

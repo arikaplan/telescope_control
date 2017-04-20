@@ -11,7 +11,7 @@ conversions for angles, integer to degrees:
 '''
 azgain=-360./(2.**16)    #az encoder is 16 bits natural binary 
 elgain=-360./(40000.)    #stupid encoder is BCD 18 bits 4 digits of 4 bits and one of two bits max 4x10x10x10x10
-eloffset=295.026            #updated based on moon crossing 2013/08/02, cofe 10 ghz ch37
+eloffset=295.026         #updated based on moon crossing 2013/08/02, cofe 10 ghz ch37
 azoffset=4.41496+140.	
 def bcd_to_int(bcd_str):
 	string= ''
@@ -36,7 +36,7 @@ def fileStruct(n_array, data):
 	#fn = os.path.join(os.path.dirname(__file__), 'my_file')
 	#Sprint(fn)
 	if not os.path.exists(path):#every time we create a new file we wanna make sure it starts writting from the begining
-		print data.index
+		print(data.index)
 		data.resetIndex()
 	
 	with h5py.File(str(path), 'w') as h5file:
@@ -73,13 +73,14 @@ if __name__=='__main__':
 	data[1]=all
 	fileStruct(data)
 	'''
+
 	if len(sys.argv)==1: #this is the defualt no argument write time
 		sys.argv.append(60)
 	#data = np.zeros(1000, dtype=[("first", np.int), ("second", np.int)])
 	eye = getData.Eyeball()
 	Data = datacollector()
 
-	#fileStruct(Data.getData())
+	#fileStruct(Data.getData()) #right now we arent writing to file
 
 	time_a = time.time()
 	while True:
@@ -96,13 +97,13 @@ if __name__=='__main__':
 		time_b = time.time()
 		delta = time_b-time_a
 		if (delta>=2):
-			print rev,az,el
+			print(rev,az,el)
 		if(delta>=int(sys.argv[1])): 
 			fileStruct(Data.getData(), Data)
 			time_a=time.time();
-			print "file written"
+			print("file written")
 			
-	print "data collected at" + str(1.0/delta) +"HZ"
+	print("data collected at" + str(1.0/delta) +"HZ")
 		
 		
 	

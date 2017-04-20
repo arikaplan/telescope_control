@@ -16,7 +16,7 @@ azDC = azAC # deceleration
 
 #elevation settings
 global elevSP
-elevSP = 180 * degtoctsE # x degrees/sec
+elevSP = 45 * degtoctsE # x degrees/sec
 global elevAC
 elevAC = 360 * degtoctsAZ # acceleration 
 global elevDC
