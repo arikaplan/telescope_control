@@ -47,6 +47,8 @@ potetnially use time.time() instead of datetime.utcnow() in scan.azScan, then yo
 
 converter.py is set up to write files every minute, logic will need to change if we want files more frequently
 
+decide if you should moniter both galil and encoder, if so combine the 2 moniter functions you currently have
+
 
 #### important notes
 galil always makes starting position the origin, this is incorrect.
