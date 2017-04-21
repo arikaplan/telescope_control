@@ -50,5 +50,5 @@ converter.py is set up to write files every minute, logic will need to change if
 
 #### important notes
 galil always makes starting position the origin, this is incorrect.
-Need to be able to ask encoder for position and other info, then put this in moniter function in gui.py
+Need to be able to ask encoder for position and other info, then put this in moniter function in gui.py, once I have this I also need to implement offset logic for all move functions
 

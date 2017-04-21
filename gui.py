@@ -6,11 +6,13 @@ sys.path.append('C:/Python27x86/lib/site-packages')
 sys.path.append('data_aquisition')
 import converter
 import gclib
-from tkinter import ttk
-from tkinter import *
 import threading
 import time
 import numpy as np
+#from tkinter import ttk #this is for python 3
+#from tkinter import *   #this is for python 3
+from Tkinter import *    #this is for python 2.7
+import ttk               #this is for python 2.7
 
 #make an instance of the gclib python class
 g = gclib.py()
@@ -45,7 +47,7 @@ azoffset = config.azoffset
 
 class interface:
 
-    def __init__(self, master, interval = 0.2): 
+    def __init__(self, master):#, interval = 0.2): 
 
         mainFrame = Frame(master)
         mainFrame.pack()
@@ -322,7 +324,7 @@ class interface:
         self.alttxt.grid(row = 2, column = 1)
         
         #thread stuff
-        self.interval = interval
+        #self.interval = interval
         thread = threading.Thread(target=self.moniter, args=())
         thread.daemon = True                            # Daemonize thread
         thread.start() 
@@ -339,20 +341,27 @@ class interface:
         self.quitButton = Button(mainFrame, text='Exit', command=master.quit)
         self.quitButton.pack(side=LEFT)
         
-    '''
+    
     def moniter(self):
 
+        t1 = time.time()
+
         while True:
+            
+            t2 = time.time()
+            dt = t2 - t1
+            
+            if dt >= 2:
+                Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
+                Palt = (float(c2('TPY')) % 4096) / degtoctsE
+                self.aztxt.delete('1.0', END)
+                self.aztxt.insert('1.0', Paz)
+                self.alttxt.delete('1.0', END)
+                self.alttxt.insert('1.0', Palt)
+                #this is currently asking galil for position, it needs to ask encoder
 
-            Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
-            Palt = (float(c2('TPY')) % 4096) / degtoctsE
-            self.aztxt.delete('1.0', END)
-            self.aztxt.insert('1.0', Paz)
-            self.alttxt.delete('1.0', END)
-            self.alttxt.insert('1.0', Palt)
-            #this is currently asking galil for position, it needs to ask encoder
-
-            time.sleep(self.interval) 
+                #time.sleep(self.interval) 
+           
     '''
     
     def moniter(self):
@@ -393,7 +402,7 @@ class interface:
                 
         print("data collected at" + str(1.0/delta) +"HZ")
 
-      
+    '''  
     def scanAz(self):
 
         tscan = float(self.tscan.get())
