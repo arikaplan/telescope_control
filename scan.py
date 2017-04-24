@@ -5,7 +5,8 @@ import planets
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
-from datetime import datetime, timedelta
+#from datetime import datetime, timedelta
+import time
 '''
 def wait(c):
     while int(float(c('MG _BGA'))) == 1 or int(float(c('MG _BGB'))) == 1:
@@ -247,11 +248,13 @@ def azScan(tscan, iterations, deltaEl, c):
     for i in range(0, iterations):
 
       #set start time
-      st = datetime.utcnow()
+      #st = datetime.utcnow()
+      st = time.time()
       #set current time to start time
       ct = st
       #duration of azimuth scan
-      dt = timedelta(0, tscan)
+      #dt = timedelta(0, tscan) 
+      dt = tscan
 
       print(' Starting az Scan: ' + str(i + 1))
       
@@ -261,7 +264,8 @@ def azScan(tscan, iterations, deltaEl, c):
       while ct < st + dt:
 
         #update current time
-        ct = datetime.utcnow()
+        #ct = datetime.utcnow()
+        ct = time.time()
 
         if c('MG _BGA') == '0.0000':
           return

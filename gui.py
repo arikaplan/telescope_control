@@ -341,7 +341,7 @@ class interface:
         self.quitButton = Button(mainFrame, text='Exit', command=master.quit)
         self.quitButton.pack(side=LEFT)
         
-    '''
+    
     #keep this in case I want to compare encoder postion to galil position
     # i.e. moniter both at the same time
     def moniter(self):
@@ -403,7 +403,7 @@ class interface:
                 
         print("data collected at" + str(1.0/delta) +"HZ")
 
-      
+    '''  
     def scanAz(self):
 
         tscan = float(self.tscan.get())

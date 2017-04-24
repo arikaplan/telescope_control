@@ -47,7 +47,9 @@ potetnially use time.time() instead of datetime.utcnow() in scan.azScan, then yo
 
 converter.py is set up to write files every minute, logic will need to change if we want files more frequently
 
-decide if you should moniter both galil and encoder, if so combine the 2 moniter functions you currently have
+decide if you should moniter both galil and encoder, if so combine the 2 moniter functions you currently have (gui.monter())
+
+I thought I fixed it so that stop function works for horizontal scan, but it still just goes to the next iteration(scan.horizontalScan())
 
 
 #### important notes
