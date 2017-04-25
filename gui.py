@@ -4,7 +4,7 @@ import config
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 sys.path.append('data_aquisition')
-import converter
+#import converter
 import gclib
 import threading
 import time
@@ -356,8 +356,8 @@ class interface:
             if dt >= 2:
                 Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
                 Palt = (float(c2('TPY')) % 4096) / degtoctsE
-                self.aztxt.delete('1.0', END)
-                self.aztxt.insert('1.0', Paz)
+                #self.aztxt.delete('1.0', END)
+                #self.aztxt.insert('1.0', Paz)
                 self.alttxt.delete('1.0', END)
                 self.alttxt.insert('1.0', Palt)
                 #this is currently asking galil for position, it needs to ask encoder

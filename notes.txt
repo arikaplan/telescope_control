@@ -43,13 +43,13 @@ have hardware safety parameters, stop, dont change el past a certain point
 
 galil commands that will never change (AC/DC) can be set at beginning of gui.py, rather than in each move function
 
-potetnially use time.time() instead of datetime.utcnow() in scan.azScan, then you dont have to use timedelta
-
 converter.py is set up to write files every minute, logic will need to change if we want files more frequently
 
 decide if you should moniter both galil and encoder, if so combine the 2 moniter functions you currently have (gui.monter())
 
-I thought I fixed it so that stop function works for horizontal scan, but it still just goes to the next iteration(scan.horizontalScan())
+I thought I fixed it so that stop function works for horizontal scan, but it still just stops the iteration its on then goes to the next iteration(scan.horizontalScan())
+
+turn converter.py in a function that can be called in moniter and moveto
 
 
 #### important notes

@@ -82,7 +82,7 @@ class datacollector(object):
 	data[1]=all
 	fileStruct(data)
 	'''
-'''
+	
 	if len(sys.argv)==1: #this is the defualt no argument write time
 		sys.argv.append(60) #this sets how long it takes to write a file
 	#data = np.zeros(1000, dtype=[("first", np.int), ("second", np.int)])
@@ -92,6 +92,7 @@ class datacollector(object):
 	#fileStruct(Data.getData()) 
 
 	time_a = time.time()
+
 	while True:
 		#timer loop
 		all = eye.getData()
@@ -120,4 +121,3 @@ class datacollector(object):
 		#print delta
 		
 		#time.sleep(.03-delta)
-'''

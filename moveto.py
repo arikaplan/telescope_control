@@ -15,6 +15,7 @@ def wait(c):
         #print(c('MG _BGA'),c('MG _BGB'))
         pass
 
+
 def location(az, el, c):
   #g = gclib.py() #make an instance of the gclib python class
   
@@ -145,7 +146,6 @@ def distance(az, el, c):
     degtoctsE = config.degtoctsE
 
     #where you are currently
-    print(c('TPX'))
     P1AZ = float(c('TPX'))
     P1E = float(c('TPY'))
     AZ_0 = P1AZ % (degtoctsAZ * 360.) / degtoctsAZ
@@ -154,14 +154,25 @@ def distance(az, el, c):
 
 
     #keep telescope from pointing below horizon
-    if (Elev_0 + el) < 0. or (Elev_0 + el) > 180.:
+    if ((Elev_0 + el) % 360.) < 0. or ((Elev_0 + el) % 360.) > 180.:
+        print Elev_0, el, Elev_0 + el
         print('Warning, this elevation is below the horizon, your going to break the telescope...')
         return 
 
+    
+    #make it rotate the short way round + keep it between 0 and 180
+    if el > 180.:
+        el = el - 360.
+        print('Rotating to the same spot but making sure you dont go below horizon')
+    
+    if el < -180.:
+        el = 360. + el
+        print('Rotating to the same spot but making sure you dont go below horizon')
+     
     #convert new coordinates to cts
     P2AZ = az  * degtoctsAZ
     P2E = el  * degtoctsE
-    
+
     #azimuth scan settings
     azSP = config.azSPm # 90 deg/sec
     azAC = config.azAC # acceleration 
@@ -175,7 +186,7 @@ def distance(az, el, c):
     elevDC = config.elevDC # deceleration
 
     elevD = P2E # distance to move elev by
-
+    
     #gclib/galil commands to move az motor
     c('SPA=' + str(azSP)) #speed, cts/sec
     c('ACA=' + str(azAC)) #speed, cts/sec
@@ -214,7 +225,10 @@ def distance(az, el, c):
     #g.GMotionComplete('B')
     print(' done.')
 
-    print('AZ_f:', AZ_0 + az, 'Elev_f:', Elev_0 + el)
+    #final position
+    AZ_f = float(c('TPX')) % (degtoctsAZ * 360.) / degtoctsAZ
+    Elev_f = float(c('TPY')) % (degtoctsE * 360.) / degtoctsE 
+    print('AZ_f:', AZ_f, 'Elev_f:', Elev_f)
  
     del c #delete the alias
 
