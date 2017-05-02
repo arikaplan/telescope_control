@@ -1,6 +1,7 @@
 import scan
 import moveto
 import config
+import connect
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 sys.path.append('data_aquisition')
@@ -14,36 +15,20 @@ import numpy as np
 from Tkinter import *    #this is for python 2.7
 import ttk               #this is for python 2.7
 
-#make an instance of the gclib python class
-g = gclib.py()
-#connect to network
-g.GOpen('10.1.2.245 --direct -s ALL')
-#g.GOpen('10.1.2.250 --direct -s ALL')
-#g.GOpen('COM1 --direct')
-#used for galil commands
-c = g.GCommand
-
-#make it again for the output frame
-g2 = gclib.py()
-#connect to network
-g2.GOpen('10.1.2.245 --direct -s ALL')
-#g2.GOpen('10.1.2.250 --direct -s ALL')
-#g.GOpen('COM1 --direct')
-#used for galil commands
-c2 = g2.GCommand
-
-c('AB') #abort motion and program
-c('MO') #turn off all motors
-c('SH') #servo on
-#c('KD 2')
+c = connect.c
 
 degtoctsAZ = config.degtoctsAZ
-degtoctsE = config.degtoctsE
+degtoctsEl = config.degtoctsEl
 
 azgain = config.azgain
 elgain = config.elgain
 eloffset = config.eloffset
 azoffset = config.azoffset
+
+#get the galil-beam offset
+#eye = converter.getData.Eyeball()
+#galilAzOffset = converter.offset(eye, c)[0]
+#galilElOffset = converter.offset(eye, c)[1] 
 
 class interface:
 
@@ -355,7 +340,7 @@ class interface:
             
             if dt >= 2:
                 Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
-                Palt = (float(c2('TPY')) % 4096) / degtoctsE
+                Palt = (float(c2('TPY')) % 4096) / degtoctsEl
                 self.aztxt.delete('1.0', END)
                 self.aztxt.insert('1.0', Paz)
                 self.alttxt.delete('1.0', END)

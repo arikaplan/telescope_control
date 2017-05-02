@@ -4,7 +4,10 @@ import planets
 import config
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
+sys.path.append('data_aquisition')
 import gclib
+import converter
+
 '''
 def wait(c):
     while int(float(c('MG _BGA'))) == 1 or int(float(c('MG _BGB'))) == 1:
@@ -32,13 +35,16 @@ def location(az, el, c):
 
     # deg to ct conversion for each motor
     degtoctsAZ = config.degtoctsAZ
-    degtoctsE = config.degtoctsE
+    degtoctsEl = config.degtoctsEl 
+
+    #offsetAz = gui.galilAzOffset * degtoctsAZ
+    #offsetEl = gui.galilElOffset * degtoctsEl
 
     #where you are currently
     P1AZ = float(c('TPX')) % (degtoctsAZ * 360.)
     #P1AZ = P1AZ - offset, or replace TP
-    P1E = float(c('TPY')) % (degtoctsE * 360.)
-    print('AZ_0:', P1AZ / degtoctsAZ, 'Elev_0:', P1E / degtoctsE)
+    P1E = float(c('TPY')) % (degtoctsEl * 360.)
+    print('AZ_0:', P1AZ / degtoctsAZ, 'Elev_0:', P1E / degtoctsEl)
 
 
     #keep telescope from pointing below horizon
@@ -48,7 +54,7 @@ def location(az, el, c):
 
     #convert new coordinates to cts
     P2AZ = az % 360 * degtoctsAZ
-    P2E = el % 360 * degtoctsE
+    P2E = el % 360 * degtoctsEl
     
     #azimuth scan settings
     azSP = config.azSPm # speed
@@ -74,11 +80,11 @@ def location(az, el, c):
 
     '''    
     #make it rotate the short way round, this might be unecessary for el
-    if elevD > 180. * degtoctsE:
-        elevD = elevD - 360. * degtoctsE
+    if elevD > 180. * degtoctsEl:
+        elevD = elevD - 360. * degtoctsEl
     
-    if elevD < -180. * degtoctsE:
-        elevD = 360. * degtoctsE + elevD
+    if elevD < -180. * degtoctsEl:
+        elevD = 360. * degtoctsEl + elevD
     '''
 
     #gclib/galil commands to move az motor
@@ -115,7 +121,7 @@ def location(az, el, c):
     #g.GMotionComplete('B')
     print(' done.')
 
-    print('AZ_f:', P2AZ/degtoctsAZ, 'Elev_f:', P2E/degtoctsE)
+    print('AZ_f:', P2AZ/degtoctsAZ, 'Elev_f:', P2E/degtoctsEl)
  
     del c #delete the alias
 
@@ -143,13 +149,13 @@ def distance(az, el, c):
 
     # deg to ct conversion for each motor
     degtoctsAZ = config.degtoctsAZ
-    degtoctsE = config.degtoctsE
+    degtoctsEl = config.degtoctsEl
 
     #where you are currently
     P1AZ = float(c('TPX'))
     P1E = float(c('TPY'))
     AZ_0 = P1AZ % (degtoctsAZ * 360.) / degtoctsAZ
-    Elev_0 = P1E % (degtoctsE * 360.) / degtoctsE 
+    Elev_0 = P1E % (degtoctsEl * 360.) / degtoctsEl 
     print('AZ_0:', AZ_0, 'Elev_0:', Elev_0)
 
 
@@ -171,7 +177,7 @@ def distance(az, el, c):
      
     #convert new coordinates to cts
     P2AZ = az  * degtoctsAZ
-    P2E = el  * degtoctsE
+    P2E = el  * degtoctsEl
 
     #azimuth scan settings
     azSP = config.azSPm # 90 deg/sec
@@ -227,7 +233,7 @@ def distance(az, el, c):
 
     #final position
     AZ_f = float(c('TPX')) % (degtoctsAZ * 360.) / degtoctsAZ
-    Elev_f = float(c('TPY')) % (degtoctsE * 360.) / degtoctsE 
+    Elev_f = float(c('TPY')) % (degtoctsEl * 360.) / degtoctsEl 
     print('AZ_f:', AZ_f, 'Elev_f:', Elev_f)
  
     del c #delete the alias
@@ -239,6 +245,7 @@ def distance(az, el, c):
     print('Unexpected GclibError:', e)
   
   return
+
   
 '''
 g = gclib.py()

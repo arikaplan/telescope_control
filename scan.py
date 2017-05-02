@@ -29,7 +29,7 @@ def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
 
     # deg to ct conversion for each motor
     degtoctsAZ = config.degtoctsAZ
-    degtoctsE = config.degtoctsE
+    degtoctsEl = config.degtoctsEl
     
     #azimuth scan settings
     azSP = config.azSP # az scan speed, 90 deg/sec
@@ -121,7 +121,7 @@ def horizontalScan(location, cbody, numAzScans, MinAz, MaxAz, MinEl, MaxEl, step
     
     # deg to ct conversion for each motor
     degtoctsAZ = config.degtoctsAZ
-    degtoctsE = config.degtoctsE
+    degtoctsEl = config.degtoctsEl
     
     #azimuth scan settings
     azSP = config.azSP # az scan speed, 90 deg/sec
@@ -213,7 +213,7 @@ def azScan(tscan, iterations, deltaEl, c):
     
     # deg to ct conversion for each motor
     degtoctsAZ = config.degtoctsAZ
-    degtoctsE = config.degtoctsE
+    degtoctsEl = config.degtoctsEl
     
     #azimuth scan settings
     azSP = config.azSP # az scan speed, 90 deg/sec
@@ -229,7 +229,7 @@ def azScan(tscan, iterations, deltaEl, c):
     elevSP = config.elevSP # x degrees/sec
     elevAC = config.elevAC # acceleration 
     elevDC = config.elevDC # deceleration
-    elevD = deltaEl * degtoctsE # move elevation x degrees each iteration
+    elevD = deltaEl * degtoctsEl # move elevation x degrees each iteration
     
     #gclib/galil commands to set az axis motor motion
     c('SPB=' + str(elevSP)) #elevation speed
@@ -240,7 +240,7 @@ def azScan(tscan, iterations, deltaEl, c):
 
     #initial position
     P1AZ = (float(c('TPX')) % (degtoctsAZ*360.)) / degtoctsAZ
-    P1E = (float(c('TPY')) % (degtoctsE*360.)) / degtoctsE
+    P1E = (float(c('TPY')) % (degtoctsEl*360.)) / degtoctsEl
     print('AZ:', P1AZ, 'Elev:', P1E)
 
 
@@ -280,7 +280,7 @@ def azScan(tscan, iterations, deltaEl, c):
 
       #final position after each az scan
       P2AZ = (float(c('TPX'))) % (degtoctsAZ*360.) / degtoctsAZ
-      P2E = float(c('TPY')) % (degtoctsE*360.) / degtoctsE
+      P2E = float(c('TPY')) % (degtoctsEl*360.) / degtoctsEl
       print('AZ:', P2AZ, 'Elev:', P2E)
 
       #change elevation for next az scan
@@ -300,7 +300,7 @@ def azScan(tscan, iterations, deltaEl, c):
         
         #position after each elevation change
         P2AZ = (float(c('TPX'))) % (degtoctsAZ*360.) / degtoctsAZ
-        P2E = float(c('TPY')) % (degtoctsE*360.) / degtoctsE
+        P2E = float(c('TPY')) % (degtoctsEl*360.) / degtoctsEl
         print('AZ:', P2AZ, 'Elev:', P2E)
     
     del c #delete the alias

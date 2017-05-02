@@ -21,6 +21,9 @@ elgain = config.elgain
 eloffset = config.eloffset
 azoffset = config.azoffset
 
+degtoctsAZ = config.degtoctsAZ
+degtoctsEl = config.degtoctsEl 
+
 def bcd_to_int(bcd_str):
 	string= ''
 	return int(string.join([str(int(bcd_str[0:2],2)), str(int(bcd_str[2:6],2)), str(int(bcd_str[6:10],2)), str(int(bcd_str[10:14],2)), str(int(bcd_str[14:18],2))]))
@@ -85,6 +88,20 @@ def getAzEl(eye):
 	rev=all[2]
 
 	return az, el, rev
+
+#this is the offset between the optical beam and the galil
+def offset(eye, c):
+    azGalil = float(c('TPX')) % (degtoctsAZ * 360.)
+    elGalil = float(c('TPY')) % (degtoctsEl * 360.)
+
+    azBeam = getAzEl(eye)[0]
+    elBeam = getAzEl(eye)[1]
+
+    azOffset = azBeam - azGalil
+    elOffset = elBeam - elGalil
+
+    return azOffset, elOffset
+
 '''
 if len(sys.argv)==1: #this is the defualt no argument write time
 	sys.argv.append(60) #this sets how long it takes to write a file
