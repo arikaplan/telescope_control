@@ -4,7 +4,7 @@ import config
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 sys.path.append('data_aquisition')
-#import converter
+import converter
 import gclib
 import threading
 import time
@@ -93,7 +93,7 @@ class interface:
         self.iterations.grid(row = 1, column = 1)
 
         self.deltaEl = Entry(inputframe)
-        self.deltaEl.insert(END, '90.0')
+        self.deltaEl.insert(END, '10.0')
         self.deltaEl.grid(row = 2, column = 1)
 
         #self.az0 = Entry(inputframe)
@@ -248,7 +248,7 @@ class interface:
 
         #user input
         self.az = Entry(inputframe)
-        self.az.insert(END, '10.0')
+        self.az.insert(END, '0.0')
         self.az.grid(row = 0, column = 1)
 
         self.el = Entry(inputframe)
@@ -341,7 +341,7 @@ class interface:
         self.quitButton = Button(mainFrame, text='Exit', command=master.quit)
         self.quitButton.pack(side=LEFT)
         
-    
+    '''
     #keep this in case I want to compare encoder postion to galil position
     # i.e. moniter both at the same time
     def moniter(self):
@@ -356,8 +356,8 @@ class interface:
             if dt >= 2:
                 Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
                 Palt = (float(c2('TPY')) % 4096) / degtoctsE
-                #self.aztxt.delete('1.0', END)
-                #self.aztxt.insert('1.0', Paz)
+                self.aztxt.delete('1.0', END)
+                self.aztxt.insert('1.0', Paz)
                 self.alttxt.delete('1.0', END)
                 self.alttxt.insert('1.0', Palt)
                 #this is currently asking galil for position, it needs to ask encoder
@@ -366,7 +366,7 @@ class interface:
            
     '''
     def moniter(self):
-
+    
         if len(sys.argv)==1: #this is the defualt no argument write time
             sys.argv.append(60) #this sets how long it takes to write a file
         #data = np.zeros(1000, dtype=[("first", np.int), ("second", np.int)])
@@ -378,13 +378,13 @@ class interface:
         time_a = time.time()
         while True:
             #timer loop
-            all = eye.getData()
-            
-            all = (converter.bcd_to_int(all[0]), converter.bin_to_int(all[1]), converter.bin_to_int(all[2]))
-            
-            el=eloffset+elgain*all[0]
-            az=np.mod(azoffset + azgain*all[1],360.)
-            rev=all[2]
+
+            az, el, rev = converter.getAzEl(eye)
+
+            Data.add(el,az,rev)
+            #print Data.getData()
+            time_b = time.time()
+            delta = time_b-time_a
             Data.add(el,az,rev)
             #print Data.getData()
             time_b = time.time()
@@ -402,8 +402,7 @@ class interface:
                 print("file written")
                 
         print("data collected at" + str(1.0/delta) +"HZ")
-
-    '''  
+         
     def scanAz(self):
 
         tscan = float(self.tscan.get())

@@ -71,53 +71,50 @@ class datacollector(object):
 		
 	def getData(self):
 		return self.data
+
+
+def getAzEl(eye):
+
+	all = eye.getData()
 	
-	
-#if __name__=='__main__':
-	'''print(bcd_to_int('101001000000000001'))
-	print(bin_to_int('0011'))
-	all = getData.getData()
 	all = (bcd_to_int(all[0]), bin_to_int(all[1]), bin_to_int(all[2]))
-	data = np.zeros(1000, dtype=[("first", np.int), ("second", np.int), ("third", np.int)])
-	data[1]=all
-	fileStruct(data)
-	'''
 	
-	if len(sys.argv)==1: #this is the defualt no argument write time
-		sys.argv.append(60) #this sets how long it takes to write a file
-	#data = np.zeros(1000, dtype=[("first", np.int), ("second", np.int)])
-	eye = getData.Eyeball()
-	Data = datacollector()
+	el=eloffset+elgain*all[0]
+	az=np.mod(azoffset + azgain*all[1],360.)
 
-	#fileStruct(Data.getData()) 
+	rev=all[2]
 
-	time_a = time.time()
+	return az, el, rev
+'''
+if len(sys.argv)==1: #this is the defualt no argument write time
+	sys.argv.append(60) #this sets how long it takes to write a file
+#data = np.zeros(1000, dtype=[("first", np.int), ("second", np.int)])
+eye = getData.Eyeball()
+Data = datacollector()
 
-	while True:
-		#timer loop
-		all = eye.getData()
+#fileStruct(Data.getData()) 
+
+time_a = time.time()
+
+while True:
+	#timer loop
+
+	az, el, rev = getAzEl(eye)
+
+	Data.add(el,az,rev)
+	#print Data.getData()
+	time_b = time.time()
+	delta = time_b-time_a
+	if (delta>=2):
+		print(rev,az,el)
+	if(delta>=int(sys.argv[1])): 
+		fileStruct(Data.getData(), Data)
+		time_a=time.time();
+		print("file written")
 		
-		all = (bcd_to_int(all[0]), bin_to_int(all[1]), bin_to_int(all[2]))
-		
-		el=eloffset+elgain*all[0]
-		az=np.mod(azoffset + azgain*all[1],360.)
-		rev=all[2]
-		Data.add(el,az,rev)
-		#print Data.getData()
-		time_b = time.time()
-		delta = time_b-time_a
-		if (delta>=2):
-			print(rev,az,el)
-		if(delta>=int(sys.argv[1])): 
-			fileStruct(Data.getData(), Data)
-			time_a=time.time();
-			print("file written")
-			
-	print("data collected at" + str(1.0/delta) +"HZ")
-		
-		
-	
-		
+print("data collected at" + str(1.0/delta) +"HZ")
+
 		#print delta
 		
 		#time.sleep(.03-delta)
+'''
