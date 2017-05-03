@@ -2,15 +2,16 @@ import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
 
+global g
 #make an instance of the gclib python class
 g = gclib.py()
+
 #connect to network
+
 g.GOpen('10.1.2.245 --direct -s ALL')
 #g.GOpen('10.1.2.250 --direct -s ALL')
 #g.GOpen('COM1 --direct')
 #used for galil commands
-global c
-c = g.GCommand
 
 '''
 #make it again for the output frame
@@ -23,6 +24,8 @@ g2.GOpen('10.1.2.245 --direct -s ALL')
 global c2
 c2 = g2.GCommand
 '''
+
+c = g.GCommand
 
 c('AB') #abort motion and program
 c('MO') #turn off all motors

@@ -15,7 +15,8 @@ import numpy as np
 from Tkinter import *    #this is for python 2.7
 import ttk               #this is for python 2.7
 
-c = connect.c
+g = connect.g
+c = g.GCommand
 
 degtoctsAZ = config.degtoctsAZ
 degtoctsEl = config.degtoctsEl
@@ -25,10 +26,7 @@ elgain = config.elgain
 eloffset = config.eloffset
 azoffset = config.azoffset
 
-#get the galil-beam offset
-#eye = converter.getData.Eyeball()
-#galilAzOffset = converter.offset(eye, c)[0]
-#galilElOffset = converter.offset(eye, c)[1] 
+
 
 class interface:
 

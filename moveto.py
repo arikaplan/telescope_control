@@ -37,6 +37,9 @@ def location(az, el, c):
     degtoctsAZ = config.degtoctsAZ
     degtoctsEl = config.degtoctsEl 
 
+    offset = converter.galilAzOffset
+    print 'offset, ', offset
+
     #offsetAz = gui.galilAzOffset * degtoctsAZ
     #offsetEl = gui.galilElOffset * degtoctsEl
 
