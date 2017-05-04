@@ -16,6 +16,7 @@ def wait(c):
 def wait(c):
     while c('MG _BGA') != '0.0000' or c('MG _BGB') != '0.0000':
         #print(c('MG _BGA'),c('MG _BGB'))
+
         pass
 
 
@@ -37,17 +38,15 @@ def location(az, el, c):
     degtoctsAZ = config.degtoctsAZ
     degtoctsEl = config.degtoctsEl 
 
-    offset = converter.galilAzOffset
-    print 'offset, ', offset
-
-    #offsetAz = gui.galilAzOffset * degtoctsAZ
-    #offsetEl = gui.galilElOffset * degtoctsEl
+    #offset between galil and beam
+    offsetAz = converter.galilAzOffset 
+    offsetEl = converter.galilElOffset 
 
     #where you are currently
-    P1AZ = float(c('TPX')) % (degtoctsAZ * 360.)
+    P1AZ = (float(c('TPX'))+offsetAz*degtoctsAZ) % (degtoctsAZ * 360.) 
     #P1AZ = P1AZ - offset, or replace TP
-    P1E = float(c('TPY')) % (degtoctsEl * 360.)
-    print('AZ_0:', P1AZ / degtoctsAZ, 'Elev_0:', P1E / degtoctsEl)
+    P1El = (float(c('TPY'))+offsetEl*degtoctsEl) % (degtoctsEl * 360.) 
+    print('AZ_0:', P1AZ / degtoctsAZ, 'Elev_0:', P1El / degtoctsEl)
 
 
     #keep telescope from pointing below horizon
@@ -57,7 +56,7 @@ def location(az, el, c):
 
     #convert new coordinates to cts
     P2AZ = az % 360 * degtoctsAZ
-    P2E = el % 360 * degtoctsEl
+    P2El = el % 360 * degtoctsEl
     
     #azimuth scan settings
     azSP = config.azSPm # speed
@@ -79,7 +78,7 @@ def location(az, el, c):
     elevAC = config.elevAC # acceleration 
     elevDC = config.elevDC # deceleration
 
-    elevD = (P2E - P1E) # distance to desired elev
+    elevD = (P2El - P1El) # distance to desired elev
 
     '''    
     #make it rotate the short way round, this might be unecessary for el
@@ -124,7 +123,10 @@ def location(az, el, c):
     #g.GMotionComplete('B')
     print(' done.')
 
-    print('AZ_f:', P2AZ/degtoctsAZ, 'Elev_f:', P2E/degtoctsEl)
+    #final position
+    AZ_f = ((float(c('TPX')) / degtoctsAZ) + offsetAz) % 360. 
+    Elev_f = ((float(c('TPY')) / degtoctsEl) + offsetEl) % 360.  
+    print('AZ_f:', AZ_f, 'Elev_f:', Elev_f)
  
     del c #delete the alias
 
@@ -154,11 +156,15 @@ def distance(az, el, c):
     degtoctsAZ = config.degtoctsAZ
     degtoctsEl = config.degtoctsEl
 
+    #offset between galil and beam
+    offsetAz = converter.galilAzOffset 
+    offsetEl = converter.galilElOffset 
+
     #where you are currently
     P1AZ = float(c('TPX'))
-    P1E = float(c('TPY'))
-    AZ_0 = P1AZ % (degtoctsAZ * 360.) / degtoctsAZ
-    Elev_0 = P1E % (degtoctsEl * 360.) / degtoctsEl 
+    P1El = float(c('TPY')) 
+    AZ_0 = ((P1AZ / degtoctsAZ) + offsetAz) % 360.
+    Elev_0 = ((P1El / degtoctsEl) + offsetEl) % 360.
     print('AZ_0:', AZ_0, 'Elev_0:', Elev_0)
 
 
@@ -178,9 +184,9 @@ def distance(az, el, c):
         el = 360. + el
         print('Rotating to the same spot but making sure you dont go below horizon')
      
-    #convert new coordinates to cts
+    #convert distance coordinates to cts
     P2AZ = az  * degtoctsAZ
-    P2E = el  * degtoctsEl
+    P2El = el  * degtoctsEl
 
     #azimuth scan settings
     azSP = config.azSPm # 90 deg/sec
@@ -194,7 +200,7 @@ def distance(az, el, c):
     elevAC = config.elevAC # acceleration 
     elevDC = config.elevDC # deceleration
 
-    elevD = P2E # distance to move elev by
+    elevD = P2El # distance to move elev by
     
     #gclib/galil commands to move az motor
     c('SPA=' + str(azSP)) #speed, cts/sec
@@ -235,8 +241,8 @@ def distance(az, el, c):
     print(' done.')
 
     #final position
-    AZ_f = float(c('TPX')) % (degtoctsAZ * 360.) / degtoctsAZ
-    Elev_f = float(c('TPY')) % (degtoctsEl * 360.) / degtoctsEl 
+    AZ_f = ((float(c('TPX')) / degtoctsAZ)+offsetAz) % 360. 
+    Elev_f = ((float(c('TPY')) / degtoctsEl)+offsetEl) % 360.  
     print('AZ_f:', AZ_f, 'Elev_f:', Elev_f)
  
     del c #delete the alias

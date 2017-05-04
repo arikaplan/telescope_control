@@ -13,7 +13,7 @@ g.GOpen('10.1.2.245 --direct -s ALL')
 #g.GOpen('COM1 --direct')
 #used for galil commands
 
-'''
+global g2
 #make it again for the output frame
 g2 = gclib.py()
 #connect to network
@@ -21,9 +21,7 @@ g2.GOpen('10.1.2.245 --direct -s ALL')
 #g2.GOpen('10.1.2.250 --direct -s ALL')
 #g.GOpen('COM1 --direct')
 #used for galil commands
-global c2
-c2 = g2.GCommand
-'''
+
 
 c = g.GCommand
 

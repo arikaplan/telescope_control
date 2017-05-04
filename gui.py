@@ -18,15 +18,15 @@ import ttk               #this is for python 2.7
 g = connect.g
 c = g.GCommand
 
+g2 = connect.g2
+c2 = g2.GCommand
+
 degtoctsAZ = config.degtoctsAZ
 degtoctsEl = config.degtoctsEl
 
-azgain = config.azgain
-elgain = config.elgain
-eloffset = config.eloffset
-azoffset = config.azoffset
-
-
+#offset between galil and beam
+offsetAz = converter.galilAzOffset 
+offsetEl = converter.galilElOffset
 
 class interface:
 
@@ -306,9 +306,26 @@ class interface:
         self.alttxt = Text(outputframe2, height = 1, width = 15)
         self.alttxt.grid(row = 2, column = 1)
         
+        #galil output
+        self.lazG = Label(outputframe2, text='az Galil')
+        self.lazG.grid(row = 1, column = 2, sticky = E)
+
+        self.aztxtG = Text(outputframe2, height = 1, width = 15)
+        self.aztxtG.grid(row = 1, column = 3)
+
+        self.laltG = Label(outputframe2, text='alt Galil')
+        self.laltG.grid(row = 2, column = 2, sticky = E)
+
+        self.alttxtG = Text(outputframe2, height = 1, width = 15)
+        self.alttxtG.grid(row = 2, column = 3)
+
         #thread stuff
         #self.interval = interval
         thread = threading.Thread(target=self.moniter, args=())
+        thread.daemon = True                            # Daemonize thread
+        thread.start() 
+
+        thread = threading.Thread(target=self.moniterGalil, args=())
         thread.daemon = True                            # Daemonize thread
         thread.start() 
 
@@ -324,10 +341,10 @@ class interface:
         self.quitButton = Button(mainFrame, text='Exit', command=master.quit)
         self.quitButton.pack(side=LEFT)
         
-    '''
+     
     #keep this in case I want to compare encoder postion to galil position
     # i.e. moniter both at the same time
-    def moniter(self):
+    def moniterGalil(self):
 
         t1 = time.time()
 
@@ -337,17 +354,17 @@ class interface:
             dt = t2 - t1
             
             if dt >= 2:
-                Paz = (float(c2('TPX')) % 1024000) / degtoctsAZ
-                Palt = (float(c2('TPY')) % 4096) / degtoctsEl
-                self.aztxt.delete('1.0', END)
-                self.aztxt.insert('1.0', Paz)
-                self.alttxt.delete('1.0', END)
-                self.alttxt.insert('1.0', Palt)
+                Paz = (((float(c2('TPX')) % 1024000) / degtoctsAZ) + offsetAz) % 360
+                Palt = (((float(c2('TPY')) % 4096) / degtoctsEl) + offsetEl) % 360
+                self.aztxtG.delete('1.0', END)
+                self.aztxtG.insert('1.0', Paz)
+                self.alttxtG.delete('1.0', END)
+                self.alttxtG.insert('1.0', Palt)
                 #this is currently asking galil for position, it needs to ask encoder
 
                 #time.sleep(self.interval) 
            
-    '''
+    
     def moniter(self):
     
         if len(sys.argv)==1: #this is the defualt no argument write time
@@ -385,7 +402,7 @@ class interface:
                 print("file written")
                 
         print("data collected at" + str(1.0/delta) +"HZ")
-         
+        
     def scanAz(self):
 
         tscan = float(self.tscan.get())

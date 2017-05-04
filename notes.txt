@@ -51,8 +51,10 @@ I thought I fixed it so that stop function works for horizontal scan, but it sti
 
 turn converter.py in a function that can be called in moniter and moveto
 
+#does import 'script' run the script once, or every time you ask for something form it?
 
 #### important notes
 galil always makes starting position the origin, this is incorrect.
 Needs to be able to ask encoder for position and other info, then put this in moniter function in gui.py, once I have this I also need to implement offset logic for all move functions
 
+####figure out whats up with moveto.py line 44 in relation to gui moveto button not showing a change in el feedback

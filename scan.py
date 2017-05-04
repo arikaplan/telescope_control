@@ -7,6 +7,7 @@ sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
 #from datetime import datetime, timedelta
 import time
+import converter
 '''
 def wait(c):
     while int(float(c('MG _BGA'))) == 1 or int(float(c('MG _BGB'))) == 1:
@@ -46,7 +47,7 @@ def linearScan(location, cbody, numAzScans, MinAz, MaxAz, c):
     #loop through back and forth azimuth scans
     for i in range(0, numAzScans):
 
-      #find az, el of varios sky objects
+      #find az, el of various sky objects
       az, el = planets.getlocation(location, cbody)
 
       print('%s az, el: ' % cbody, az, el)
@@ -214,6 +215,10 @@ def azScan(tscan, iterations, deltaEl, c):
     # deg to ct conversion for each motor
     degtoctsAZ = config.degtoctsAZ
     degtoctsEl = config.degtoctsEl
+
+    #offset between galil and beam
+    offsetAz = converter.galilAzOffset 
+    offsetEl = converter.galilElOffset
     
     #azimuth scan settings
     azSP = config.azSP # az scan speed, 90 deg/sec
@@ -239,9 +244,9 @@ def azScan(tscan, iterations, deltaEl, c):
     
 
     #initial position
-    P1AZ = (float(c('TPX')) % (degtoctsAZ*360.)) / degtoctsAZ
-    P1E = (float(c('TPY')) % (degtoctsEl*360.)) / degtoctsEl
-    print('AZ:', P1AZ, 'Elev:', P1E)
+    P1AZ = ((float(c('TPX')) / degtoctsAZ) + offsetAz) % 360. 
+    P1El = ((float(c('TPY')) / degtoctsEl) + offsetEl) % 360.
+    print('AZ:', P1AZ, 'Elev:', P1El)
 
 
     #loop through iterations
@@ -279,9 +284,9 @@ def azScan(tscan, iterations, deltaEl, c):
       print(' done.')
 
       #final position after each az scan
-      P2AZ = (float(c('TPX'))) % (degtoctsAZ*360.) / degtoctsAZ
-      P2E = float(c('TPY')) % (degtoctsEl*360.) / degtoctsEl
-      print('AZ:', P2AZ, 'Elev:', P2E)
+      P2AZ = ((float(c('TPX')) / degtoctsAZ) + offsetAz) % 360. 
+      P2El = ((float(c('TPY')) / degtoctsEl) + offsetEl) % 360.
+      print('AZ:', P2AZ, 'Elev:', P2El)
 
       #change elevation for next az scan
       if i < iterations - 1:
@@ -299,9 +304,9 @@ def azScan(tscan, iterations, deltaEl, c):
         print('done')
         
         #position after each elevation change
-        P2AZ = (float(c('TPX'))) % (degtoctsAZ*360.) / degtoctsAZ
-        P2E = float(c('TPY')) % (degtoctsEl*360.) / degtoctsEl
-        print('AZ:', P2AZ, 'Elev:', P2E)
+        P2AZ = ((float(c('TPX')) / degtoctsAZ) + offsetAz) % 360. 
+        P2El = ((float(c('TPY')) / degtoctsEl) + offsetEl) % 360.
+        print('AZ:', P2AZ, 'Elev:', P2El)
     
     del c #delete the alias
 

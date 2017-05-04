@@ -92,8 +92,8 @@ def getAzEl(eye):
 
 #this is the offset between the optical beam and the galil
 def offset(eye, c):
-    azGalil = float(c('TPX')) % (degtoctsAZ * 360.)
-    elGalil = float(c('TPY')) % (degtoctsEl * 360.)
+    azGalil = (float(c('TPX')) / degtoctsAZ) % 360.                            
+    elGalil = (float(c('TPY')) / degtoctsEl) % 360.
 
     azBeam = getAzEl(eye)[0]
     elBeam = getAzEl(eye)[1]
@@ -109,7 +109,7 @@ c = connect.g.GCommand
 global galilAzOffset
 galilAzOffset = offset(eye,c)[0]
 global galilElOffset
-galilElOffset = offset(eye,c)[0]
+galilElOffset = offset(eye,c)[1]
 
 '''
 if len(sys.argv)==1: #this is the defualt no argument write time
