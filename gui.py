@@ -5,7 +5,7 @@ import config
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 sys.path.append('data_aquisition')
-import converter
+import get_pointing as gp
 import plot
 import gclib
 import threading
@@ -28,8 +28,8 @@ degtoctsAZ = config.degtoctsAZ
 degtoctsEl = config.degtoctsEl
 
 #offset between galil and beam
-#offsetAz = converter.galilAzOffset 
-#offsetEl = converter.galilElOffset
+#offsetAz = gp.galilAzOffset 
+#offsetEl = gp.galilElOffset
 
 class interface:
 
@@ -402,28 +402,26 @@ class interface:
     
     def moniter(self):
     
+	write_time = 60
         if len(sys.argv)==1: #this is the defualt no argument write time
             sys.argv.append(60) #this sets how long it takes to write a file
         #data = np.zeros(1000, dtype=[("first", np.int), ("second", np.int)])
-        eye = converter.getData.Eyeball()
-        Data = converter.datacollector()
+        eye = gp.getData.Eyeball()
+        Data = gp.datacollector()
 
-        #converter.fileStruct(Data.getData()) 
+        #gp.fileStruct(Data.getData()) 
 
         time_a = time.time()
         while True:
             #timer loop
 
-            az, el, rev = converter.getAzEl(eye)
+            az, el, gpstime = gp.getAzEl(eye)
 
-            Data.add(el,az,rev)
+            Data.add(az,el,gpstime)
             #print Data.getData()
             time_b = time.time()
             delta = time_b-time_a
-            Data.add(el,az,rev)
-            #print Data.getData()
-            time_b = time.time()
-            delta = time_b-time_a
+
             if (delta>=2):
                 #print(rev,az,el)
                 self.aztxt.delete('1.0', END)
@@ -431,8 +429,8 @@ class interface:
                 self.alttxt.delete('1.0', END)
                 self.alttxt.insert('1.0', el)
 
-            if(delta>=int(sys.argv[1])): 
-                converter.fileStruct(Data.getData(), Data)
+            if(delta>=int(write_time)): 
+                gp.fileStruct(Data.getData(), Data)
                 time_a=time.time();
                 print("file written")
                 

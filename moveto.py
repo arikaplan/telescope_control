@@ -6,7 +6,7 @@ import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 sys.path.append('data_aquisition')
 import gclib
-import converter
+import get_pointing as gp
 
 '''
 def wait(c):
@@ -39,8 +39,8 @@ def location(az, el, c):
     degtoctsEl = config.degtoctsEl 
 
     #offset between galil and beam
-    offsetAz = converter.galilAzOffset 
-    offsetEl = converter.galilElOffset 
+    offsetAz = gp.galilAzOffset 
+    offsetEl = gp.galilElOffset 
 
     #where you are currently
     P1AZ = (float(c('TPX'))+offsetAz*degtoctsAZ) % (degtoctsAZ * 360.) 
@@ -157,8 +157,8 @@ def distance(az, el, c):
     degtoctsEl = config.degtoctsEl
 
     #offset between galil and beam
-    offsetAz = converter.galilAzOffset 
-    offsetEl = converter.galilElOffset 
+    offsetAz = gp.galilAzOffset 
+    offsetEl = gp.galilElOffset 
 
     #where you are currently
     P1AZ = float(c('TPX'))

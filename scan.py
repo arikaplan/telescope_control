@@ -7,7 +7,7 @@ sys.path.append('C:/Python27x86/lib/site-packages')
 import gclib
 #from datetime import datetime, timedelta
 import time
-import converter
+import get_pointing as gp
 '''
 def wait(c):
     while int(float(c('MG _BGA'))) == 1 or int(float(c('MG _BGB'))) == 1:
@@ -217,8 +217,8 @@ def azScan(tscan, iterations, deltaEl, c):
     degtoctsEl = config.degtoctsEl
 
     #offset between galil and beam
-    offsetAz = converter.galilAzOffset 
-    offsetEl = converter.galilElOffset
+    offsetAz = gp.galilAzOffset 
+    offsetEl = gp.galilElOffset
     
     #azimuth scan settings
     azSP = config.azSP # az scan speed, 90 deg/sec
