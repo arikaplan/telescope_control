@@ -1,5 +1,7 @@
 #import sys
 #sys.path.append('C:/users/labuser/anaconda3/lib/site-packages')
+import sys
+sys.path.append('C:/Python27x86/lib/site-packages')
 from PyDAQmx import *
 from PyDAQmx.DAQmxCallBack import *
 from numpy import zeros

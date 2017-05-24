@@ -1,5 +1,5 @@
 import h5py as h5
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 from plot_path import open_folder
 from plot_path import select_file
@@ -45,27 +45,27 @@ def plot_h5(year, month, day,st_hour,st_minute,ed_hour,ed_minute):
     for fname in files:
         with h5.File(fname,'r') as f:
             temp = np.array(f['data'][:,0])
-            print temp.shape
-            var1=temp[:,0]
-            print var1#[0:100]
-            size=len(var1)
-            print size
-            var2=f['data'][:,1]
-            var3=f['data'][:,2]
+            print temp
+            #~ var1=temp[:,0]
+            #~ print var1#[0:100]
+            #~ size=len(var1)
+            #~ print size
+            #~ var2=f['data'][:,1]
+            #~ var3=f['data'][:,2]
 
-        a=var1
-        b=var2
-        c=var3
+        #~ a=var1
+        #~ b=var2
+        #~ c=var3
 
-        a=np.array(a).reshape(size,1)
-        b=np.array(b).reshape(size,1)
-        c=np.array(c).reshape(size,1)
+        #~ a=np.array(a).reshape(size,1)
+        #~ b=np.array(b).reshape(size,1)
+        #~ c=np.array(c).reshape(size,1)
 
-        i+=1
-        t=np.linspace(int(m[i-1]),1+int(m[i-1]),size)
+        #~ i+=1
+        #~ t=np.linspace(int(m[i-1]),1+int(m[i-1]),size)
         
         
-
+'''
         y1,=plt.plot(t,a,'b',label='y1')
         y2,=plt.plot(t,b,'k',label='y2')
         y3,=plt.plot(t,c,'r--',label='y3')
@@ -74,7 +74,7 @@ def plot_h5(year, month, day,st_hour,st_minute,ed_hour,ed_minute):
         plt.ylim([0,500])
         plt.legend(handles=[y1,y2,y3])
     plt.show()
-
+'''
 if __name__=="__main__":
     plot_h5(2017,04,20,15,42,15,43)
     #print conti_test(2017,04,21,01,20,11,21)
