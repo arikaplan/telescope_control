@@ -7,7 +7,7 @@ import time
 import sys
 sys.path.append('../')
 import config
-import connect
+#import connect
 
 '''
 conversions for angles, integer to degrees:
@@ -104,12 +104,12 @@ def offset(eye, c):
     return azOffset, elOffset
 
 
-eye = getData.Eyeball()
-c = connect.g.GCommand
-global galilAzOffset
-galilAzOffset = offset(eye,c)[0]
-global galilElOffset
-galilElOffset = offset(eye,c)[1]
+#eye = getData.Eyeball()
+#c = connect.g.GCommand
+#global galilAzOffset
+#galilAzOffset = offset(eye,c)[0]
+#global galilElOffset
+#galilElOffset = offset(eye,c)[1]
 
 '''
 if len(sys.argv)==1: #this is the defualt no argument write time

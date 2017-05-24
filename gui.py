@@ -1,32 +1,35 @@
 import scan
 import moveto
 import config
-import connect
+#import connect
 import sys
 sys.path.append('C:/Python27x86/lib/site-packages')
 sys.path.append('data_aquisition')
 import converter
+import plot
 import gclib
 import threading
 import time
+from datetime import datetime
 import numpy as np
 #from tkinter import ttk #this is for python 3
 #from tkinter import *   #this is for python 3
 from Tkinter import *    #this is for python 2.7
 import ttk               #this is for python 2.7
 
-g = connect.g
-c = g.GCommand
 
-g2 = connect.g2
-c2 = g2.GCommand
+#g = connect.g
+#c = g.GCommand
+
+#g2 = connect.g2
+#c2 = g2.GCommand
 
 degtoctsAZ = config.degtoctsAZ
 degtoctsEl = config.degtoctsEl
 
 #offset between galil and beam
-offsetAz = converter.galilAzOffset 
-offsetEl = converter.galilElOffset
+#offsetAz = converter.galilAzOffset 
+#offsetEl = converter.galilElOffset
 
 class interface:
 
@@ -36,9 +39,6 @@ class interface:
         mainFrame.pack()
 
         nb = ttk.Notebook(mainFrame)
-
-        outputframe = Frame(mainFrame)
-        outputframe.pack(side=RIGHT)
 
         ##### azimuth scan #####
         page1 = Frame(nb)
@@ -284,6 +284,9 @@ class interface:
         nb.pack(expand=1, fill="both")
 
         ####### output frame ##### 
+
+        outputframe = Frame(mainFrame)
+        outputframe.pack()
         
         outputframe1 = Frame(outputframe)
         outputframe1.pack()
@@ -292,48 +295,80 @@ class interface:
         outputframe2.pack()
         
         self.title = Label(outputframe1, text='Feedback')
-        self.title.pack()
+        self.title.pack(side=LEFT)
 
         self.laz = Label(outputframe2, text='az')
-        self.laz.grid(row = 1, column = 0, sticky = E)
+        self.laz.grid(row = 0, column = 0, sticky = W)
 
         self.aztxt = Text(outputframe2, height = 1, width = 15)
-        self.aztxt.grid(row = 1, column = 1)
+        self.aztxt.grid(row = 0, column = 1)
 
-        self.lalt = Label(outputframe2, text='alt')
-        self.lalt.grid(row = 2, column = 0, sticky = E)
+        self.lalt = Label(outputframe2, text='el')
+        self.lalt.grid(row = 1, column = 0, sticky = W)
 
         self.alttxt = Text(outputframe2, height = 1, width = 15)
-        self.alttxt.grid(row = 2, column = 1)
+        self.alttxt.grid(row = 1, column = 1)
         
         #galil output
         self.lazG = Label(outputframe2, text='az Galil')
-        self.lazG.grid(row = 1, column = 2, sticky = E)
+        self.lazG.grid(row = 0, column = 2, sticky = W)
 
         self.aztxtG = Text(outputframe2, height = 1, width = 15)
-        self.aztxtG.grid(row = 1, column = 3)
+        self.aztxtG.grid(row = 0, column = 3)
 
-        self.laltG = Label(outputframe2, text='alt Galil')
-        self.laltG.grid(row = 2, column = 2, sticky = E)
+        self.laltG = Label(outputframe2, text='el Galil')
+        self.laltG.grid(row = 1, column = 2, sticky = W)
 
         self.alttxtG = Text(outputframe2, height = 1, width = 15)
-        self.alttxtG.grid(row = 2, column = 3)
+        self.alttxtG.grid(row = 1, column = 3)
 
         #thread stuff
         #self.interval = interval
         thread = threading.Thread(target=self.moniter, args=())
         thread.daemon = True                            # Daemonize thread
         thread.start() 
-
+        '''
         thread = threading.Thread(target=self.moniterGalil, args=())
         thread.daemon = True                            # Daemonize thread
         thread.start() 
+        '''
+
+        #plot data
+        outputframe3 = Frame(outputframe)
+        outputframe3.pack()
+
+        self.scan = Button(outputframe3, 
+            text='Plot', command=self.plot)
+        self.scan.grid(row = 0, column = 0, sticky=W)
+
+        self.var = Entry(outputframe3, width = 5)
+        self.var.insert(END, 'el')
+        self.var.grid(row = 0, column = 1, sticky=W)
+
+        self.l1 = Label(outputframe3, text='From')
+        self.l1.grid(row = 0, column = 2, sticky=W)
+
+        self.beg = Entry(outputframe3)
+        self.beg.insert(END, '2017-04-20-0-0')
+        self.beg.grid(row = 0, column = 3)
+
+        self.l2 = Label(outputframe3, text='To')
+        self.l2.grid(row = 0, column = 4, sticky=W)
+
+        self.l3 = Label(outputframe3, text='yyyy-mm-dd-hh-mm')
+        self.l3.grid(row = 1, column = 3, sticky=W)
+
+        self.l4 = Label(outputframe3, text='"now" for current time')
+        self.l4.grid(row = 1, column = 5, sticky=W)
+
+        self.end = Entry(outputframe3)
+        self.end.insert(END, '2017-04-20-24-59')
+        self.end.grid(row = 0, column = 5)
 
         ############# stop frame ###############
         
-        bottomFrame = Frame(mainFrame)
-        bottomFrame.pack(side=BOTTOM)
-
+        #bottomFrame = Frame(mainFrame)
+        #bottomFrame.pack(side=BOTTOM)
 
         self.stopbutton = Button(mainFrame, text='Stop', command=self.stop)
         self.stopbutton.pack(side=LEFT)
@@ -466,7 +501,43 @@ class interface:
         #moveto.location(az, el, c)
 
 
-    #this does not currently work
+    def plot(self):
+        var = self.var.get()
+        beg = self.beg.get()
+        end = self.end.get()
+
+        date1 = beg.split('-')
+        year1 = date1[0]
+        month1 = date1[1]
+        day1 = date1[2]
+        hour1 = date1[3]
+        minute1 = date1[4]
+
+        if end == 'now':
+            end = str(datetime.utcnow())
+            end = end.split()
+            end0 = end[0].split('-')
+            end1 = end[1].split(':')
+            end1[2] = str(round(float(end1[2])))
+            end = end0+end1
+
+
+        date2 = end.split('-')
+        year2 = date2[0]
+        month2 = date2[1]
+        day2 = date2[2]
+        hour2 = date2[3]
+        minute2 = date2[4]
+
+        #thread = threading.Thread(target=plot.plot_h5, 
+        #    args=(var, year1, month1, day1, hour1, minute1, hour2, minute2))
+        #thread.daemon = True
+        #thread.start()
+
+        #make sure this doesnt stop other functions from working while plot is showing
+        plot.plot_h5(var, year1, month1, day1, hour1, minute1, hour2, minute2)
+
+    #this does not currently work for horizontal scan, you have to keep pressing it
     
     def stop(self):
         print('stopping motion...')
