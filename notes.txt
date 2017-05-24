@@ -48,3 +48,5 @@ converter.py is set up to write files every minute, logic will need to change if
 I thought I fixed it so that stop function works for horizontal scan, but it still just stops the iteration its on then goes to the next iteration(scan.horizontalScan())
 
 put functionality in gui to plot data from files (and live for az/el data)
+
+put planets selection in drop down menu
