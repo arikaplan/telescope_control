@@ -20,9 +20,9 @@ def time_conv(st_hour,st_minute,ed_hour,ed_minute):
     return n
     
 ##open folder of selected path
-def open_folder(year, month, day):
+def open_folder(month,day,year):
 
-    date=date_conv(year,month,day)
+    date=date_conv(month,day,year)
     
     #change the basic path "C:/Python27/deepspace/" to whatever you need            
     os.chdir("C:/Users/labuser/Desktop/telescope_control/data_aquisition/data/"+date[0]+"-"+date[1]+"-"+date[2])

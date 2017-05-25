@@ -349,7 +349,7 @@ class interface:
         self.l1.grid(row = 0, column = 2, sticky=W)
 
         self.beg = Entry(outputframe3)
-        self.beg.insert(END, '2017-04-20-0-0')
+        self.beg.insert(END, '2017-05-24-14-44')
         self.beg.grid(row = 0, column = 3)
 
         self.l2 = Label(outputframe3, text='To')
@@ -362,7 +362,7 @@ class interface:
         self.l4.grid(row = 1, column = 5, sticky=W)
 
         self.end = Entry(outputframe3)
-        self.end.insert(END, '2017-04-20-24-59')
+        self.end.insert(END, '2017-05-24-14-44')
         self.end.grid(row = 0, column = 5)
 
         ############# stop frame ###############
@@ -505,11 +505,11 @@ class interface:
         end = self.end.get()
 
         date1 = beg.split('-')
-        year1 = date1[0]
-        month1 = date1[1]
-        day1 = date1[2]
-        hour1 = date1[3]
-        minute1 = date1[4]
+        year1 = int(date1[0])
+        month1 = int(date1[1])
+        day1 = int(date1[2])
+        hour1 = int(date1[3])
+        minute1 = int(date1[4])
 
         if end == 'now':
             end = str(datetime.utcnow())
@@ -521,11 +521,11 @@ class interface:
 
 
         date2 = end.split('-')
-        year2 = date2[0]
-        month2 = date2[1]
-        day2 = date2[2]
-        hour2 = date2[3]
-        minute2 = date2[4]
+        year2 = int(date2[0])
+        month2 = int(date2[1])
+        day2 = int(date2[2])
+        hour2 = int(date2[3])
+        minute2 = int(date2[4])
 
         #thread = threading.Thread(target=plot.plot_h5, 
         #    args=(var, year1, month1, day1, hour1, minute1, hour2, minute2))
