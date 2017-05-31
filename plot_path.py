@@ -53,6 +53,6 @@ def select_file(st_hour,st_minute,ed_hour,ed_minute):
             sub_fname.append(files[j])
     return sub_fname
 
-if __name__ == '__main__':
-    open_folder(2017,04,21)
-    print select_file(00,00,23,59)
+#if __name__ == '__main__':
+#    open_folder(2017,04,21)
+#    print select_file(00,00,23,59)
