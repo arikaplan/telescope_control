@@ -25,17 +25,11 @@ def conti_test(year,month,day,st_hour,st_minute,ed_hour,ed_minute):
         print('Time range:',time_range)
         
     if len(minute)!=time_range:
-
         print "Files are discontinuous"
-
         return minute
     else:
-
-        print 'Files are continuous'
-        
+        print 'Files are continuous'        
         return minute
-
-
 
 
 def plot_h5(var, year, month, day,st_hour,st_minute,ed_hour,ed_minute):
@@ -43,13 +37,9 @@ def plot_h5(var, year, month, day,st_hour,st_minute,ed_hour,ed_minute):
     open_folder(month,day,year)
     files=select_file(st_hour,st_minute,ed_hour,ed_minute)
 
-
-    m=conti_test(year,month,day,st_hour,st_minute,ed_hour,ed_minute)
+    #m=conti_test(year,month,day,st_hour,st_minute,ed_hour,ed_minute)
     
-    numb=len(files)
-    size=0
-    d_h=st_hour-ed_hour
-    d_m=st_hour-ed_minute
+    #size=0
     for fname in files:
         with h5.File(fname,'r') as f:
             var1 = f['data']['%s' % var]
