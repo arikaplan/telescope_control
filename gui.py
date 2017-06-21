@@ -340,9 +340,16 @@ class interface:
         self.scan = Button(outputframe3, 
             text='Plot', command=self.plot)
         self.scan.grid(row = 0, column = 0, sticky=W)
+	
+	self.choices=['az','el','gpstime','science data']
+        self.bar=StringVar(outputframe3)
+        self.bar.set(self.choices[0])
+
+        self.option=tk.OptionMenu(outputframe3,self.bar,*self.choices,command=self.update)
+        self.option.grid(row=1,column=1,sticky=EW)
 
         self.var = Entry(outputframe3, width = 5)
-        self.var.insert(END, 'el')
+        #self.var.insert(END, 'el')
         self.var.grid(row = 0, column = 1, sticky=W)
 
         self.l1 = Label(outputframe3, text='From')
@@ -375,8 +382,13 @@ class interface:
 
         self.quitButton = Button(mainFrame, text='Exit', command=master.quit)
         self.quitButton.pack(side=LEFT)
-        
-     
+    
+    #update inputs of drop down menu    
+    def update(self,value):
+        for i in range(len(self.choices)):
+            if value==self.choices[i]:
+                self.var.delete(0,'end')
+                self.var.insert(END,self.choices[i])
     #keep this in case I want to compare encoder postion to galil position
     # i.e. moniter both at the same time
     def moniterGalil(self):
