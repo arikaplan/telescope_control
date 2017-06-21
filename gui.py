@@ -116,30 +116,33 @@ class interface:
         self.l5.grid(row = 4, column = 0, sticky=W)
 
         #user input
-        self.location_lin = Entry(inputframe)
+        self.location_lin = Entry(inputframe,width=10)
         self.location_lin.insert(END, 'UCSB')
-        self.location_lin.grid(row = 0, column = 1)
+        self.location_lin.grid(row = 0, column = 1,sticky=W)
 
-        self.cbody_lin = Entry(inputframe)
-        self.cbody_lin.insert(END, 'Neptune')
-        self.cbody_lin.grid(row = 1, column = 1)
-
-        self.numAzScans_lin = Entry(inputframe)
+        self.numAzScans_lin = Entry(inputframe,width=10)
         self.numAzScans_lin.insert(END, '2')
-        self.numAzScans_lin.grid(row = 2, column = 1)
+        self.numAzScans_lin.grid(row = 2, column = 1,sticky=W)
 
-        self.MinAz_lin = Entry(inputframe)
+        self.MinAz_lin = Entry(inputframe,width=10)
         self.MinAz_lin.insert(END, '-10.0')
-        self.MinAz_lin.grid(row = 3, column = 1)
+        self.MinAz_lin.grid(row = 3, column = 1,sticky=W)
 
-        self.MaxAz_lin = Entry(inputframe)
+        self.MaxAz_lin = Entry(inputframe,width=10)
         self.MaxAz_lin.insert(END, '10.0')
-        self.MaxAz_lin.grid(row = 4, column = 1)
+        self.MaxAz_lin.grid(row = 4, column = 1,sticky=W)
 
         self.scan = Button(buttonframe, 
             text='Start Scan', 
             command=self.linear)
         self.scan.pack(side=LEFT)
+        ##########linear tracking drop down#######
+        self.planets = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune']
+        self.cbody_lin=StringVar(inputframe)
+        self.cbody_lin.set(self.planets[0])
+        self.phouse=OptionMenu(inputframe,self.cbody_lin,*self.planets)
+  
+        self.phouse.grid(row = 1, column = 1,sticky=W)
 
         ###### horizontal scan ######
         page3 = Frame(nb2)
@@ -167,42 +170,45 @@ class interface:
         self.l8.grid(row = 7, column = 0, sticky=W)
 
         #user input
-        self.location_hor = Entry(inputframe)
+        self.location_hor = Entry(inputframe,width=10)
         self.location_hor.insert(END, 'UCSB')
-        self.location_hor.grid(row = 0, column = 1)
+        self.location_hor.grid(row = 0, column = 1,sticky=W)
 
-        self.cbody_hor = Entry(inputframe)
-        self.cbody_hor.insert(END, 'Neptune')
-        self.cbody_hor.grid(row = 1, column = 1)
-
-        self.numAzScans_hor = Entry(inputframe)
+        self.numAzScans_hor = Entry(inputframe,width=10)
         self.numAzScans_hor.insert(END, '2')
-        self.numAzScans_hor.grid(row = 2, column = 1)
+        self.numAzScans_hor.grid(row = 2, column = 1,sticky=W)
 
-        self.MinAz_hor = Entry(inputframe)
+        self.MinAz_hor = Entry(inputframe,width=10)
         self.MinAz_hor.insert(END, '-10.0')
-        self.MinAz_hor.grid(row = 3, column = 1)
+        self.MinAz_hor.grid(row = 3, column = 1,sticky=W)
 
-        self.MaxAz_hor = Entry(inputframe)
+        self.MaxAz_hor = Entry(inputframe,width=10)
         self.MaxAz_hor.insert(END, '10.0')
-        self.MaxAz_hor.grid(row = 4, column = 1)
+        self.MaxAz_hor.grid(row = 4, column = 1,sticky=W)
 
-        self.MinEl = Entry(inputframe)
+        self.MinEl = Entry(inputframe,width=10)
         self.MinEl.insert(END, '-10.0')
-        self.MinEl.grid(row = 5, column = 1)
+        self.MinEl.grid(row = 5, column = 1,sticky=W)
 
-        self.MaxEl = Entry(inputframe)
+        self.MaxEl = Entry(inputframe,width=10)
         self.MaxEl.insert(END, '10.0')
-        self.MaxEl.grid(row = 6, column = 1)
+        self.MaxEl.grid(row = 6, column = 1,sticky=W)
 
-        self.stepSize = Entry(inputframe)
+        self.stepSize = Entry(inputframe,width=10)
         self.stepSize.insert(END, '10.0')
-        self.stepSize.grid(row = 7, column = 1)
+        self.stepSize.grid(row = 7, column = 1,sticky=W)
 
         self.scan = Button(buttonframe, 
             text='Start Scan', 
             command=self.horizontal)
         self.scan.pack(side=LEFT)
+	        
+        ##########horizontal tracking drop down#######
+        self.planets = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune']
+        self.cbody_hor=StringVar(inputframe)
+        self.cbody_hor.set(self.planets[0])
+        self.phouse=OptionMenu(inputframe,self.cbody_hor,*self.planets)
+        self.phouse.grid(row = 1, column = 1,sticky=W)
 
 
         ####### move distance page #########
@@ -365,9 +371,7 @@ class interface:
         self.choices=['az','el','gpstime','sci_data']
         self.bar=StringVar(outputframe3)
         self.bar.set(self.choices[0])
-  
-
-        self.option=tk.OptionMenu(outputframe3,self.bar,*self.choices,command=self.update)
+        self.option=OptionMenu(outputframe3,self.bar,*self.choices)
         self.option.grid(row=0,column=1,sticky=EW)
 
         ############# stop frame ###############
@@ -381,11 +385,6 @@ class interface:
         self.quitButton = Button(mainFrame, text='Exit', command=master.quit)
         self.quitButton.pack(side=LEFT)
     
-    #update inputs of drop down menu to plot function  
-    def update(self,value):
-        for i in range(len(self.choices)):
-            if value==self.choices[i]:
-		return value
     #keep this in case I want to compare encoder postion to galil position
     # i.e. moniter both at the same time
     def moniterGalil(self):
