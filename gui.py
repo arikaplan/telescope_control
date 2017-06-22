@@ -538,7 +538,7 @@ class interface:
             var2 = self.bar2.get()
             var3 = self.bar3.get()
 
-            data = rt.plotnow(yrmoday, fpath, chan = var1)
+            data = rt.plotnow(yrmoday, fpath, chan = var2)
             plt.plot(combdata[var1][var2][var3],label=ch+' '+ var3)
     #this does not currently work for horizontal scan, you have to keep pressing it
     
