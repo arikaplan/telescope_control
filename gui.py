@@ -366,13 +366,14 @@ class interface:
         self.end = Entry(outputframe3)
         self.end.insert(END, '2017-05-24-14-44')
         self.end.grid(row = 0, column = 5)
-	
+
         ############# plot drop down menu ###############
-        self.choices=['az','el','gpstime','sci_data']
-        self.bar=StringVar(outputframe3)
-        self.bar.set(self.choices[0])
-        self.option=OptionMenu(outputframe3,self.bar,*self.choices)
-        self.option.grid(row=0,column=1,sticky=EW)
+        #For Move Plot
+        self.choice1=['az','el','gpstime','sci_data'] 
+        self.bar1=StringVar()
+        self.bar1.set(self.choice1[0])
+        self.option1=OptionMenu(self.outputframe3,self.bar1,*self.choice1,command=self.update_ch)
+        self.option1.grid(row=0,column=1,sticky=W)     
 
         ############# stop frame ###############
         
@@ -384,6 +385,32 @@ class interface:
 
         self.quitButton = Button(mainFrame, text='Exit', command=master.quit)
         self.quitButton.pack(side=LEFT)
+
+        self.motorTxt = Text(mainFrame, height = 1, width = 3)
+        self.motorTxt.insert(END, 'ON')
+        self.motorTxt.pack(side=RIGHT)
+        
+        self.motorButton = Button(mainFrame, text='Motor ON/OFF', command=self.motor)
+        self.motorButton.pack(side=RIGHT)
+
+##                self.var.delete(0,'end')
+##                self.var.insert(END,self.choices[i])
+    ####channel options for sci_data
+    def update_ch(self,value):
+        if value==self.choice1[3]:
+            self.choice2=['ch1','ch2','ch3','ch4','ch5','ch6','ch7'
+                          ,'ch8','ch9','ch10','ch11','ch12','ch13','ch14',
+                          'ch15','ch16']
+            self.bar2=StringVar()
+            self.option2=OptionMenu(self.outputframe3,self.bar2,*self.choice2)
+            self.option2.grid(row=1,column=1,sticky=W)
+            self.choice3=['T','Q','U']
+            self.bar3=StringVar()
+            self.option3=OptionMenu(self.outputframe3,self.bar3,*self.choice3)
+            self.option3.grid(row=2,column=1,sticky=W)
+        else:
+            self.option2.grid_forget()
+            self.option3.grid_forget()
     
     #keep this in case I want to compare encoder postion to galil position
     # i.e. moniter both at the same time
