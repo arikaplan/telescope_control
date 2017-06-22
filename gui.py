@@ -508,41 +508,38 @@ class interface:
 
 
     def plot(self):
-        var = self.bar.get()
-        beg = self.beg.get()
-        end = self.end.get()
 
-        date1 = beg.split('-')
-        year1 = int(date1[0])
-        month1 = int(date1[1])
-        day1 = int(date1[2])
-        hour1 = int(date1[3])
-        minute1 = int(date1[4])
+        var1 = self.bar1.get()
 
-        if end == 'now':
-            end = str(datetime.utcnow())
-            end = end.split()
-            end0 = end[0].split('-')
-            end1 = end[1].split(':')
-            end1[2] = str(round(float(end1[2])))
-            end = end0+end1
+        if var1 != 'sci_data':
+            date = self.date.get()
+            beg = self.beg.get()
+            end = self.end.get()
+        
+            date = date.split('-')
+            year = date[0]
+            month = date[1]
+            day = date[2]
 
+            time1 = beg.split('-')
+            hour1 = int(time1[0])
+            minute1 = int(time1[1])
 
-        date2 = end.split('-')
-        year2 = int(date2[0])
-        month2 = int(date2[1])
-        day2 = int(date2[2])
-        hour2 = int(date2[3])
-        minute2 = int(date2[4])
+            time2 = end.split('-')
+            hour2 = int(time2[0])
+            minute2 = int(time2[1])
 
-        #thread = threading.Thread(target=plot.plot_h5, 
-        #    args=(var, year1, month1, day1, hour1, minute1, hour2, minute2))
-        #thread.daemon = True
-        #thread.start()
+            plot.plot_h5(var1, year, month, day, hour1, minute1, hour2, minute2)
 
-        #make sure this doesnt stop other functions from working while plot is showing
-        plot.plot_h5(var, year1, month1, day1, hour1, minute1, hour2, minute2)
+        else:
+            yrmoday='20170602'
+            fpath='c:/Users/shulin/greenpol/'
 
+            var2 = self.bar2.get()
+            var3 = self.bar3.get()
+
+            data = rt.plotnow(yrmoday, fpath, chan = var1)
+            plt.plot(combdata[var1][var2][var3],label=ch+' '+ var3)
     #this does not currently work for horizontal scan, you have to keep pressing it
     
     def stop(self):
