@@ -340,32 +340,44 @@ class interface:
         '''
 
         #plot data
-        outputframe3 = Frame(outputframe)
-        outputframe3.pack()
+        self.outputframe3 = Frame(outputframe)
+        self.outputframe3.pack()
 
-        self.scan = Button(outputframe3, 
+        self.scan = Button(self.outputframe3, 
             text='Plot', command=self.plot)
         self.scan.grid(row = 0, column = 0, sticky=W)
 
-        self.l1 = Label(outputframe3, text='From')
-        self.l1.grid(row = 0, column = 2, sticky=W)
 
-        self.beg = Entry(outputframe3)
-        self.beg.insert(END, '2017-05-24-14-44')
-        self.beg.grid(row = 0, column = 3)
+    
+        self.l1 = Label(self.outputframe3, text='Date')
+        self.l1.grid(row = 0, column = 2, sticky =W)
+    
+        self.date = Entry(self.outputframe3, width = 10)
+        self.date.insert(END, '2017-06-03')
+        self.date.grid(row = 0, column = 3)
 
-        self.l2 = Label(outputframe3, text='To')
+        self.l2 = Label(self.outputframe3, text='From')
         self.l2.grid(row = 0, column = 4, sticky=W)
 
-        self.l3 = Label(outputframe3, text='yyyy-mm-dd-hh-mm')
-        self.l3.grid(row = 1, column = 3, sticky=W)
+        self.beg = Entry(self.outputframe3, width = 5)
+        self.beg.insert(END, '00-00')
+        self.beg.grid(row = 0, column = 5)
 
-        self.l4 = Label(outputframe3, text='"now" for current time')
-        self.l4.grid(row = 1, column = 5, sticky=W)
+        self.l3 = Label(self.outputframe3, text='To')
+        self.l3.grid(row = 0, column = 6, sticky=W)
+    
+        self.end = Entry(self.outputframe3, width = 5)
+        self.end.insert(END, '22-07')
+        self.end.grid(row = 0, column = 7, sticky=W)
 
-        self.end = Entry(outputframe3)
-        self.end.insert(END, '2017-05-24-14-44')
-        self.end.grid(row = 0, column = 5)
+        self.l4 = Label(self.outputframe3, text='yyyy-mm-dd')
+        self.l4.grid(row = 1, column = 3, sticky=W)
+    
+        self.l5 = Label(self.outputframe3, text='hh-mm')
+        self.l5.grid(row = 1, column = 5, sticky=W)
+
+        self.l6 = Label(self.outputframe3, text='hh-mm')
+        self.l6.grid(row = 1, column =7, sticky=W)
 
         ############# plot drop down menu ###############
         #For Move Plot
