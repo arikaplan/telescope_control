@@ -585,12 +585,29 @@ class interface:
         print('stopping motion...')
         c('ST')
     
+    def motor(self):
+        status = str(self.motorTxt.get('1.0',END))
+        print len(status)
+        #print status[0], ',', status[1], ',', status[2]
+        on = status[:2]
+        off = status[:3]
+
+        #if its on, turn it off
+        if on == 'ON':
+            c('MO')
+            self.motorTxt.delete('1.0', END)
+            self.motorTxt.insert('1.0', 'OFF')
+            print 'motor off'
+
+        #if its off, turn it on
+        elif off == 'OFF':
+            c('SH')
+            self.motorTxt.delete('1.0', END)
+            self.motorTxt.insert('1.0', 'ON')  
+            print 'motor on' 
 
 root = Tk()
 root.title("Telescope Control")
 
 b = interface(root)
 
-root.mainloop()
-
-g.GClose() #close connections
